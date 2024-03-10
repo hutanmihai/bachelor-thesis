@@ -1,6 +1,7 @@
 ### Custom ###
 # Data
 scraper/data/
+core/data/
 
 # IDEs
 .idea/
