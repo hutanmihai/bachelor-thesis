@@ -1,13 +1,15 @@
+from concurrent.futures import ThreadPoolExecutor
+
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from src.constants import ADS_CSV_PATH, ADS_URLS_PATH
+from constants import ADS_CSV_PATH, ADS_URLS_PATH
 from utils.decorators import show_elapsed_time
 
 
 def get_ads_urls() -> list[str]:
     """
-    Reads the ADD_URLS_PATH txt file and returns a list of URLs.
+    Reads the ADS_URLS_PATH txt file and returns a list of URLs.
     :return: A list of URLs.
     """
     with open(ADS_URLS_PATH, "r") as file:
@@ -42,11 +44,12 @@ def get_images_urls(soup: BeautifulSoup) -> list[str]:
     :param soup:
     :return: A list of URLs.
     """
-    photo_gallery = soup.find("div", {"data-testid": "photo-gallery"})
-    if not photo_gallery:
-        return []  # No photo gallery found
-    images = photo_gallery.find_all("img")
-    return [image["src"] for image in images]
+    try:
+        photo_gallery = soup.find("div", {"data-testid": "photo-gallery"})
+        images = photo_gallery.find_all("img")
+        return [image["src"] for image in images]
+    except AttributeError:
+        return []
 
 
 def get_details(soup: BeautifulSoup) -> dict:
@@ -55,20 +58,23 @@ def get_details(soup: BeautifulSoup) -> dict:
     :param soup:
     :return: A dictionary with the categories as keys and the values as values.
     """
-    content_details_section = soup.find("div", {"data-testid": "content-details-section"})
-    details_items = content_details_section.find_all("div", {"data-testid": "advert-details-item"})
-
     details = {}
+    try:
+        content_details_section = soup.find("div", {"data-testid": "content-details-section"})
+        details_items = content_details_section.find_all("div", {"data-testid": "advert-details-item"})
 
-    for item in details_items:
-        children = item.find_all(["p", "a"])
-        # use first children as key and second as value
-        key: str = children[0].text.lower()
-        value = children[1].text.lower()
+        for item in details_items:
+            children = item.find_all(["p", "a"])
+            # use first children as key and second as value
+            key: str = children[0].text.lower()
+            value = children[1].text.lower()
 
-        details[key] = value
+            details[key] = value
 
-    return details
+        return details
+
+    except AttributeError:
+        return {}
 
 
 def get_description(soup: BeautifulSoup) -> str | None:
@@ -112,6 +118,78 @@ def get_equipment(soup: BeautifulSoup) -> dict[str, list[str] | list[None]]:
         return {}
 
 
+def get_price(soup: BeautifulSoup) -> int | None:
+    """
+    Extracts the price from the html.
+    :param soup:
+    :return: The price or None if not found.
+    """
+    try:
+        price = soup.find("h3", class_="offer-price__number eqdspoq4 ooa-o7wv9s er34gjf0")
+        # replace spcaes
+        price = int(price.text.replace(" ", ""))
+        return price
+    except AttributeError:
+        return None
+    except ValueError:
+        return None
+
+
+def get_currency(soup: BeautifulSoup) -> str | None:
+    """
+    Extracts the currency from the html.
+    :param soup:
+    :return: The currency or None if not found.
+    """
+    try:
+        currency = soup.find("p", class_="offer-price__currency eqdspoq5 ooa-pk2ls er34gjf0")
+        return currency.text.lower()
+    except AttributeError:
+        return None
+
+
+def process_row(df, index, row):
+    global response
+
+    url = row["url"]
+
+    # retry requsting 3 times if it fails
+    for _ in range(3):
+        try:
+            response = requests.get(url)
+        except requests.exceptions.ConnectionError:
+            print(f"DNS failure, retrying {url}")
+            continue
+        if response.status_code == 200:
+            break
+
+    if response.status_code != 200:
+        print(f"Failed to fetch {url}")
+        return
+
+    soup = BeautifulSoup(response.text, "lxml")
+
+    images = get_images_urls(soup)
+    df.at[index, "images"] = ",".join(images)
+
+    details = get_details(soup)
+    for key, value in details.items():
+        df.at[index, key] = value
+
+    description = get_description(soup)
+    df.at[index, "description"] = description
+
+    equipment = get_equipment(soup)
+    for key, value in equipment.items():
+        df.at[index, key] = ",".join(value)
+
+    price = get_price(soup)
+    df.at[index, "price"] = price
+
+    currency = get_currency(soup)
+    df.at[index, "currency"] = currency
+
+
 @show_elapsed_time
 def get_ads_details_to_csv():
     df = pd.DataFrame(get_ads_urls(), columns=["url"])
@@ -126,29 +204,16 @@ def get_ads_details_to_csv():
     df["siguranta"] = [None] * df.shape[0]
     df["vehicule electrice"] = [None] * df.shape[0]
 
-    for index, row in df.iterrows():
-        url = row["url"]
-        response = requests.get(url)
+    with ThreadPoolExecutor() as executor:
+        futures = []
 
-        if response.status_code != 200:
-            print(f"Failed to fetch {url}")
-            continue
+        for index, row in df.iterrows():
+            future = executor.submit(process_row, df, index, row)
+            futures.append(future)
 
-        soup = BeautifulSoup(response.text, "lxml")
-
-        images = get_images_urls(soup)
-        df.at[index, "images"] = ",".join(images)
-
-        details = get_details(soup)
-        for key, value in details.items():
-            df.at[index, key] = value
-
-        description = get_description(soup)
-        df.at[index, "description"] = description
-
-        equipment = get_equipment(soup)
-        for key, value in equipment.items():
-            df.at[index, key] = ",".join(value)
+        # Wait for all futures to complete
+        for future in futures:
+            future.result()
 
     df.to_csv(ADS_CSV_PATH, index=False)
 
