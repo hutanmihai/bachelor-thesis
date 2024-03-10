@@ -18,6 +18,7 @@ if __name__ == "__main__":
     print(f"Initial number of rows: {len(df)}")
 
     df = df[~df["id"].isin(ids)]
+    df = df.drop(columns=["images"])
 
     df.to_csv(FINAL_DATA_PATH, index=False)
 
