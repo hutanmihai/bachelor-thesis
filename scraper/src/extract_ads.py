@@ -1,17 +1,20 @@
-import timeit
-
 import requests
 from bs4 import BeautifulSoup
-from src.constants import NUMBER_OF_PAGES
+from constants import ADS_URLS_PATH, DATA_PATH, NUMBER_OF_PAGES
+from utils.decorators import show_elapsed_time
+from utils.dirs import create_dir_if_not_exists
 from utils.search import add_page
 
 
+@show_elapsed_time
 def extract_ads():
-    hrefs = set()
+
+    create_dir_if_not_exists(DATA_PATH)
+
+    urls = set()
 
     for i in range(1, NUMBER_OF_PAGES + 1):
         page = add_page(i)
-        found = 0
 
         response = requests.get(page)
         if response.status_code != 200:
@@ -24,18 +27,12 @@ def extract_ads():
         for section in sections:
             h1_tag = section.find("h1", class_="e1oqyyyi9 ooa-1ed90th er34gjf0")
             a_tag = h1_tag.find("a")
-            hrefs.add(a_tag["href"])
-            found += 1
+            urls.add(a_tag["href"])
 
-        print(f"Page {i}: Found {found} hrefs.")
-
-    with open("../data/ads_hrefs.txt", "w") as file:
-        for href in hrefs:
-            file.write(href + "\n")
+    with open(ADS_URLS_PATH, "w") as file:
+        for url in urls:
+            file.write(url + "\n")
 
 
 if __name__ == "__main__":
-    start_time = timeit.default_timer()
     extract_ads()
-    elapsed = timeit.default_timer() - start_time
-    print(f"Elapsed time: {elapsed:.2f} seconds.")
