@@ -3,8 +3,12 @@
 scraper/data/
 core/data/
 
+# Misc
+.DS_Store
+
 # IDEs
 .idea/
+.vscode/
 
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
