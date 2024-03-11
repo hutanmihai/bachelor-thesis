@@ -8,11 +8,11 @@ packages = [{ include = "src", from = "." }]
 
 [tool.poetry.dependencies]
 python = "3.12.2"
-beautifulsoup4 = "^4.12.3"
-requests = "^2.31.0"
-pillow = "^10.2.0"
-lxml = "^5.1.0"
-pandas = "^2.2.1"
+beautifulsoup4 = "4.12.3"
+requests = "2.31.0"
+pillow = "10.2.0"
+lxml = "5.1.0"
+pandas = "2.2.1"
 
 
 [tool.poetry.group.dev.dependencies]
