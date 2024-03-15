@@ -1,9 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
-from constants import ADS_URLS_PATH, DATA_PATH, NUMBER_OF_PAGES
-from utils.decorators import show_elapsed_time
-from utils.dirs import create_dir_if_not_exists
-from utils.search import add_page
+from src.constants import DATA_PATH, NUMBER_OF_PAGES, URLS_TXT_PATH
+from src.utils.decorators import show_elapsed_time
+from src.utils.dirs import create_dir_if_not_exists
+from src.utils.search import add_page
+
+MAIN_PAGE_SECTION_CLASS = "ooa-10gfd0w ekwd5px1"
+H1_INSIDE_SECTION_CLASS = "ekwd5px9 ooa-1ed90th er34gjf0"
 
 
 @show_elapsed_time
@@ -13,7 +16,7 @@ def extract_ads():
 
     urls = set()
 
-    for i in range(1, NUMBER_OF_PAGES + 1):
+    for i in range(NUMBER_OF_PAGES):
         page = add_page(i)
 
         response = requests.get(page)
@@ -22,16 +25,18 @@ def extract_ads():
             continue
 
         soup: BeautifulSoup = BeautifulSoup(response.text, "lxml")
-        sections = soup.find_all("section", class_="ooa-10gfd0w e1oqyyyi1")
+        sections = soup.find_all("section", class_=MAIN_PAGE_SECTION_CLASS)
 
         for section in sections:
-            h1_tag = section.find("h1", class_="e1oqyyyi9 ooa-1ed90th er34gjf0")
+            h1_tag = section.find("h1", class_=H1_INSIDE_SECTION_CLASS)
             a_tag = h1_tag.find("a")
             urls.add(a_tag["href"])
 
-    with open(ADS_URLS_PATH, "w") as file:
+    with open(URLS_TXT_PATH, "w") as file:
         for url in urls:
             file.write(url + "\n")
+
+    print(f"Extracted {len(urls)} urls")
 
 
 if __name__ == "__main__":

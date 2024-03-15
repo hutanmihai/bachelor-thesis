@@ -3,8 +3,8 @@ from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from constants import ADS_CSV_PATH, ADS_URLS_PATH
-from utils.decorators import show_elapsed_time
+from src.constants import RAW_CSV, URLS_TXT_PATH
+from src.utils.decorators import show_elapsed_time
 
 
 def get_ads_urls() -> list[str]:
@@ -12,7 +12,7 @@ def get_ads_urls() -> list[str]:
     Reads the ADS_URLS_PATH txt file and returns a list of URLs.
     :return: A list of URLs.
     """
-    with open(ADS_URLS_PATH, "r") as file:
+    with open(URLS_TXT_PATH, "r") as file:
         return [line.rstrip() for line in file.readlines()]
 
 
@@ -38,7 +38,7 @@ def get_id(url: str) -> str:
     return extracted_path.split("-")[-1]
 
 
-def get_images_urls(soup: BeautifulSoup) -> list[str]:
+def get_images_urls(soup: BeautifulSoup) -> list[str] | None:
     """
     Extracts the URLs of the images from the html.
     :param soup:
@@ -49,10 +49,10 @@ def get_images_urls(soup: BeautifulSoup) -> list[str]:
         images = photo_gallery.find_all("img")
         return [image["src"] for image in images]
     except AttributeError:
-        return []
+        return None
 
 
-def get_details(soup: BeautifulSoup) -> dict:
+def get_details(soup: BeautifulSoup) -> dict | None:
     """
     Extracts the details from the html.
     :param soup:
@@ -74,7 +74,7 @@ def get_details(soup: BeautifulSoup) -> dict:
         return details
 
     except AttributeError:
-        return {}
+        return None
 
 
 def get_description(soup: BeautifulSoup) -> str | None:
@@ -91,7 +91,7 @@ def get_description(soup: BeautifulSoup) -> str | None:
         return None
 
 
-def get_equipment(soup: BeautifulSoup) -> dict[str, list[str] | list[None]]:
+def get_equipment(soup: BeautifulSoup) -> dict[str, list[str]] | None:
     """
     Extracts the equipment from the html.
     :param soup:
@@ -115,10 +115,10 @@ def get_equipment(soup: BeautifulSoup) -> dict[str, list[str] | list[None]]:
         return equipment
 
     except AttributeError:
-        return {}
+        return None
 
 
-def get_price(soup: BeautifulSoup) -> int | None:
+def get_price(soup: BeautifulSoup) -> str | None:
     """
     Extracts the price from the html.
     :param soup:
@@ -127,7 +127,7 @@ def get_price(soup: BeautifulSoup) -> int | None:
     try:
         price = soup.find("h3", class_="offer-price__number eqdspoq4 ooa-o7wv9s er34gjf0")
         # replace spcaes
-        price = int(price.text.replace(" ", ""))
+        price = price.text.replace(" ", "")
         return price
     except AttributeError:
         return None
@@ -170,18 +170,21 @@ def process_row(df, index, row):
     soup = BeautifulSoup(response.text, "lxml")
 
     images = get_images_urls(soup)
-    df.at[index, "images"] = ",".join(images)
+    if images:
+        df.at[index, "images"] = ",".join(images)
 
     details = get_details(soup)
-    for key, value in details.items():
-        df.at[index, key] = value
+    if details:
+        for key, value in details.items():
+            df.at[index, key] = value
 
     description = get_description(soup)
     df.at[index, "description"] = description
 
     equipment = get_equipment(soup)
-    for key, value in equipment.items():
-        df.at[index, key] = ",".join(value)
+    if equipment:
+        for key, value in equipment.items():
+            df.at[index, key] = ",".join(value)
 
     price = get_price(soup)
     df.at[index, "price"] = price
@@ -196,7 +199,7 @@ def get_ads_details_to_csv():
     df["id"] = df["url"].apply(get_id)
     df["path"] = df["url"].apply(get_last_path_element)
 
-    df["images"] = ""
+    df["images"] = None
     df["audio si tehnologie"] = [None] * df.shape[0]
     df["confort si echipamente optionale"] = [None] * df.shape[0]
     df["electronice si sisteme de asistenta"] = [None] * df.shape[0]
@@ -215,7 +218,7 @@ def get_ads_details_to_csv():
         for future in futures:
             future.result()
 
-    df.to_csv(ADS_CSV_PATH, index=False)
+    df.to_csv(RAW_CSV, index=False)
 
 
 if __name__ == "__main__":

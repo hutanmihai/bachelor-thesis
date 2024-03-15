@@ -25,7 +25,7 @@ conda activate thesis
 - Install the required libraries
 
 ```bash
-pip install jupyter==1.0.0 numpy==1.26.4 matplotlib==3.8.3 opencv-python==4.9.0.80 pandas==2.2.1 pillow==10.2.0
+pip install jupyter==1.0.0 numpy==1.26.4 matplotlib==3.8.3 opencv-python==4.9.0.80 pandas==2.2.1 pillow==10.2.0 black==24.2.0 seaborn missigno
 ```
 
 - Install pytorch

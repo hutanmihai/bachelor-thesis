@@ -3,10 +3,10 @@ from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
 import PIL
 import requests
-from constants import CLEANED_ADS_CSV_PATH, IMAGES_PATH
 from PIL import Image
-from utils.decorators import show_elapsed_time
-from utils.dirs import create_dir_if_not_exists
+from src.constants import CLEANED_CSV, IMAGES_PATH, NUMBER_OF_IMAGES_MAX_PER_AD
+from src.utils.decorators import show_elapsed_time
+from src.utils.dirs import create_dir_if_not_exists
 
 
 def download_image(image_url, folder_path, image_index):
@@ -22,7 +22,7 @@ def download_image(image_url, folder_path, image_index):
 
 @show_elapsed_time
 def download_images():
-    df = pd.read_csv(CLEANED_ADS_CSV_PATH)
+    df = pd.read_csv(CLEANED_CSV)
 
     create_dir_if_not_exists(IMAGES_PATH)
 
@@ -42,8 +42,7 @@ def download_images():
 
             try:
                 for idx, image in enumerate(images_urls):
-                    # download only the first 2 images
-                    if idx > 1:
+                    if idx > NUMBER_OF_IMAGES_MAX_PER_AD - 1:
                         break
                     future = executor.submit(download_image, image, f"{IMAGES_PATH}/{id}", idx)
                     futures.append(future)
