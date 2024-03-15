@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from src.constants import DATA_PATH, NUMBER_OF_PAGES, URLS_TXT_PATH
-from src.utils.decorators import show_elapsed_time
+from src.utils.decorators import show_elapsed_time, send_notification
 from src.utils.dirs import create_dir_if_not_exists
 from src.utils.search import add_page
 
@@ -10,6 +10,7 @@ H1_INSIDE_SECTION_CLASS = "ekwd5px9 ooa-1ed90th er34gjf0"
 
 
 @show_elapsed_time
+@send_notification
 def extract_ads():
 
     create_dir_if_not_exists(DATA_PATH)

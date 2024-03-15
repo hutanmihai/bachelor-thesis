@@ -1,6 +1,6 @@
 import timeit
 
-from discord import send_discord_notification
+from src.utils.discord import send_discord_notification
 
 
 def show_elapsed_time(func):

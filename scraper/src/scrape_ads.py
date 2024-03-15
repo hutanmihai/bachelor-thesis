@@ -4,7 +4,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from src.constants import RAW_CSV, URLS_TXT_PATH
-from src.utils.decorators import show_elapsed_time
+from src.utils.decorators import show_elapsed_time, send_notification
 
 
 def get_ads_urls() -> list[str]:
@@ -194,6 +194,7 @@ def process_row(df, index, row):
 
 
 @show_elapsed_time
+@send_notification
 def get_ads_details_to_csv():
     df = pd.DataFrame(get_ads_urls(), columns=["url"])
     df["id"] = df["url"].apply(get_id)

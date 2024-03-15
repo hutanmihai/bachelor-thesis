@@ -5,7 +5,7 @@ import PIL
 import requests
 from PIL import Image
 from src.constants import CLEANED_CSV, IMAGES_PATH, NUMBER_OF_IMAGES_MAX_PER_AD
-from src.utils.decorators import show_elapsed_time
+from src.utils.decorators import show_elapsed_time, send_notification
 from src.utils.dirs import create_dir_if_not_exists
 
 
@@ -21,6 +21,7 @@ def download_image(image_url, folder_path, image_index):
 
 
 @show_elapsed_time
+@send_notification
 def download_images():
     df = pd.read_csv(CLEANED_CSV)
 
