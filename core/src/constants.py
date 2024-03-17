@@ -4,4 +4,4 @@ GRAPHS_PATH = Path("../graphs")
 DATA_PATH = Path("../data")
 
 IMAGES_PATH = DATA_PATH / "images"
-CSV_PATH = DATA_PATH / "final_data.csv"
+FINAL_CSV = DATA_PATH / "final.csv"
