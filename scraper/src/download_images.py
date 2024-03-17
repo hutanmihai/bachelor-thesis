@@ -5,7 +5,7 @@ import PIL
 import requests
 from PIL import Image
 from src.constants import CLEANED_CSV, IMAGES_PATH, NUMBER_OF_IMAGES_MAX_PER_AD
-from src.utils.decorators import show_elapsed_time, send_notification
+from src.utils.decorators import send_notification, show_elapsed_time
 from src.utils.dirs import create_dir_if_not_exists
 
 

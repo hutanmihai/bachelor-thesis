@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from src.constants import DATA_PATH, NUMBER_OF_PAGES, URLS_TXT_PATH
-from src.utils.decorators import show_elapsed_time, send_notification
+from src.utils.decorators import send_notification, show_elapsed_time
 from src.utils.dirs import create_dir_if_not_exists
 from src.utils.search import add_page
 

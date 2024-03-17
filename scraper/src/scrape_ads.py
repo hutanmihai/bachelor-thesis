@@ -4,7 +4,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from src.constants import RAW_CSV, URLS_TXT_PATH
-from src.utils.decorators import show_elapsed_time, send_notification
+from src.utils.decorators import send_notification, show_elapsed_time
 
 
 def get_ads_urls() -> list[str]:
