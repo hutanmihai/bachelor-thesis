@@ -4,7 +4,7 @@ import pandas as pd
 import PIL
 import requests
 from PIL import Image
-from src.constants import CLEANED_CSV, IMAGES_PATH, NUMBER_OF_IMAGES_MAX_PER_AD
+from src.constants import CURRENT_CLEANED_CSV, CURRENT_IMAGES_PATH, NUMBER_OF_IMAGES_MAX_PER_AD
 from src.utils.decorators import send_notification, show_elapsed_time
 from src.utils.dirs import create_dir_if_not_exists
 
@@ -23,9 +23,9 @@ def download_image(image_url, folder_path, image_index):
 @show_elapsed_time
 @send_notification
 def download_images():
-    df = pd.read_csv(CLEANED_CSV)
+    df = pd.read_csv(CURRENT_CLEANED_CSV)
 
-    create_dir_if_not_exists(IMAGES_PATH)
+    create_dir_if_not_exists(CURRENT_IMAGES_PATH)
 
     with ThreadPoolExecutor() as executor:
         futures = []
@@ -39,13 +39,13 @@ def download_images():
 
             id = row["id"]
 
-            create_dir_if_not_exists(IMAGES_PATH / id)
+            create_dir_if_not_exists(CURRENT_IMAGES_PATH / id)
 
             try:
                 for idx, image in enumerate(images_urls):
                     if idx > NUMBER_OF_IMAGES_MAX_PER_AD - 1:
                         break
-                    future = executor.submit(download_image, image, f"{IMAGES_PATH}/{id}", idx)
+                    future = executor.submit(download_image, image, f"{CURRENT_IMAGES_PATH}/{id}", idx)
                     futures.append(future)
             except:
                 print(images_urls)

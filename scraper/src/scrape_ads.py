@@ -3,7 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from src.constants import RAW_CSV, URLS_TXT_PATH
+from src.constants import CURRENT_URLS_TXT_PATH, CURRENT_RAW_CSV
 from src.utils.decorators import send_notification, show_elapsed_time
 
 
@@ -12,7 +12,7 @@ def get_ads_urls() -> list[str]:
     Reads the ADS_URLS_PATH txt file and returns a list of URLs.
     :return: A list of URLs.
     """
-    with open(URLS_TXT_PATH, "r") as file:
+    with open(CURRENT_URLS_TXT_PATH, "r") as file:
         return [line.rstrip() for line in file.readlines()]
 
 
@@ -219,7 +219,7 @@ def get_ads_details_to_csv():
         for future in futures:
             future.result()
 
-    df.to_csv(RAW_CSV, index=False)
+    df.to_csv(CURRENT_RAW_CSV, index=False)
 
 
 if __name__ == "__main__":
