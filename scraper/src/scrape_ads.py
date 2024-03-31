@@ -3,7 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from src.constants import CURRENT_URLS_TXT_PATH, CURRENT_RAW_CSV
+from src.constants import CURRENT_URLS_TXT_PATH, CURRENT_RAW_CSV, BEST_FINAL_CSV
 from src.utils.decorators import send_notification, show_elapsed_time
 
 
@@ -196,9 +196,15 @@ def process_row(df, index, row):
 @show_elapsed_time
 @send_notification
 def get_ads_details_to_csv():
-    df = pd.DataFrame(get_ads_urls(), columns=["url"])
+    old_df = pd.read_csv(BEST_FINAL_CSV)
+    max_unique_id = old_df["unique_id"].max()
+    new_unique_id = int(max_unique_id) + 1
+
+    ads = get_ads_urls()
+    df = pd.DataFrame(ads, columns=["url"])
     df["id"] = df["url"].apply(get_id)
     df["path"] = df["url"].apply(get_last_path_element)
+    df["unique_id"] = [str(i).zfill(6) for i in range(new_unique_id, new_unique_id + len(df))]
 
     df["images"] = None
     df["audio si tehnologie"] = [None] * df.shape[0]
@@ -218,6 +224,11 @@ def get_ads_details_to_csv():
         # Wait for all futures to complete
         for future in futures:
             future.result()
+
+    print(f"Initial number of rows: {len(df)}")
+    print(f"Dropping rows with core missing values...")
+    df = df.dropna(subset=["images", "price", "currency", "marca", "model", "anul producției"])
+    print(f"Number of rows after removing missing values: {len(df)}")
 
     df.to_csv(CURRENT_RAW_CSV, index=False)
 

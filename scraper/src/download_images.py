@@ -4,7 +4,7 @@ import pandas as pd
 import PIL
 import requests
 from PIL import Image
-from src.constants import CURRENT_CLEANED_CSV, CURRENT_IMAGES_PATH, NUMBER_OF_IMAGES_MAX_PER_AD
+from src.constants import CURRENT_RAW_CSV, CURRENT_IMAGES_PATH, NUMBER_OF_IMAGES_MAX_PER_AD
 from src.utils.decorators import send_notification, show_elapsed_time
 from src.utils.dirs import create_dir_if_not_exists
 
@@ -23,7 +23,7 @@ def download_image(image_url, folder_path, image_index):
 @show_elapsed_time
 @send_notification
 def download_images():
-    df = pd.read_csv(CURRENT_CLEANED_CSV)
+    df = pd.read_csv(CURRENT_RAW_CSV)
 
     create_dir_if_not_exists(CURRENT_IMAGES_PATH)
 
@@ -37,15 +37,15 @@ def download_images():
                 print(f"Failed to extract images for {row['images']}")
                 continue
 
-            id = row["id"]
+            unique_id = row["unique_id"]
 
-            create_dir_if_not_exists(CURRENT_IMAGES_PATH / id)
+            create_dir_if_not_exists(CURRENT_IMAGES_PATH / str(unique_id).zfill(6))
 
             try:
                 for idx, image in enumerate(images_urls):
                     if idx > NUMBER_OF_IMAGES_MAX_PER_AD - 1:
                         break
-                    future = executor.submit(download_image, image, f"{CURRENT_IMAGES_PATH}/{id}", idx)
+                    future = executor.submit(download_image, image, f"{CURRENT_IMAGES_PATH}/{str(unique_id).zfill(6)}", idx)
                     futures.append(future)
             except:
                 print(images_urls)
