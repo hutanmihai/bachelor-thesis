@@ -1,7 +1,7 @@
 from pathlib import Path
 
 GRAPHS_PATH = Path("../graphs")
-DATA_PATH = Path("../../scraper/data/stage")
+DATA_PATH = Path("../../scraper/data/best")
 
 IMAGES_PATH = DATA_PATH / "images"
 FINAL_CSV = DATA_PATH / "final.csv"
