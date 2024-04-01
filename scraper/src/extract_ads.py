@@ -1,11 +1,11 @@
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from src.constants import NUMBER_OF_PAGES, CURRENT_DATA_PATH, CURRENT_URLS_TXT_PATH, BEST_FINAL_CSV
+from src.constants import BEST_FINAL_CSV, CURRENT_DATA_PATH, CURRENT_URLS_TXT_PATH, NUMBER_OF_PAGES
 from src.scrape_ads import get_id
 from src.utils.decorators import send_notification, show_elapsed_time
 from src.utils.dirs import create_dir_if_not_exists
 from src.utils.search import add_page
-import pandas as pd
 from tqdm import tqdm
 
 MAIN_PAGE_SECTION_CLASS = "ooa-10gfd0w eszxync1"

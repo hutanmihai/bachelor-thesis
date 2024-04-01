@@ -12,6 +12,9 @@ fastapi = "^0.110.0"
 uvicorn = "^0.29.0"
 sqlalchemy = { extras = ["postgresql-asyncpg"], version = "^2.0.29" }
 pydantic-settings = "^2.2.1"
+pyjwt = "^2.8.0"
+passlib = { extras = ["bcrypt"], version = "^1.7.4" }
+pydantic = {extras = ["email"], version = "^2.6.4"}
 
 
 [tool.poetry.group.dev.dependencies]
@@ -29,3 +32,22 @@ httpx = "^0.27.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poe.tasks]
+[tool.poe.tasks.create_migration]
+# This task will create migration
+help = "Create migration"
+cmd = "alembic revision --autogenerate"
+envfile = ".env"
+
+[tool.poe.tasks.upgrade_schema]
+# This task will upgrade the database schema
+help = "Upgrade database schema"
+cmd = "alembic upgrade head"
+envfile = ".env"
+
+[tool.poe.tasks.downgrade_schema]
+# This task will upgrade the database schema
+help = "Downgrade database schema"
+cmd = "alembic downgrade head"
+envfile = ".env"

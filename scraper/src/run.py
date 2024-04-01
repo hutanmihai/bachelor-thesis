@@ -5,7 +5,7 @@ from src.final_check import final_check
 from src.merge_data import merge_data
 from src.scrape_ads import get_ads_details_to_csv
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     extract_ads_urls()
     get_ads_details_to_csv()
     download_images()

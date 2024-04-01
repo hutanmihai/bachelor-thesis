@@ -28,4 +28,5 @@ repos:
       - id: isort
         exclude: ^(docs/.*|^frontend/.*)
         name: isort (python)
-        args: [ --line-length=150 ]
+        language_version: 3.12.2
+        args: [ --profile=black, --line-length=150 ]

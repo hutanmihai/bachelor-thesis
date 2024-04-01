@@ -1,5 +1,12 @@
+import asyncio
+import logging
+from contextlib import asynccontextmanager
+
+from alembic import command
+from alembic.config import Config
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from src.apis.auth_api import router as auth_router
 from src.apis.health_api import router as health_router
 from src.settings import settings
 from uvicorn import run as uvicorn_run
@@ -8,6 +15,7 @@ from uvicorn import run as uvicorn_run
 def _register_api_handlers(app: FastAPI) -> FastAPI:
     """Register API handlers."""
     app.include_router(health_router)
+    app.include_router(auth_router)
     return app
 
 
@@ -23,9 +31,24 @@ def add_middleware(app: FastAPI) -> FastAPI:
     return app
 
 
+async def run_migrations():
+    alembic_cfg = Config("alembic.ini")
+    await asyncio.to_thread(command.upgrade, alembic_cfg, "head")
+
+
+@asynccontextmanager
+async def lifespan(app_: FastAPI):
+    log = logging.getLogger("uvicorn")
+    log.info("Starting up...")
+    log.info("Run alembic upgrade head...")
+    await run_migrations()
+    yield
+    log.info("Shutting down...")
+
+
 def create_app() -> FastAPI:
     """Create and return FastAPI application."""
-    app = FastAPI()
+    app = FastAPI(lifespan=lifespan)
     app = _register_api_handlers(app)
     app = add_middleware(app)
     return app

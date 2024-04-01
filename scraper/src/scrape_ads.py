@@ -3,7 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from src.constants import CURRENT_URLS_TXT_PATH, CURRENT_RAW_CSV, BEST_FINAL_CSV
+from src.constants import BEST_FINAL_CSV, CURRENT_RAW_CSV, CURRENT_URLS_TXT_PATH
 from src.utils.decorators import send_notification, show_elapsed_time
 
 

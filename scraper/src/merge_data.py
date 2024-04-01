@@ -1,12 +1,19 @@
-from pathlib import Path
-import pandas as pd
 import shutil
-from tqdm import tqdm
+from pathlib import Path
 
-from src.constants import CURRENT_FINAL_CSV, BEST_FINAL_CSV, STAGE_FINAL_CSV, STAGE_IMAGES_PATH, CURRENT_IMAGES_PATH, \
-    BEST_IMAGES_PATH, STAGE_DATA_PATH
+import pandas as pd
+from src.constants import (
+    BEST_FINAL_CSV,
+    BEST_IMAGES_PATH,
+    CURRENT_FINAL_CSV,
+    CURRENT_IMAGES_PATH,
+    STAGE_DATA_PATH,
+    STAGE_FINAL_CSV,
+    STAGE_IMAGES_PATH,
+)
 from src.utils.decorators import send_notification, show_elapsed_time
 from src.utils.dirs import create_dir_if_not_exists
+from tqdm import tqdm
 
 
 @show_elapsed_time
@@ -44,5 +51,5 @@ def merge_data():
         shutil.copytree(dir, STAGE_IMAGES_PATH / dir.name)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     merge_data()
