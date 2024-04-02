@@ -1,5 +1,6 @@
 import { Button, ButtonProps } from '@/components/ui/button'
 import { useFormContext } from 'react-hook-form'
+import { Loader } from 'lucide-react'
 
 export type TRHFSubmitButtonProps = ButtonProps & {
   text: string
@@ -21,12 +22,10 @@ function RHFSubmitButton({
       variant={variant}
       color={color}
       type="submit"
-      // TODO: Add Spinner icon
-      // endIcon={isSubmitting ? <Spinner /> : null}
       disabled={disabled || isSubmitting}
       {...other}
     >
-      {text}
+      {isSubmitting ? <Loader className="h-6 w-6" /> : text}
     </Button>
   )
 }
