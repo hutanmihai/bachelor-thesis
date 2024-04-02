@@ -24,8 +24,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter()
   const pathname = usePathname()
 
-  const { mutate: loginMutation } = useLogin()
-  const { mutate: registerMutation } = useRegister()
+  const { mutateAsync: loginMutation } = useLogin()
+  const { mutateAsync: registerMutation } = useRegister()
 
   useEffect(() => {
     if (!isAuth && protectedRoutes.includes(pathname)) {
@@ -36,11 +36,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = useCallback(
     async (payload: TLoginRequestModel) => {
       setIsLoading(true)
-      loginMutation(payload, {
+      await loginMutation(payload, {
         onSuccess: async (token) => {
           try {
             saveAccessToken(token)
-            setIsAuth(true)
+            setIsAuth(() => true)
             router.push(routes.dashboard.root)
           } catch (error) {
             removeAccessToken()
@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const register = useCallback(
     async (payload: TRegisterRequestModel) => {
       setIsLoading(true)
-      registerMutation(payload, {
+      await registerMutation(payload, {
         onSuccess: async (token) => {
           try {
             saveAccessToken(token)
