@@ -74,17 +74,27 @@ function AuthForm({ type }: TAuthFormProps) {
         <div className="grid gap-4">
           {type === 'register' && (
             <div className="grid gap-2">
-              <Label htmlFor="email">Username</Label>
-              <RHFInput name="username" id="username" placeholder="m" />
+              <RHFInput
+                name="username"
+                id="username"
+                placeholder="m"
+                labelName="Username"
+                required
+              />
             </div>
           )}
           <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <RHFInput name="email" id="email" type="email" placeholder="m@example.com" />
+            <RHFInput
+              name="email"
+              id="email"
+              type="email"
+              placeholder="m@example.com"
+              labelName="Email"
+              required
+            />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
-            <RHFInput name="password" id="password" type="password" />
+            <RHFInput name="password" id="password" type="password" labelName="Password" required />
           </div>
           <RHFSubmitButton
             type="submit"

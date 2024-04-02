@@ -3,6 +3,7 @@
 import { useAuth } from '@/auth/context/auth'
 import MaxWidthWrapper from '@/components/max-width-wrapper'
 import MobileNav from '@/components/navbar/mobile-nav'
+import UserAccountNav from '@/components/navbar/user-account-nav'
 import { buttonVariants } from '@/components/ui/button'
 import { routes } from '@/config.global'
 import { ArrowRight } from 'lucide-react'
@@ -62,7 +63,7 @@ function Navbar() {
                   Dashboard
                 </Link>
 
-                <span className="font-semibold">TODO</span>
+                <UserAccountNav email="m@example.com" name="mihaihutan" />
               </>
             )}
           </div>

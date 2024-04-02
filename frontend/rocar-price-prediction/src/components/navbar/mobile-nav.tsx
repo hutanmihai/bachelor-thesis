@@ -1,6 +1,7 @@
 'use client'
 
 import { useAuth } from '@/auth/context/auth'
+import LogoutButton from '@/components/auth/logout-button'
 import { Button } from '@/components/ui/button'
 import { routes } from '@/config.global'
 import { ArrowRight, LogOut, Menu } from 'lucide-react'
@@ -77,9 +78,7 @@ const MobileNav = () => {
                 </li>
                 <li className="my-3 h-px w-full bg-gray-300" />
                 <li>
-                  <Button variant="destructive" onClick={logout} className="w-full font-semibold">
-                    Logout <LogOut className="ml-2 h-5 w-5" />
-                  </Button>
+                  <LogoutButton />
                 </li>
               </>
             )}

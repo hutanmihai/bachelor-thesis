@@ -1,6 +1,6 @@
 'use client'
 
-import { removeAccessToken, saveAccessToken } from '@/auth/session'
+import { getAccessToken, removeAccessToken, saveAccessToken } from '@/auth/session'
 import { protectedRoutes, routes } from '@/config.global'
 import { TLoginRequestModel, TRegisterRequestModel } from '@/requests/auth'
 import { usePathname, useRouter } from 'next/navigation'
@@ -26,6 +26,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const { mutateAsync: loginMutation } = useLogin()
   const { mutateAsync: registerMutation } = useRegister()
+
+  useEffect(() => {
+    if (getAccessToken()) setIsAuth(true)
+  }, [])
 
   useEffect(() => {
     if (!isAuth && protectedRoutes.includes(pathname)) {
