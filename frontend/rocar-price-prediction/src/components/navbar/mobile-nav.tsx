@@ -69,6 +69,16 @@ const MobileNav = () => {
               <>
                 <li>
                   <Link
+                    onClick={() => closeOnCurrent(routes.pricing.root)}
+                    className="flex w-full items-center font-semibold"
+                    href={routes.pricing.root}
+                  >
+                    Pricing
+                  </Link>
+                </li>
+                <li className="my-3 h-px w-full bg-gray-300" />
+                <li>
+                  <Link
                     onClick={() => closeOnCurrent(routes.dashboard.root)}
                     className="flex w-full items-center font-semibold"
                     href={routes.dashboard.root}

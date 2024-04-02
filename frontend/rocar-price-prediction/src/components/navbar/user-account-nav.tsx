@@ -23,7 +23,7 @@ function UserAccountNav({ email, name }: UserAccountNavProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="overflow-visible">
         <Button className="aspect-square h-8 w-8 rounded-full bg-primary">
-          <Avatar className="flex justify-center items-center mb-1">
+          <Avatar className="mb-1 flex items-center justify-center">
             <User className="h-5 w-5" />
           </Avatar>
         </Button>
@@ -40,7 +40,9 @@ function UserAccountNav({ email, name }: UserAccountNavProps) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href={routes.dashboard.root} className='cursor-pointer'>Dashboard</Link>
+          <Link href={routes.dashboard.root} className="cursor-pointer">
+            Dashboard
+          </Link>
         </DropdownMenuItem>
 
         {/*<DropdownMenuItem asChild>*/}

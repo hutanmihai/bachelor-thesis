@@ -54,6 +54,15 @@ function Navbar() {
             ) : (
               <>
                 <Link
+                  href={routes.pricing.root}
+                  className={buttonVariants({
+                    variant: 'ghost',
+                    size: 'sm',
+                  })}
+                >
+                  Pricing
+                </Link>
+                <Link
                   href={routes.dashboard.root}
                   className={buttonVariants({
                     variant: 'ghost',
