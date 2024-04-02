@@ -40,8 +40,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         onSuccess: async (token) => {
           try {
             saveAccessToken(token)
-            setIsAuth(() => true)
-            router.push(routes.dashboard.root)
+            setIsAuth(true)
+            // TODO: Redirect to dashboard
+            router.push(routes.landingpage.root)
           } catch (error) {
             removeAccessToken()
             setIsAuth(false)
@@ -64,7 +65,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           try {
             saveAccessToken(token)
             setIsAuth(true)
-            router.push(routes.dashboard.root)
+            // TODO: Redirect to dashboard
+            router.push(routes.landingpage.root)
           } catch (error) {
             removeAccessToken()
             setIsAuth(false)

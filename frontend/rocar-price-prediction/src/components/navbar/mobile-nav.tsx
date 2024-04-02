@@ -1,13 +1,16 @@
 'use client'
 
+import { useAuth } from '@/auth/context/auth'
+import { Button } from '@/components/ui/button'
 import { routes } from '@/config.global'
-import { ArrowRight, Menu } from 'lucide-react'
+import { ArrowRight, LogOut, Menu } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
+const MobileNav = () => {
   const pathname = usePathname()
+  const { isAuth, logout } = useAuth()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const toggleOpen = () => setIsOpen((prev) => !prev)
 
@@ -74,9 +77,9 @@ const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
                 </li>
                 <li className="my-3 h-px w-full bg-gray-300" />
                 <li>
-                  <Link className="flex w-full items-center font-semibold" href="/sign-out">
-                    Sign out
-                  </Link>
+                  <Button variant="destructive" onClick={logout} className="w-full font-semibold">
+                    Logout <LogOut className="ml-2 h-5 w-5" />
+                  </Button>
                 </li>
               </>
             )}

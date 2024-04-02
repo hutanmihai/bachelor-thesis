@@ -18,37 +18,53 @@ function Navbar() {
           <Link href={routes.landingpage.root} className="z-40 flex font-semibold">
             RoCar.
           </Link>
-          <MobileNav isAuth={isAuth} />
+          <MobileNav />
 
           <div className="hidden items-center space-x-4 sm:flex">
-            <>
-              <Link
-                href={routes.pricing.root}
-                className={buttonVariants({
-                  variant: 'ghost',
-                  size: 'sm',
-                })}
-              >
-                Pricing
-              </Link>
-              <Link
-                href={routes.auth.login}
-                className={buttonVariants({
-                  variant: 'ghost',
-                  size: 'sm',
-                })}
-              >
-                Login
-              </Link>
-              <Link
-                href={routes.auth.register}
-                className={buttonVariants({
-                  size: 'sm',
-                })}
-              >
-                Get started <ArrowRight className="ml-1.5 h-5 w-5" />
-              </Link>
-            </>
+            {!isAuth ? (
+              <>
+                <Link
+                  href={routes.pricing.root}
+                  className={buttonVariants({
+                    variant: 'ghost',
+                    size: 'sm',
+                  })}
+                >
+                  Pricing
+                </Link>
+                <Link
+                  href={routes.auth.login}
+                  className={buttonVariants({
+                    variant: 'ghost',
+                    size: 'sm',
+                  })}
+                >
+                  Login
+                </Link>
+                <Link
+                  href={routes.auth.register}
+                  className={buttonVariants({
+                    size: 'sm',
+                  })}
+                >
+                  Get started <ArrowRight className="ml-1.5 h-5 w-5" />
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href={routes.dashboard.root}
+                  className={buttonVariants({
+                    variant: 'ghost',
+                    size: 'sm',
+                  })}
+                >
+                  Dashboard
+                </Link>
+
+                <span className="font-semibold">TODO</span>
+              </>
+            )}
           </div>
         </div>
       </MaxWidthWrapper>
