@@ -1,5 +1,6 @@
 'use client'
 
+import { AuthProvider } from '@/auth/context/auth'
 import { Toaster } from '@/components/ui/toaster'
 import { ReactNode } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
@@ -7,8 +8,10 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 function GlobalProviders({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={new QueryClient()}>
-      {children}
-      <Toaster />
+      <AuthProvider>
+        {children}
+        <Toaster />
+      </AuthProvider>
     </QueryClientProvider>
   )
 }

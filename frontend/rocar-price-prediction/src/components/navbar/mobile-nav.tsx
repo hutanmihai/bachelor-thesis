@@ -1,5 +1,6 @@
 'use client'
 
+import { routes } from '@/config.global'
 import { ArrowRight, Menu } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -31,9 +32,9 @@ const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
               <>
                 <li>
                   <Link
-                    onClick={() => closeOnCurrent('/sign-up')}
+                    onClick={() => closeOnCurrent(routes.auth.register)}
                     className="flex w-full items-center font-semibold text-primary"
-                    href="/auth/register"
+                    href={routes.auth.register}
                   >
                     Get started
                     <ArrowRight className="ml-2 h-5 w-5" />
@@ -42,9 +43,9 @@ const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
                 <li className="my-3 h-px w-full bg-gray-300" />
                 <li>
                   <Link
-                    onClick={() => closeOnCurrent('/sign-in')}
+                    onClick={() => closeOnCurrent(routes.auth.login)}
                     className="flex w-full items-center font-semibold"
-                    href="/auth/login"
+                    href={routes.auth.login}
                   >
                     Login
                   </Link>
@@ -52,9 +53,9 @@ const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
                 <li className="my-3 h-px w-full bg-gray-300" />
                 <li>
                   <Link
-                    onClick={() => closeOnCurrent('/pricing')}
+                    onClick={() => closeOnCurrent(routes.pricing.root)}
                     className="flex w-full items-center font-semibold"
-                    href="/pricing"
+                    href={routes.pricing.root}
                   >
                     Pricing
                   </Link>
@@ -64,9 +65,9 @@ const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
               <>
                 <li>
                   <Link
-                    onClick={() => closeOnCurrent('/dashboard')}
+                    onClick={() => closeOnCurrent(routes.dashboard.root)}
                     className="flex w-full items-center font-semibold"
-                    href="/dashboard"
+                    href={routes.dashboard.root}
                   >
                     Dashboard
                   </Link>

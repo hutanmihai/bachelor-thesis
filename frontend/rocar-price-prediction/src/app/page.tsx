@@ -1,5 +1,6 @@
 import MaxWidthWrapper from '@/components/max-width-wrapper'
 import { buttonVariants } from '@/components/ui/button'
+import { routes } from '@/config.global'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -21,7 +22,7 @@ export default function Home() {
           accurate predictions based on the data you provide us from the ad.
         </p>
         <Link
-          href="/dashboard"
+          href={routes.dashboard.root}
           className={buttonVariants({
             size: 'lg',
             className:
@@ -95,7 +96,10 @@ export default function Home() {
                 <span className="text-xl font-semibold">Sign up for an account</span>
                 <span className="mt-2 text-zinc-700">
                   Either starting out by trying three free predictions or choose one of our&nbsp;
-                  <Link href="/pricing" className="text-blue-700 underline underline-offset-2">
+                  <Link
+                    href={routes.pricing.root}
+                    className="text-blue-700 underline underline-offset-2"
+                  >
                     offers
                   </Link>
                   .

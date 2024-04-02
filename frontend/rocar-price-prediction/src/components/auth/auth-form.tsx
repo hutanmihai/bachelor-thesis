@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { routes } from '@/config.global'
 import Link from 'next/link'
 import { FormEvent } from 'react'
 
@@ -43,12 +44,12 @@ function AuthForm({ type }: TAuthFormProps) {
           {type === 'login' ? (
             <>
               Don&apos;t have an account?{' '}
-              <Link href="/auth/register" className="underline">
+              <Link href={routes.auth.register} className="underline">
                 Sign up
               </Link>
             </>
           ) : (
-            <Link href="/auth/login" className="underline">
+            <Link href={routes.auth.login} className="underline">
               Already have an account? Sign in
             </Link>
           )}

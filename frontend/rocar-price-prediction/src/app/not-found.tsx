@@ -1,5 +1,6 @@
 import MaxWidthWrapper from '@/components/max-width-wrapper'
 import { buttonVariants } from '@/components/ui/button'
+import { routes } from '@/config.global'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
@@ -10,7 +11,7 @@ function NotFound() {
         <h1 className="my-auto text-4xl font-bold">404 - Page Not Found</h1>
         <p className="text-lg">The page you are looking for does not exist.</p>
         <Link
-          href="/"
+          href={routes.landingpage.root}
           className={buttonVariants({
             size: 'lg',
             variant: 'link',

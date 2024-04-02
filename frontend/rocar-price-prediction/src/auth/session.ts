@@ -1,4 +1,4 @@
-export function saveAccessToken(token: string) {
+export function saveAccessToken({ token }: { token: string }) {
   localStorage.setItem('accessToken', token)
 }
 
