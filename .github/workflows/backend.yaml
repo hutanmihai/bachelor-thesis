@@ -67,7 +67,7 @@ jobs:
           STRIPE_PRICE_ID_THREE: ${{ secrets.STRIPE_PRICE_ID_THREE }}
           STRIPE_PRICE_ID_FIVE: ${{ secrets.STRIPE_PRICE_ID_FIVE }}
           STRIPE_PRICE_ID_TEN: ${{ secrets.STRIPE_PRICE_ID_TEN }}
-        run: pytest --junitxml=reports/report_func.xml .backend/src/tests/
+        run: pytest --junitxml=reports/report_func.xml backend/src/tests/
       - name: Save junit report
         if: always()
         uses: actions/upload-artifact@v4
