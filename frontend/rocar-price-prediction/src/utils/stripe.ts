@@ -1,9 +1,7 @@
-import { Stripe } from 'stripe'
+import { STRIPE_PUBLIC_KEY } from '@/config.global'
+import { loadStripe } from '@stripe/stripe-js'
 
-let stripePromise: Stripe | null = null
-export const getStripe = () => {
-  if (!stripePromise) return new Stripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
-}
+const stripePromise = loadStripe(STRIPE_PUBLIC_KEY!)
 
 export const PRODUCTS = [
   {

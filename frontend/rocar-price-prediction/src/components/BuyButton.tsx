@@ -1,11 +1,12 @@
 'use client'
 
 import { useAuth } from '@/auth/context/auth'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import { routes } from '@/config.global'
+import { useCreateCheckoutSession } from '@/hooks/payment'
 import { cn } from '@/lib/utils'
-import { ArrowRight } from 'lucide-react'
-import Link from 'next/link'
+import { ArrowRight, Loader } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 type TBuyButtonProps = {
   product: 'three' | 'five' | 'ten'
@@ -13,6 +14,17 @@ type TBuyButtonProps = {
 
 function BuyButton({ product }: TBuyButtonProps) {
   const { isAuth } = useAuth()
+  const router = useRouter()
+  const { isLoading, mutateAsync: createCheckoutSession } = useCreateCheckoutSession()
+
+  const onClick = async () => {
+    if (!isAuth) {
+      router.push(routes.auth.login)
+      return
+    }
+
+    await createCheckoutSession({ price_id: product })
+  }
 
   const productClassNamesMap = {
     three: 'text-black bg-white hover:bg-accent hover:text-accent-foreground',
@@ -21,14 +33,18 @@ function BuyButton({ product }: TBuyButtonProps) {
   }
 
   return (
-    <Link
-      href={isAuth ? routes.dashboard.root : routes.auth.login}
-      className={buttonVariants({
-        className: cn('w-full', productClassNamesMap[product]),
-      })}
+    <Button
+      onClick={onClick}
+      className={cn('w-full', productClassNamesMap[product])}
+      disabled={isLoading}
     >
-      Buy now <ArrowRight className="ml-1.5 h-5 w-5" />
-    </Link>
+      Buy now{' '}
+      {isLoading ? (
+        <Loader className="ml-1.5 h-5 w-5" />
+      ) : (
+        <ArrowRight className="ml-1.5 h-5 w-5" />
+      )}
+    </Button>
   )
 }
 

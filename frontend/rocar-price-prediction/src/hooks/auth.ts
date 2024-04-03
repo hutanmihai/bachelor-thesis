@@ -1,4 +1,3 @@
-import { removeAccessToken } from '@/auth/session'
 import { toast, useToast } from '@/components/ui/use-toast'
 import { login, register, TLoginRequestModel, TRegisterRequestModel } from '@/requests/auth'
 import { AxiosError } from 'axios'
@@ -40,8 +39,4 @@ export function useRegister() {
       },
     }
   )
-}
-
-export function useLogout() {
-  removeAccessToken()
 }

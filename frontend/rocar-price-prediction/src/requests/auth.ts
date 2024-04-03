@@ -11,8 +11,8 @@ export type TLoginRequestModel = {
   password: string
 }
 
-export async function login({ email, password }: TLoginRequestModel) {
-  const response = await axiosInstance.post(apiConfig.auth.login, { email, password })
+export async function login(payload: TLoginRequestModel) {
+  const response = await axiosInstance.post(apiConfig.auth.login, payload)
   return response.data as TTokenResponseModel
 }
 
@@ -22,7 +22,7 @@ export type TRegisterRequestModel = {
   password: string
 }
 
-export async function register({ username, email, password }: TRegisterRequestModel) {
-  const response = await axios.post(apiConfig.auth.register, { username, email, password })
+export async function register(payload: TRegisterRequestModel) {
+  const response = await axios.post(apiConfig.auth.register, payload)
   return response.data as TTokenResponseModel
 }
