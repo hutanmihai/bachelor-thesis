@@ -18,11 +18,10 @@ jobs:
       - run: cd backend
       - uses: psf/black@24.2.0
         with:
-          black_args: --line-length=150
           src: "./src"
           jupyter: true
-          version: 3.12.2
-          options: "--check --verbose"
+          version: 24.2.0
+          options: "--check --verbose --line-length=150"
   test:
     needs: lint
     runs-on: ubuntu-latest
