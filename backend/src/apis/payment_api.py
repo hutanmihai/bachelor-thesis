@@ -62,7 +62,7 @@ async def webhook_stripe(
         raise HTTPException(422, detail=str(e))
 
     if event["type"] == "checkout.session.completed":
-        # TODO: Add logic to handle successful checkout
+        # TODO: Add logic to handle successful checkout!
         print("Succesful checkout")
 
     return status.HTTP_200_OK

@@ -21,6 +21,7 @@ jobs:
           jupyter: true
           options: "--check --verbose"
   run-tests:
+    needs: linter
     runs-on: ubuntu-latest
     services:
       postgres:
