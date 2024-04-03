@@ -14,14 +14,14 @@ sqlalchemy = { extras = ["postgresql-asyncpg"], version = "^2.0.29" }
 pydantic-settings = "^2.2.1"
 pyjwt = "^2.8.0"
 passlib = { extras = ["bcrypt"], version = "^1.7.4" }
-pydantic = {extras = ["email"], version = "^2.6.4"}
+pydantic = { extras = ["email"], version = "^2.6.4" }
 stripe = "^8.9.0"
+alembic = "^1.13.1"
 
 
 [tool.poetry.group.dev.dependencies]
 black = "24.2.0"
 poethepoet = "^0.25.0"
-alembic = "^1.13.1"
 
 
 [tool.poetry.group.test.dependencies]
@@ -34,21 +34,155 @@ httpx = "^0.27.0"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.poetry.scripts]
+run_app = "src.main:run_app"
+
 [tool.poe.tasks]
+
+[tool.poe.tasks.clean]
+# This task will be called by poe clean, and it cleans all artifacts from previous tests
+help = "Clean up the project"
+cmd = """
+    rm -rf .coverage && \
+    rm -rf coverage.xml && \
+    rm -rf htmlcov && \
+    rm -rf .pytest_cache && \
+    rm -rf ./**/__pycache__ && \
+    rm -rf dist && \
+    """
+
+[tool.poe.tasks.clean_pycache]
+# This task will be called by poe clean_pycache, and it removes all __pycache__ folders
+help = "Clean up the project of all __pycache__ folders"
+cmd = """
+    rm -rf ./**/__pycache__
+    rm -rf .pytest_cache
+    """
+
+[tool.poe.tasks.pytest_unit]
+# This task will be called by poe test, and it will run all tests with optional arguments shown in args.
+help = "Run unittests"
+cmd = "pytest src/tests/unit_tests --cov=src/tests/unit_tests --cov-report=$cov_type"
+
+[[tool.poe.tasks.pytest_unit.args]]
+# This argument will be passed to the pytest_unit task and if it is provided it will generate a coverage report in the specified format (html, xml, term)
+help = "Generate coverage html or xml report"
+name = "cov_type"
+positional = true
+required = false
+
+[tool.poe.tasks.unit_test]
+# This task will be called by poe unit_test, and it will first clean all artifacts from previous tests and then run all tests
+help = "Clean artifacts and run unittests"
+sequence = ["clean", "pytest_unit $cov_type", "clean_pycache"]
+envfile = "envs/test.env"
+
+[[tool.poe.tasks.unit_test.args]]
+# This argument will be passed to the unit_test task, then to the pytest taks and if it is provided it will generate a coverage report in the specified format (html, xml, term)
+help = "Generate coverage html or xml report"
+name = "cov_type"
+options = ["--cov-report"]
+required = false
+
+[tool.poe.tasks.build_image]
+# This task will be called by poe build_image, and it will build a docker image
+help = "Build docker image"
+cmd = "docker build -t app_image:$image_tag ."
+
+[[tool.poe.tasks.build_image.args]]
+# This argument will be passed to the build_image task, and it will be used as a tag for the docker image
+help = "Tag of the docker image"
+name = "image_tag"
+options = ["--tag"]
+default = "latest"
+
+[tool.poe.tasks.start_app]
+# This task composes up the app using primary database
+help = "Start the app"
+cmd = "docker-compose up -d app"
+envfile = "envs/dev.env"
+
+[tool.poe.tasks.stop_app]
+# This task composes down the app
+help = "Stop the app"
+cmd = "docker-compose down"
+envfile = "envs/dev.env"
+
+[tool.poe.tasks.start_test_db]
+# This task composes up the test db
+help = "Start the test db"
+cmd = "docker-compose up -d test_db "
+
+[tool.poe.tasks.pytest_api]
+# This task will be called by poe integration_test, and it will run all tests for the API
+help = "Run API tests"
+cmd = "pytest src/tests/integration_tests --cov=src/tests/integration_tests --cov-report=$cov_type"
+
+[[tool.poe.tasks.pytest_api.args]]
+# This argument will be passed to the pytest_api task and if it is provided it will generate a coverage report in the specified format (html, xml, term)
+help = "Generate coverage html or xml report"
+name = "cov_type"
+positional = true
+required = false
+default = "term"
+
+[tool.poe.tasks.wait_for_db]
+# This task will be called by poe integration_test, and it will call sleep for the db to be ready
+help = "Wait for the database to be ready"
+cmd = "sleep 1"
+
+[tool.poe.tasks.destroy_test_db]
+# This task removes the test_db container
+help = "Destroy the test db"
+cmd = "docker-compose rm -svf test_db"
+
+[tool.poe.tasks.integration_test]
+# This task will be called by poe api_test, and it will first start the test db
+# and then wait for it to be ready and then run all tests for the API and then clean up __pycache__ folders
+# and remove test_db container.
+help = "Run API tests in a new environment"
+sequence = ["start_test_db", "wait_for_db", "pytest_api $cov_type", "clean_pycache", "destroy_test_db"]
+envfile = "envs/test.env"
+
+[[tool.poe.tasks.integration_test.args]]
+# This argument will be passed to the integration_test task and if it is provided it will generate a coverage report in the specified format (html, xml, term)
+help = "Generate coverage html or xml report"
+name = "cov_type"
+options = ["--cov-report"]
+required = false
+
+[tool.poe.tasks.pipeline_unit_test]
+# This task will be called by poe pipeline_unittest, and it will run all unittests
+help = "Run unittests in CI/CD Pipeline"
+cmd = "pytest --junitxml=reports/report_unit.xml --cov=src/tests/unit_tests --cov-report=html src/tests/unit_tests"
+envfile = "envs/ci.env"
+
+[tool.poe.tasks.pipeline_integration_test]
+# This task will be called by poe pipeline_functional_test, and it will run all API tests
+help = "Run API tests in CI/CD Pipeline"
+cmd = "pytest --junitxml=reports/report_func.xml src/tests/integration_tests"
+envfile = "envs/ci.env"
+
 [tool.poe.tasks.create_migration]
 # This task will create migration
 help = "Create migration"
 cmd = "alembic revision --autogenerate"
-envfile = ".env"
+envfile = "envs/local.env"
 
 [tool.poe.tasks.upgrade_schema]
 # This task will upgrade the database schema
 help = "Upgrade database schema"
 cmd = "alembic upgrade head"
-envfile = ".env"
+envfile = "envs/local.env"
 
 [tool.poe.tasks.downgrade_schema]
 # This task will upgrade the database schema
 help = "Downgrade database schema"
 cmd = "alembic downgrade head"
-envfile = ".env"
+envfile = "envs/local.env"
+
+[tool.poe.tasks.upgrade_schema_production]
+# This task will upgrade the database schema on production db
+help = "Upgrade database schema on production db"
+cmd = "alembic upgrade head"
+envfile = "envs/prod.env"

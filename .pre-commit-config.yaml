@@ -11,8 +11,6 @@ repos:
         exclude: ^(docs/.*|^frontend/.*)
       - id: check-added-large-files
         exclude: ^(docs/.*|^frontend/.*)
-      - id: name-tests-test
-        exclude: ^(docs/.*|^frontend/.*)
 
   - repo: https://github.com/psf/black-pre-commit-mirror
     rev: 24.2.0

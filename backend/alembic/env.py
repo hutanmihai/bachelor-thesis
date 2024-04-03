@@ -9,7 +9,7 @@ from src.settings import settings
 
 
 def get_database_url() -> str:
-    return settings.database_url
+    return settings.database_url.unicode_string()
 
 
 config = context.config

@@ -1,0 +1,64 @@
+services:
+
+  db:
+    image: postgres:16
+    container_name: postgres_container
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_DB}
+    ports:
+      - ${DATABASE_PORT}:${DATABASE_PORT}
+    volumes:
+      - postgresdata:/var/lib/postgresql/data
+
+  init-dev-db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: init_dev_db_container
+    depends_on:
+      db:
+        condition: service_healthy
+    command: "poetry run alembic upgrade head"
+    env_file:
+      - envs/dev.env
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: app_container
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    depends_on:
+      init-dev-db:
+        condition: service_completed_successfully
+    env_file:
+      - envs/dev.env
+
+  test_db:
+    image: postgres:16
+    container_name: test_postgres_container
+    environment:
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_DB}
+      - POSTGRES_HOST=${DATABASE_HOST}
+    expose:
+      - ${DATABASE_PORT}
+    ports:
+      - ${DATABASE_PORT}:${DATABASE_PORT}
+    command: -p ${DATABASE_PORT}
+    env_file:
+      - envs/test.env
+
+volumes:
+  postgresdata:
