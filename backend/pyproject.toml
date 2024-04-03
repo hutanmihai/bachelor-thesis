@@ -15,6 +15,7 @@ pydantic-settings = "^2.2.1"
 pyjwt = "^2.8.0"
 passlib = { extras = ["bcrypt"], version = "^1.7.4" }
 pydantic = {extras = ["email"], version = "^2.6.4"}
+stripe = "^8.9.0"
 
 
 [tool.poetry.group.dev.dependencies]

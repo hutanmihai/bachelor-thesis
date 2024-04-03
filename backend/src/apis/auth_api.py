@@ -27,10 +27,15 @@ async def register(register_schema: RegisterSchema, user_srv: UserSrv = Depends(
     email = register_schema.email
     password = register_schema.password
 
-    user = await user_srv.new_user(username, email, password)
+    try:
+        user = await user_srv.get_user_by_email(email)
+    except UserNotFound:
+        user = None
 
-    if not user:
+    if user:
         return ApiError(detail="User already exists")
+
+    user = await user_srv.new_user(username, email, password)
 
     return TokenSchema(token=token_encode(user.id))
 
