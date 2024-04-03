@@ -36,8 +36,7 @@ jobs:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       - name: Set up Python 3.12.2
         uses: actions/setup-python@v3
         with:
@@ -68,10 +67,13 @@ jobs:
           STRIPE_PRICE_ID_THREE: ${{ secrets.STRIPE_PRICE_ID_THREE }}
           STRIPE_PRICE_ID_FIVE: ${{ secrets.STRIPE_PRICE_ID_FIVE }}
           STRIPE_PRICE_ID_TEN: ${{ secrets.STRIPE_PRICE_ID_TEN }}
-        run: pytest --junitxml=reports/report_func.xml ./src/tests/
+        run: |
+          cd backend
+          pytest --junitxml=reports/report_func.xml ./src/tests/
       - name: Save junit report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test_report
           path: ./reports/report_func.xml
+      - uses: actions/checkout@v4
