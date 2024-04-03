@@ -68,7 +68,7 @@ jobs:
           STRIPE_PRICE_ID_FIVE: ${{ secrets.STRIPE_PRICE_ID_FIVE }}
           STRIPE_PRICE_ID_TEN: ${{ secrets.STRIPE_PRICE_ID_TEN }}
         run: |
-          export PYTHONPATH=$PYTHONPATH:$(pwd)/backend/src
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/backend
           pytest --junitxml=reports/report_func.xml backend/src/tests/
       - name: Save junit report
         if: always()
