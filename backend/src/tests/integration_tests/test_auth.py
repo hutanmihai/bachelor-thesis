@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta, timezone
 
-import pytest
 from fastapi import status
 from httpx import AsyncClient
 from jwt import encode
@@ -9,7 +8,6 @@ from src.tests.integration_tests.utils.data_generation_tools import generate_id
 from src.tests.integration_tests.utils.entity_instance import new_user
 
 
-@pytest.mark.asyncio
 async def test_valid_jwt_return_works(client: AsyncClient):
     new_created_user, jwt = await new_user()
 
@@ -25,7 +23,6 @@ async def test_valid_jwt_return_works(client: AsyncClient):
     assert response.json() == expected_response
 
 
-@pytest.mark.asyncio
 async def test_bad_scheme_for_jwt_header_returns_error(client: AsyncClient):
     new_created_user, jwt = await new_user()
 
@@ -41,7 +38,6 @@ async def test_bad_scheme_for_jwt_header_returns_error(client: AsyncClient):
     assert response.json() == expected_response
 
 
-@pytest.mark.asyncio
 async def test_invalid_jwt_returns_error(client: AsyncClient):
     new_created_user, jwt = await new_user()
 
@@ -57,7 +53,6 @@ async def test_invalid_jwt_returns_error(client: AsyncClient):
     assert response.json() == expected_response
 
 
-@pytest.mark.asyncio
 async def test_missing_sub_field_in_jwt_returns_error(client: AsyncClient):
     jwt = encode(
         {"not_a_sub_field": "123", "exp": datetime.now(timezone.utc) + timedelta(10)},
@@ -77,7 +72,6 @@ async def test_missing_sub_field_in_jwt_returns_error(client: AsyncClient):
     assert response.json() == expected_response
 
 
-@pytest.mark.asyncio
 async def test_missing_exp_field_in_jwt_returns_error(client: AsyncClient):
     payload = {"sub": "123"}
     jwt = encode(payload, settings.secret_key, algorithm=settings.algorithm)
@@ -94,7 +88,6 @@ async def test_missing_exp_field_in_jwt_returns_error(client: AsyncClient):
     assert response.json() == expected_response
 
 
-@pytest.mark.asyncio
 async def test_invalid_sub_in_jwt_returns_error(client: AsyncClient):
     payload = {"sub": "123", "exp": datetime.now(timezone.utc) + timedelta(10)}
     jwt = encode(payload, settings.secret_key, algorithm=settings.algorithm)
@@ -111,7 +104,6 @@ async def test_invalid_sub_in_jwt_returns_error(client: AsyncClient):
     assert response.json() == expected_response
 
 
-@pytest.mark.asyncio
 async def test_invalid_jwt_no_user_found_error(client: AsyncClient):
     payload = {"sub": generate_id(), "exp": datetime.now(timezone.utc) + timedelta(10)}
     jwt = encode(payload, settings.secret_key, algorithm=settings.algorithm)
@@ -128,7 +120,6 @@ async def test_invalid_jwt_no_user_found_error(client: AsyncClient):
     assert response.json() == expected_response
 
 
-@pytest.mark.asyncio
 async def test_expired_jwt_returns_error(client: AsyncClient):
     new_created_user, jwt = await new_user()
     jwt = {"sub": new_created_user.id, "exp": datetime.now(timezone.utc) - timedelta(minutes=10)}
