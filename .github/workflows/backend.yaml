@@ -9,7 +9,18 @@ on:
       - 'backend/**'
 
 jobs:
-  test:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cd backend
+      - uses: psf/black@24.2.0
+        with:
+          args: --line-length 150
+          src: "./src"
+          jupyter: true
+          options: "--check --verbose"
+  run-tests:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -31,6 +42,7 @@ jobs:
           python-version: 3.12.2
       - name: Install dependencies
         run: |
+          cd backend
           python -m pip install --upgrade pip
           pip install poetry
           poetry export --without-hashes --format=requirements.txt --with "dev" --with "test" > requirements.txt
