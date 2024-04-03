@@ -21,9 +21,7 @@ class AppSettings(BaseSettings):
     stripe_price_id_three: str = Field(..., env="STRIPE_PRICE_ID_THREE")
     stripe_price_id_five: str = Field(..., env="STRIPE_PRICE_ID_FIVE")
     stripe_price_id_ten: str = Field(..., env="STRIPE_PRICE_ID_TEN")
-    payment_methods: str = Field(..., env="PAYMENT_METHODS")
     stripe_api_version: str = Field(..., env="STRIPE_API_VERSION")
-    frontend_domain: str = Field(..., env="FRONTEND_DOMAIN")
 
     # DATABASE
     database_user: str = Field(..., env="DATABASE_USER")

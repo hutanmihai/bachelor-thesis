@@ -153,18 +153,6 @@ name = "cov_type"
 options = ["--cov-report"]
 required = false
 
-[tool.poe.tasks.pipeline_unit_test]
-# This task will be called by poe pipeline_unittest, and it will run all unittests
-help = "Run unittests in CI/CD Pipeline"
-cmd = "pytest --junitxml=reports/report_unit.xml --cov=src/tests/unit_tests --cov-report=html src/tests/unit_tests"
-envfile = "envs/ci.env"
-
-[tool.poe.tasks.pipeline_integration_test]
-# This task will be called by poe pipeline_functional_test, and it will run all API tests
-help = "Run API tests in CI/CD Pipeline"
-cmd = "pytest --junitxml=reports/report_func.xml src/tests/integration_tests"
-envfile = "envs/ci.env"
-
 [tool.poe.tasks.create_migration]
 # This task will create migration
 help = "Create migration"
