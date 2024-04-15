@@ -1,4 +1,4 @@
-import BuyButton from '@/components/BuyButton'
+import BuyButton from '@/components/buy-button'
 import MaxWidthWrapper from '@/components/max-width-wrapper'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
@@ -13,7 +13,7 @@ function Pricing() {
           Choose the package that fits your needs. We got you covered.
         </p>
       </div>
-      <div className="grid grid-cols-1 gap-10 pt-12">
+      <div className="grid grid-cols-3 gap-10 pt-12 mx-[-200px]">
         <TooltipProvider>
           {PRODUCTS.map((product) => {
             return (

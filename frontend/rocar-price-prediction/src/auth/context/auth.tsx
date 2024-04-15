@@ -1,10 +1,10 @@
 'use client'
 
 import { getAccessToken, removeAccessToken, saveAccessToken } from '@/auth/session'
-import { protectedRoutes, routes } from '@/config.global'
+import { routes } from '@/config.global'
 import { TLoginRequestModel, TRegisterRequestModel } from '@/requests/auth'
-import { usePathname, useRouter } from 'next/navigation'
-import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react'
+import { useRouter } from 'next/navigation'
+import { createContext, useContext, useState, useCallback, ReactNode, useEffect } from 'react'
 
 import { useLogin, useRegister } from '@/hooks/auth'
 
@@ -14,6 +14,7 @@ type AuthContextType = {
   login: (payload: TLoginRequestModel) => Promise<void>
   register: (payload: TRegisterRequestModel) => Promise<void>
   logout: () => Promise<void>
+  setIsAuth: (isAuth: boolean) => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -22,7 +23,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isAuth, setIsAuth] = useState<boolean>(false)
   const router = useRouter()
-  const pathname = usePathname()
 
   const { mutateAsync: loginMutation } = useLogin()
   const { mutateAsync: registerMutation } = useRegister()
@@ -30,12 +30,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (getAccessToken()) setIsAuth(true)
   }, [])
-
-  useEffect(() => {
-    if (!isAuth && protectedRoutes.includes(pathname)) {
-      router.replace(routes.auth.login)
-    }
-  }, [isAuth, pathname, router])
 
   const login = useCallback(
     async (payload: TLoginRequestModel) => {
@@ -45,8 +39,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           try {
             saveAccessToken(token)
             setIsAuth(true)
-            // TODO: Redirect to dashboard
-            router.push(routes.landingpage.root)
+            router.push(routes.dashboard.root)
           } catch (error) {
             removeAccessToken()
             setIsAuth(false)
@@ -58,7 +51,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       })
       setIsLoading(false)
     },
-    [loginMutation, router]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [loginMutation]
   )
 
   const register = useCallback(
@@ -69,8 +63,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           try {
             saveAccessToken(token)
             setIsAuth(true)
-            // TODO: Redirect to dashboard
-            router.push(routes.landingpage.root)
+            router.push(routes.dashboard.root)
           } catch (error) {
             removeAccessToken()
             setIsAuth(false)
@@ -82,7 +75,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       })
       setIsLoading(false)
     },
-    [registerMutation, router]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [registerMutation]
   )
 
   const logout = useCallback(async () => {
@@ -90,7 +84,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsAuth(false)
   }, [])
 
-  const value = { isAuth, isLoading, login, register, logout }
+  const value = { isAuth, isLoading, login, register, logout, setIsAuth }
 
   return <AuthContext.Provider value={value}> {children} </AuthContext.Provider>
 }
