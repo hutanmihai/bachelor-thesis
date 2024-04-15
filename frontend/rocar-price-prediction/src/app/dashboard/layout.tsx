@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { AuthGuard } from '@/auth/guard'
 import { ReactNode } from 'react'

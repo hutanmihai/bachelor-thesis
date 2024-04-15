@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { getAccessToken } from '@/auth/session'
 import { routes } from '@/config.global'

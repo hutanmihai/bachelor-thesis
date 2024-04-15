@@ -1,7 +1,7 @@
 import GlobalProviders from '@/app/providers/global-providers'
 import Navbar from '@/components/navbar/navbar'
 import { cn } from '@/lib/utils'
-import type {Metadata, Viewport} from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter as FontSans } from 'next/font/google'
 import './globals.css'
 import { ReactNode } from 'react'
@@ -38,7 +38,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn('min-h-screen bg-background font-sans antialiased grainy', fontSans.variable)}>
+      <body
+        className={cn('grainy min-h-screen bg-background font-sans antialiased', fontSans.variable)}
+      >
         <GlobalProviders>
           <Navbar />
           {children}
