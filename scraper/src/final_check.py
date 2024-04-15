@@ -1,6 +1,7 @@
 import os
 
 import pandas as pd
+
 from src.constants import STAGE_FINAL_CSV, STAGE_IMAGES_PATH
 
 
@@ -13,6 +14,9 @@ def final_check():
         unique_id = row["unique_id"].zfill(6)
         if unique_id not in images_dirs:
             print(f"Missing folder for {unique_id}")
+
+    print(len(images_dirs), "images folders found")
+    print(len(df), "unique_ids found")
 
 
 if __name__ == "__main__":

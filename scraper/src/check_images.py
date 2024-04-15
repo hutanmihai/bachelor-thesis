@@ -3,6 +3,7 @@ import os
 import shutil
 
 import pandas as pd
+
 from src.constants import CURRENT_FINAL_CSV, CURRENT_IMAGES_PATH, CURRENT_RAW_CSV, NUMBER_OF_IMAGES_MAX_PER_AD
 
 
@@ -19,7 +20,9 @@ def check_images():
     df = pd.read_csv(CURRENT_RAW_CSV, dtype={"unique_id": str})
     print(f"Initial number of rows: {len(df)}")
 
-    df = df[~df["unique_id"].zfill(6).isin(ids)]
+    df["unique_id"] = df["unique_id"].str.zfill(6)
+
+    df = df[~df["unique_id"].isin(ids)]
     df = df.drop(columns=["images"])
 
     df.to_csv(CURRENT_FINAL_CSV, index=False)
