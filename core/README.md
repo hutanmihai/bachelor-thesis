@@ -25,7 +25,8 @@ conda activate core
 - Install the required libraries
 
 ```bash
-pip install jupyter==1.0.0 numpy==1.26.4 matplotlib==3.8.3 opencv-python==4.9.0.80 pandas==2.2.1 pillow==10.2.0 black==24.2.0 seaborn missingno scikit-learn category_encoders
+pip install jupyter==1.0.0 numpy==1.26.4 matplotlib==3.8.3 opencv-python==4.9.0.80 pandas==2.2.1 pillow==10.2.0 black==24.2.0 seaborn missingno scikit-learn category_encoders transformers
+pip install accelerate -U
 ```
 
 - Install pytorch
