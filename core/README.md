@@ -33,6 +33,7 @@ pip install autopredictor
 pip install langdetect
 pip install emoji
 pip install wordcloud
+pip install timm scipy
 ```
 
 - Install pytorch
