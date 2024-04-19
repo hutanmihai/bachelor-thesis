@@ -30,6 +30,9 @@ pip install jupyter==1.0.0 numpy==1.26.4 matplotlib==3.8.3 opencv-python==4.9.0.
 pip install accelerate -U
 pip install lazypredict
 pip install autopredictor
+pip install langdetect
+pip install emoji
+pip install wordcloud
 ```
 
 - Install pytorch
