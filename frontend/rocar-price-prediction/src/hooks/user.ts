@@ -1,16 +1,14 @@
-import { toast } from '@/components/ui/use-toast'
 import { routes } from '@/config.global'
 import { getCurrentUser } from '@/requests/user'
-import { AxiosError } from 'axios'
+import { useRouter } from 'next/navigation'
 import { useQuery } from 'react-query'
 
 export function useUser() {
+  const router = useRouter()
+
   return useQuery('getCurrentUser', async () => await getCurrentUser(), {
-    onError: (error: AxiosError) => {
-      toast({
-        title: error.message,
-        variant: 'destructive',
-      })
+    onError: () => {
+      router.push(routes.auth.login)
     },
   })
 }

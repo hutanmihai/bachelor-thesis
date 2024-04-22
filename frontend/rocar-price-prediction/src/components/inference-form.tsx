@@ -43,7 +43,8 @@ function InferenceForm() {
   const defaultValues: TInferenceFormType = {
     manufacturer: '',
     model: '',
-    year: 2020,
+    // @ts-ignore
+    year: [2020],
     chassis: '',
     fuel: '',
     km: 0,
@@ -77,8 +78,9 @@ function InferenceForm() {
       ...data,
       // @ts-ignore
       year: data.year[0],
-      sold_by: data.sold_by === 'dealer',
-      gearbox: data.gearbox === 'automatic',
+      // TODO: add real description textarea input
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec turpis nec elit tincidunt aliquam.',
     }
     // Sleep for 10 seconds to simulate the inference process TODO: Remove this line
     await new Promise((resolve) => setTimeout(resolve, 10000))

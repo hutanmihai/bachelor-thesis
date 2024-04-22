@@ -6,8 +6,8 @@ export type TInferenceRequestModel = {
   model: string
   fuel: string
   chassis: string
-  sold_by: boolean // True for dealer, False for private
-  gearbox: boolean // True for automatic, False for manual
+  sold_by: string
+  gearbox: string
   year: number
   km: number
   power: number

@@ -7,10 +7,8 @@ class StructuredDataSchema(BaseModel):
     model: str
     fuel: str
     chassis: str
-
-    # boolean
-    sold_by: bool  # True for dealer, False for private
-    gearbox: bool  # True for automatic, False for manual
+    sold_by: str
+    gearbox: str
 
     # numerical
     km: int

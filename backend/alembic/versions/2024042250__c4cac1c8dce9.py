@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: a7a2e175b593
+Revision ID: c4cac1c8dce9
 Revises:
-Create Date: 2024-04-22 22:22:16.354235
+Create Date: 2024-04-22 23:50:09.101366
 
 """
 
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = "a7a2e175b593"
+revision: str = "c4cac1c8dce9"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -40,15 +40,15 @@ def upgrade() -> None:
         sa.Column("model", sa.VARCHAR(length=255), nullable=False),
         sa.Column("fuel", sa.VARCHAR(length=255), nullable=False),
         sa.Column("chassis", sa.VARCHAR(length=255), nullable=False),
-        sa.Column("sold_by", sa.BOOLEAN(), nullable=False),
-        sa.Column("gearbox", sa.BOOLEAN(), nullable=False),
+        sa.Column("sold_by", sa.VARCHAR(length=255), nullable=False),
+        sa.Column("gearbox", sa.VARCHAR(length=255), nullable=False),
         sa.Column("km", sa.INTEGER(), nullable=False),
         sa.Column("power", sa.INTEGER(), nullable=False),
         sa.Column("engine", sa.INTEGER(), nullable=False),
         sa.Column("year", sa.INTEGER(), nullable=False),
         sa.Column("description", sa.TEXT(), nullable=False),
-        sa.Column("prediction", sa.VARCHAR(length=255), nullable=False),
-        sa.Column("created_at", sa.VARCHAR(length=255), nullable=False),
+        sa.Column("prediction", sa.INTEGER(), nullable=False),
+        sa.Column("created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=False),
         sa.Column("updated_at", sa.DateTime(), server_default=sa.text("now()"), nullable=False),
         sa.ForeignKeyConstraint(
             ["user_id"],

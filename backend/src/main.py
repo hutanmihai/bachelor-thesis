@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.apis.auth_api import router as auth_router
+from src.apis.entry_api import router as entry_router
 from src.apis.health_api import router as health_router
 from src.apis.inference_api import router as inference_router
 from src.apis.payment_api import router as payment_router
@@ -16,6 +17,7 @@ def _register_api_handlers(app: FastAPI) -> FastAPI:
     app.include_router(payment_router)
     app.include_router(inference_router)
     app.include_router(user_router)
+    app.include_router(entry_router)
     return app
 
 

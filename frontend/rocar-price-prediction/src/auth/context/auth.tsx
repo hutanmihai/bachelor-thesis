@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isAuth, setIsAuth] = useState<boolean>(false)
   const [user, setUser] = useState<TUser | null>(null)
-  const { data: userData } = useUser()
+  const { refetch: refetchUser } = useUser()
   const router = useRouter()
 
   const { mutateAsync: loginMutation } = useLogin()
@@ -38,10 +38,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [])
 
   useEffect(() => {
-    if (userData) {
-      setUser(userData)
+    if (isAuth) {
+      refetchUser().then(({ data }) => {
+        if (data) {
+          setUser(data)
+        } else setUser(null)
+      })
     } else setUser(null)
-  }, [userData])
+  }, [isAuth, refetchUser])
 
   const login = useCallback(
     async (payload: TLoginRequestModel) => {

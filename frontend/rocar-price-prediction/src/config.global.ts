@@ -13,6 +13,10 @@ export const apiConfig = {
   user: {
     me: `${BACKEND_URL}/user/me`,
   },
+  entry: {
+    list: `${BACKEND_URL}/entry/all`,
+    delete: (id: string) => `${BACKEND_URL}/entry/${id}`,
+  },
 }
 
 export const routes = {
