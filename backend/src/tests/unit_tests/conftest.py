@@ -1,9 +1,12 @@
 from unittest import mock
 
 import pytest
+from src.repositories.entry_repo import EntryRepository
 from src.repositories.sqlalchemy_repo import SQLAlchemyRepository
 from src.repositories.user_repo import UserRepository
+from src.services.entry_srv import EntrySrv
 from src.services.health_srv import HealthSrv
+from src.services.inference_srv import InferenceSrv
 from src.services.user_srv import UserSrv
 
 
@@ -25,6 +28,17 @@ async def db_session():
         scalars=scalars_mock,
         get=get_mock,
         name="async session mock",
+    )
+
+
+@pytest.fixture
+async def entry_repository_mock():
+    create_mock = mock.AsyncMock(name="entry_repository.create mock")
+    get_all_entries_mock = mock.AsyncMock(name="entry_repository.get_all_entries mock")
+    return mock.AsyncMock(
+        create=create_mock,
+        get_all_entries=get_all_entries_mock,
+        name="async entry_repository mock",
     )
 
 
@@ -61,8 +75,23 @@ async def user_repository(db_session) -> UserRepository:
 
 
 @pytest.fixture
+async def entry_repository(db_session) -> EntryRepository:
+    return EntryRepository(db_session)
+
+
+@pytest.fixture
 async def user_service(user_repository_mock) -> UserSrv:
     return UserSrv(repo=user_repository_mock)
+
+
+@pytest.fixture
+async def entry_service(entry_repository_mock) -> EntrySrv:
+    return EntrySrv(repo=entry_repository_mock)
+
+
+@pytest.fixture
+async def inference_service(sqlalchemy_repository_mock) -> InferenceSrv:
+    return InferenceSrv(repo=sqlalchemy_repository_mock)
 
 
 @pytest.fixture

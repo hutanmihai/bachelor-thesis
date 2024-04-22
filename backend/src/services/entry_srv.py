@@ -26,7 +26,7 @@ class EntrySrv(AbstractService):
         try:
             instance = await self._repository.get(Entry, entry_id)
             if instance.user_id != user_id:
-                raise EntryNotCreatedByUser
+                raise EntryNotCreatedByUser()
             await self._repository.delete(instance)
         except EntityNotFound:
             raise EntryNotFound()
