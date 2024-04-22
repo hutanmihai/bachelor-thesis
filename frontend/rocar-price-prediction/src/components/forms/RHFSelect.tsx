@@ -1,25 +1,35 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input, InputProps } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 import { Asterisk } from 'lucide-react'
 import * as React from 'react'
 import { useFormContext } from 'react-hook-form'
 
-type TRHFInputProps = InputProps & {
+type TRHFSelectProps = {
   name: string
   labelName: string
+  placeholder: string
+  values: string[]
   required?: boolean
+  className?: string
+  disabled?: boolean
 }
 
-function RHFInput({
+function RHFSelect({
   name,
   labelName,
   required,
   className,
-  type,
   disabled,
-  ...other
-}: TRHFInputProps) {
+  placeholder,
+  values,
+}: TRHFSelectProps) {
   const {
     control,
     formState: { isSubmitting },
@@ -36,21 +46,25 @@ function RHFInput({
             {required && <Asterisk className="mb-2 h-4 w-4 text-destructive" />}
           </div>
           <FormControl>
-            <Input
-              {...field}
-              type={type}
-              value={type === 'number' && field.value === 0 ? '' : field.value}
-              onChange={(event) => {
-                if (type === 'number') {
-                  field.onChange(Number(event.target.value))
-                } else {
-                  field.onChange(event.target.value)
-                }
-              }}
+            <Select
+              onValueChange={field.onChange}
+              defaultValue={field.value}
               disabled={disabled || isSubmitting}
-              className={cn(className, error ? 'ring-2 ring-destructive' : '')}
-              {...other}
-            />
+              required={required}
+            >
+              <FormControl>
+                <SelectTrigger className={cn(className, error ? 'ring-2 ring-destructive' : '')}>
+                  <SelectValue placeholder={placeholder} />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                {values.map((value) => (
+                  <SelectItem key={value} value={value}>
+                    {value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </FormControl>
           {error && (
             <FormMessage className="mb-0 mt-0.5 line-clamp-1 text-xs">{error.message}</FormMessage>
@@ -61,4 +75,4 @@ function RHFInput({
   )
 }
 
-export default RHFInput
+export default RHFSelect

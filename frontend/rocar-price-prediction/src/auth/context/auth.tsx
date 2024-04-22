@@ -1,6 +1,7 @@
 'use client'
 
 import { getAccessToken, removeAccessToken, saveAccessToken } from '@/auth/session'
+import { toast } from '@/components/ui/use-toast'
 import { routes } from '@/config.global'
 import { TLoginRequestModel, TRegisterRequestModel } from '@/requests/auth'
 import { useRouter } from 'next/navigation'
@@ -82,7 +83,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = useCallback(async () => {
     removeAccessToken()
     setIsAuth(false)
-  }, [])
+    router.push(routes.auth.login)
+    toast({
+      title: 'Logged out successfully',
+    })
+  }, [router])
 
   const value = { isAuth, isLoading, login, register, logout, setIsAuth }
 

@@ -6,6 +6,7 @@ export const apiConfig = {
     login: `${BACKEND_URL}/login`,
     register: `${BACKEND_URL}/register`,
   },
+  inference: `${BACKEND_URL}/inference`,
 }
 
 export const routes = {
@@ -23,6 +24,3 @@ export const routes = {
     root: '/pricing',
   },
 }
-
-export const publicRoutes = [routes.landingpage.root, routes.auth.login, routes.auth.register]
-export const protectedRoutes = [routes.dashboard.root]

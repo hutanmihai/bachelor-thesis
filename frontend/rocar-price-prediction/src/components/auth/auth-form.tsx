@@ -4,7 +4,6 @@ import { useAuth } from '@/auth/context/auth'
 import FormProvider from '@/components/forms/FormProvider'
 import RHFInput from '@/components/forms/RHFInput'
 import RHFSubmitButton from '@/components/forms/RHFSubmitButton'
-import { Label } from '@/components/ui/label'
 import { routes } from '@/config.global'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
@@ -46,7 +45,7 @@ function AuthForm({ type }: TAuthFormProps) {
     username: type === 'register' ? z.string().min(3) : z.string().optional(),
   })
 
-  const methods = useForm<TAuthFormType>({
+  const form = useForm<TAuthFormType>({
     resolver: zodResolver(schema),
     defaultValues: defaultValues,
   })
@@ -61,7 +60,7 @@ function AuthForm({ type }: TAuthFormProps) {
   }
 
   return (
-    <FormProvider methods={methods} onSubmit={methods.handleSubmit(handleSubmit)}>
+    <FormProvider form={form} onSubmit={form.handleSubmit(handleSubmit)}>
       <div className="mx-auto grid w-[350px] gap-6">
         <div className="grid gap-2 text-center">
           <h1 className="text-3xl font-bold">{type === 'login' ? 'Login' : 'Register'}</h1>

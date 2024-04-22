@@ -1,15 +1,16 @@
-import { UseFormReturn, FormProvider as Form, FieldValues } from 'react-hook-form'
+import { UseFormReturn, FieldValues } from 'react-hook-form'
 import { ReactNode } from 'react'
+import { Form } from '@/components/ui/form'
 
 type TFormProviderProps<T extends FieldValues> = {
   children: ReactNode
-  methods: UseFormReturn<T>
+  form: UseFormReturn<T>
   onSubmit?: VoidFunction
 }
 
-function FormProvider<T extends object>({ children, onSubmit, methods }: TFormProviderProps<T>) {
+function FormProvider<T extends object>({ children, onSubmit, form }: TFormProviderProps<T>) {
   return (
-    <Form {...methods}>
+    <Form {...form}>
       <form onSubmit={onSubmit} noValidate>
         {children}
       </form>
