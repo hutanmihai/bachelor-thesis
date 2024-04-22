@@ -21,6 +21,7 @@ router = APIRouter(tags=["auth"])
     status_code=status.HTTP_201_CREATED,
     response_description="User created successfully",
     responses=generate_error_responses(status.HTTP_404_NOT_FOUND, status.HTTP_403_FORBIDDEN),
+    response_model=TokenSchema,
 )
 async def register(register_schema: RegisterSchema, user_srv: UserSrv = Depends(UserSrv)):
     username = register_schema.username
@@ -46,6 +47,7 @@ async def register(register_schema: RegisterSchema, user_srv: UserSrv = Depends(
     status_code=status.HTTP_200_OK,
     response_description="Login successful",
     responses=generate_error_responses(status.HTTP_404_NOT_FOUND, status.HTTP_403_FORBIDDEN),
+    response_model=TokenSchema,
 )
 async def login(login_schema: LoginSchema, user_srv: UserSrv = Depends(UserSrv)):
     email = login_schema.email

@@ -4,8 +4,9 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 from sqlalchemy.ext.asyncio import AsyncEngine
-from src import models
 from src.settings import settings
+
+from src import models
 
 
 def get_database_url() -> str:
