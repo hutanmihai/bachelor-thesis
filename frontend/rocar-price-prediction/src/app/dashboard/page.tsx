@@ -1,5 +1,6 @@
 'use client'
 
+import { useAuth } from '@/auth/context/auth'
 import InferenceForm from '@/components/inference-form'
 import MaxWidthWrapper from '@/components/max-width-wrapper'
 import PredictionsHistory from '@/components/predictions-history'
@@ -18,6 +19,7 @@ import { useState } from 'react'
 
 function Dashboard() {
   const [isHistoryVisible, setIsHistoryVisible] = useState(true)
+  const { user } = useAuth()
 
   return (
     <MaxWidthWrapper>
@@ -32,7 +34,7 @@ function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-center">
-              <span className="text-5xl font-bold">5</span>
+              <span className="text-5xl font-bold">{user?.predictions}</span>
             </div>
           </CardContent>
           <CardFooter>

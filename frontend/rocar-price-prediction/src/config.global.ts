@@ -7,6 +7,12 @@ export const apiConfig = {
     register: `${BACKEND_URL}/register`,
   },
   inference: `${BACKEND_URL}/inference`,
+  stripe: {
+    createCheckoutSession: `${BACKEND_URL}/create-checkout-session`,
+  },
+  user: {
+    me: `${BACKEND_URL}/user/me`,
+  },
 }
 
 export const routes = {

@@ -1,5 +1,5 @@
 import LogoutButton from '@/components/auth/logout-button'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -9,13 +9,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { routes } from '@/config.global'
-import Image from 'next/image'
 import Link from 'next/link'
-import { Gem, User } from 'lucide-react'
+import { User } from 'lucide-react'
 
 interface UserAccountNavProps {
   email: string | undefined
-  name: string
+  name: string | undefined
 }
 
 function UserAccountNav({ email, name }: UserAccountNavProps) {

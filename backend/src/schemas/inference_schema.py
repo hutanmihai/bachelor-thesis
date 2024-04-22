@@ -6,15 +6,20 @@ class StructuredDataSchema(BaseModel):
     manufacturer: str
     model: str
     fuel: str
+    chassis: str
+
+    # boolean
     sold_by: bool  # True for dealer, False for private
     gearbox: bool  # True for automatic, False for manual
-    chassis: str
 
     # numerical
     km: int
     power: int
     engine: int
     year: int
+
+    # description
+    description: str
 
 
 class InferenceResponseSchema(BaseModel):

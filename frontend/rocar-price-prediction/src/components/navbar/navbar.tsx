@@ -10,7 +10,7 @@ import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
 function Navbar() {
-  const { isAuth } = useAuth()
+  const { isAuth, user } = useAuth()
 
   return (
     <nav className="sticky inset-x-0 top-0 z-30 h-14 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
@@ -72,7 +72,7 @@ function Navbar() {
                   Dashboard
                 </Link>
 
-                <UserAccountNav email="m@example.com" name="mihaihutan" />
+                <UserAccountNav email={user?.email} name={user?.username} />
               </>
             )}
           </div>

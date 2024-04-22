@@ -1,3 +1,4 @@
+import { apiConfig } from '@/config.global'
 import axiosInstance from '@/utils/axios'
 
 export type TCreateCheckoutSessionRequestModel = {
@@ -9,6 +10,6 @@ export type TCreateCheckoutSessionResponseModel = {
 }
 
 export async function createCheckoutSession(payload: TCreateCheckoutSessionRequestModel) {
-  const response = await axiosInstance.post('/create-checkout-session', payload)
+  const response = await axiosInstance.post(apiConfig.stripe.createCheckoutSession, payload)
   return response.data as TCreateCheckoutSessionResponseModel
 }
