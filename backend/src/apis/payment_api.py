@@ -2,6 +2,7 @@ from uuid import UUID
 
 import stripe
 from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
+from src.apis.utils.utils import generate_api_error_response
 from src.auth.auth_bearer import auth_required
 from src.schemas.errors_schema import ApiError
 from src.schemas.payment_schema import CreateCheckoutSessionRequestSchema, CreateCheckoutSessionResponseSchema
@@ -41,7 +42,7 @@ async def create_checkout_session(
         return CreateCheckoutSessionResponseSchema(url=session.url)
     except Exception as e:
         print(e)
-        return ApiError(detail="An unexpected error has occured, please try again later")
+        return generate_api_error_response(status.HTTP_500_INTERNAL_SERVER_ERROR, "An unexpected error has occured")
 
 
 @router.post("/webhook", status_code=status.HTTP_200_OK, summary="Stripe webhook", response_model=None)

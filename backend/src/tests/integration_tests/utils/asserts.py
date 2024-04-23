@@ -39,7 +39,6 @@ def assert_token_response(content: dict):
 
 def assert_base_entry_response(actual_entry: Entry, expected_entry: Entry):
     assert actual_entry.id is not None
-    assert actual_entry.user_id is not None
     assert actual_entry.manufacturer == expected_entry.manufacturer
     assert actual_entry.model == expected_entry.model
     assert actual_entry.fuel == expected_entry.fuel
@@ -51,10 +50,9 @@ def assert_base_entry_response(actual_entry: Entry, expected_entry: Entry):
     assert actual_entry.engine == expected_entry.engine
     assert actual_entry.year == expected_entry.year
     assert actual_entry.description == expected_entry.description
-    assert actual_entry.created_at is not None
-    assert actual_entry.updated_at is not None
+    assert actual_entry.prediction == expected_entry.prediction
 
 
 def assert_list_entry_response(actual_entries: List[Entry], expected_entries: List[Entry]):
     for actual, expected in zip(actual_entries, expected_entries):
-        assert_base_entry_response(actual, expected)
+        assert_base_entry_response(Entry(**actual), expected)

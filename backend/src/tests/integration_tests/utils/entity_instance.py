@@ -1,3 +1,5 @@
+from typing import List
+
 from src.auth.jwt_handler import token_encode
 from src.auth.utils import hash_password
 from src.database import async_session
@@ -26,10 +28,18 @@ async def new_user_with_password(password: str) -> (User, str):
         return actual_user, token
 
 
-async def new_entry(user: User) -> (Entry, str):
+async def new_entryy(user: User) -> (Entry, str):
     async with async_session() as session:
         entry: Entry = get_entry_instance(user.id)
         session.add(entry)
         actual_entry = await session.get(Entry, entry.id)
         await session.commit()
         return actual_entry
+
+
+async def new_entriess(user: User, number_of_entries: int) -> List[Entry]:
+    async with async_session() as session:
+        entries = [get_entry_instance(user.id) for _ in range(number_of_entries)]
+        session.add_all(entries)
+        await session.commit()
+        return entries

@@ -2,12 +2,11 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
-from src.apis.utils.utils import generate_error_responses
+from src.apis.utils.utils import generate_api_error_response, generate_error_responses
 from src.auth.auth_bearer import auth_required
 from src.schemas.entry_schema import EntryListSchema, EntrySchema
-from src.schemas.errors_schema import ApiError
 from src.services.entry_srv import EntrySrv
-from src.services.errors import EntryNotFound
+from src.services.errors import EntryNotCreatedByUser, EntryNotFound
 
 router = APIRouter(tags=["entry"])
 
@@ -56,7 +55,9 @@ async def entry_delete(entry_id: UUID, user_id: UUID = Depends(auth_required), e
     try:
         await entry_srv.delete_entry(entry_id, user_id)
     except EntryNotFound:
-        return ApiError(detail="Entry not found")
+        return generate_api_error_response(status.HTTP_404_NOT_FOUND, "Entry not found")
+    except EntryNotCreatedByUser:
+        return generate_api_error_response(status.HTTP_403_FORBIDDEN, "Entry not created by user")
     return JSONResponse(
         status_code=status.HTTP_200_OK,
         content={"message": "Entry deleted successfully"},

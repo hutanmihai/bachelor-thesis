@@ -1,7 +1,7 @@
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, status
-from src.apis.utils.utils import generate_error_responses
+from src.apis.utils.utils import generate_api_error_response, generate_error_responses
 from src.auth.auth_bearer import auth_required
 from src.models import Entry
 from src.schemas.errors_schema import ApiError
@@ -50,4 +50,4 @@ async def inference(
     except Exception as e:
         # TODO: see errors at inference
         print(e)
-        return ApiError(detail="An unexpected error has occured, please try again later")
+        return generate_api_error_response(status.HTTP_500_INTERNAL_SERVER_ERROR, "An unexpected error has occured, please try again later")
