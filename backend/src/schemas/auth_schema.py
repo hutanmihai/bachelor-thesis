@@ -17,7 +17,7 @@ class RegisterSchema(BaseModel):
 
 
 class LoginSchema(BaseModel):
-    email: str = Field(..., min_length=3, max_length=50)
+    email: EmailStr = Field(..., min_length=3, max_length=50)
     password: str = Field(..., min_length=3, max_length=50)
 
     class Config:

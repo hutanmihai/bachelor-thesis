@@ -1,13 +1,11 @@
-from passlib.context import CryptContext
+import bcrypt
 from src.models import User
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 # Verify user password
 async def verify_password(user: User, password: str) -> bool:
-    return pwd_context.verify(password, user.password)
+    return bcrypt.checkpw(password.encode("utf-8"), user.password.encode("utf-8"))
 
 
 async def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+    return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode()

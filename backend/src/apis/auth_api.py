@@ -2,12 +2,11 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
-from src.apis.utils.utils import generate_error_responses
+from src.apis.utils.utils import generate_api_error_response, generate_error_responses
 from src.auth.auth_bearer import auth_required
 from src.auth.jwt_handler import token_encode
 from src.auth.utils import verify_password
 from src.schemas.auth_schema import LoginSchema, RegisterSchema
-from src.schemas.errors_schema import ApiError
 from src.schemas.jwt_schema import TokenSchema
 from src.services.errors import UserNotFound
 from src.services.user_srv import UserSrv
@@ -21,7 +20,6 @@ router = APIRouter(tags=["auth"])
     status_code=status.HTTP_201_CREATED,
     response_description="User created successfully",
     responses=generate_error_responses(status.HTTP_404_NOT_FOUND, status.HTTP_403_FORBIDDEN),
-    response_model=TokenSchema,
 )
 async def register(register_schema: RegisterSchema, user_srv: UserSrv = Depends(UserSrv)):
     username = register_schema.username
@@ -34,7 +32,7 @@ async def register(register_schema: RegisterSchema, user_srv: UserSrv = Depends(
         user = None
 
     if user:
-        return ApiError(detail="User already exists")
+        return generate_api_error_response(status.HTTP_400_BAD_REQUEST, "User already exists")
 
     user = await user_srv.new_user(username, email, password)
 
@@ -47,7 +45,6 @@ async def register(register_schema: RegisterSchema, user_srv: UserSrv = Depends(
     status_code=status.HTTP_200_OK,
     response_description="Login successful",
     responses=generate_error_responses(status.HTTP_404_NOT_FOUND, status.HTTP_403_FORBIDDEN),
-    response_model=TokenSchema,
 )
 async def login(login_schema: LoginSchema, user_srv: UserSrv = Depends(UserSrv)):
     email = login_schema.email
@@ -55,10 +52,10 @@ async def login(login_schema: LoginSchema, user_srv: UserSrv = Depends(UserSrv))
     try:
         user = await user_srv.get_user_by_email(email)
     except UserNotFound:
-        return ApiError(detail="User not found")
+        return generate_api_error_response(status.HTTP_400_BAD_REQUEST, "Invalid credentials")
 
-    if not verify_password(user, password):
-        return ApiError(detail="Invalid credentials")
+    if not await verify_password(user, password):
+        return generate_api_error_response(status.HTTP_400_BAD_REQUEST, "Invalid credentials")
 
     return TokenSchema(token=token_encode(user.id))
 
