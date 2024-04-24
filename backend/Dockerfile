@@ -50,10 +50,11 @@ RUN pip3 install -r requirements.txt
 RUN rm requirements.txt
 
 COPY ./src ./src
-COPY ./alembic.ini ./alembic.ini
+COPY ./alembic.ini .
 COPY ./alembic ./alembic
+COPY ./start.sh .
 
-RUN alembic upgrade head
+RUN chmod +x start.sh
 
 EXPOSE 80
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["./start.sh"]
