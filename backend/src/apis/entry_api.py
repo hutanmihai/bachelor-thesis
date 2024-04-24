@@ -1,12 +1,18 @@
+import datetime
+from datetime import datetime
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, status
+from botocore.client import BaseClient
+from botocore.exceptions import NoCredentialsError
+from fastapi import APIRouter, Depends, File, UploadFile, status
 from fastapi.responses import JSONResponse
 from src.apis.utils.utils import generate_api_error_response, generate_error_responses
 from src.auth.auth_bearer import auth_required
+from src.deps import s3_auth
 from src.schemas.entry_schema import EntryListSchema, EntrySchema
 from src.services.entry_srv import EntrySrv
 from src.services.errors import EntryNotCreatedByUser, EntryNotFound
+from src.settings import settings
 
 router = APIRouter(tags=["entry"])
 
@@ -62,3 +68,30 @@ async def entry_delete(entry_id: UUID, user_id: UUID = Depends(auth_required), e
         status_code=status.HTTP_200_OK,
         content={"message": "Entry deleted successfully"},
     )
+
+
+@router.post(
+    "/upload",
+    summary="Upload image",
+    status_code=status.HTTP_200_OK,
+    response_description="Image uploaded successfully",
+    responses=generate_error_responses(status.HTTP_400_BAD_REQUEST, status.HTTP_403_FORBIDDEN, status.HTTP_500_INTERNAL_SERVER_ERROR),
+)
+async def upload_image(file: UploadFile = File(...), user_id=Depends(auth_required), s3_client: BaseClient = Depends(s3_auth)):
+    try:
+        if not file.content_type.startswith("image/"):
+            return generate_api_error_response(status_code=status.HTTP_400_BAD_REQUEST, detail="File is not an image")
+
+        file_content = await file.read()
+        timestamp = str(datetime.timestamp(datetime.now())).split(".")[0]
+        file_path = f"images/{user_id}_{timestamp}"
+
+        s3_client.put_object(Body=file_content, Bucket=settings.bucket_name, Key=file_path, ContentType=file.content_type)
+
+        url = f"https://{settings.bucket_name}.s3.amazonaws.com/{file_path}"
+        return JSONResponse(status_code=status.HTTP_200_OK, content={"url": url})
+
+    except NoCredentialsError:
+        return generate_api_error_response(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error")
+    except Exception as e:
+        return generate_api_error_response(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))

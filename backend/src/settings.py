@@ -23,6 +23,11 @@ class AppSettings(BaseSettings):
     stripe_price_id_ten: str = Field(..., env="STRIPE_PRICE_ID_TEN")
     stripe_api_version: str = Field(..., env="STRIPE_API_VERSION")
 
+    # AWS
+    aws_access_key: str = Field(..., env="AWS_ACCESS_KEY")
+    aws_secret_access_key: str = Field(..., env="AWS_SECRET_ACCESS_KEY")
+    bucket_name: str = "thesis-s3"
+
     # DATABASE
     database_user: str = Field(..., env="DATABASE_USER")
     database_password: str = Field(..., env="DATABASE_PASSWORD")
