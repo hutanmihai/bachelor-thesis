@@ -87,7 +87,18 @@ function PredictionsHistory() {
               </div>
             </div>
           }
-          header={<Skeleton />}
+          header={
+            entry.image_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={entry.image_url}
+                alt={entry.manufacturer + entry.model}
+                className="flex h-full min-h-[6rem] w-full flex-1 rounded-xl"
+              />
+            ) : (
+              <Skeleton />
+            )
+          }
           className={i === 3 || i === 6 ? 'md:col-span-2' : ''}
         />
       ))}

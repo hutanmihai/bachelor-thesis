@@ -12,5 +12,5 @@ export type TEntry = {
   engine: number
   description: string
   prediction: number
-  // TODO: add image link
+  image_url: string
 }

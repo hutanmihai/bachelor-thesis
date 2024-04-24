@@ -161,7 +161,9 @@ function InferenceForm() {
             name="model"
             labelName="Model"
             placeholder="Choose model"
-            values={modelValues}
+            // TODO: fix this
+            // values={modelValues}
+            values={['x1', 'x2']}
             disabled={!form.watch('manufacturer')}
             required
           />
