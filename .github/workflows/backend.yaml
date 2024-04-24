@@ -67,6 +67,8 @@ jobs:
           STRIPE_PRICE_ID_THREE: ${{ secrets.STRIPE_PRICE_ID_THREE }}
           STRIPE_PRICE_ID_FIVE: ${{ secrets.STRIPE_PRICE_ID_FIVE }}
           STRIPE_PRICE_ID_TEN: ${{ secrets.STRIPE_PRICE_ID_TEN }}
+          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           export PYTHONPATH=$PYTHONPATH:$(pwd)/backend
           pytest --junitxml=reports/report_func.xml backend/src/tests/
