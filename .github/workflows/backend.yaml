@@ -10,14 +10,6 @@ on:
       - 'backend/**'
       - '.github/workflows/backend.yaml'
 
-name: My Deploy
-
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
 jobs:
   lint:
     runs-on: ubuntu-latest
