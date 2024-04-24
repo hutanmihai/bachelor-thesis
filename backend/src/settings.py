@@ -31,6 +31,7 @@ class AppSettings(BaseSettings):
     database_db: Optional[str] = Field(None, env="DATABASE_DB")
     database_url: Union[Optional[PostgresDsn], Optional[str]] = None
 
+    # BUILD DB URL
     @field_validator("database_url", mode="before")
     @classmethod
     def assemble_db_connection(cls, v: Optional[str], values: ValidationInfo) -> Any:
