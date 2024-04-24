@@ -51,6 +51,8 @@ RUN rm requirements.txt
 
 COPY ./src ./src
 
-EXPOSE 80
+WORKDIR /app/src
+RUN alembic upgrade head
 
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "80"]
+EXPOSE 80
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
