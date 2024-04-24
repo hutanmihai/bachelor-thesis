@@ -10,6 +10,14 @@ on:
       - 'backend/**'
       - '.github/workflows/backend.yaml'
 
+name: My Deploy
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -76,3 +84,14 @@ jobs:
         with:
           name: test_report
           path: ./reports/report_func.xml
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to production
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.BACKEND_RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.BACKEND_RENDER_API_KEY }}
+          wait-for-success: true
