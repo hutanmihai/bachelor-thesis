@@ -82,7 +82,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to production
-        uses: johnbeynon/render-deploy-action@v0.0.8
-        with:
-          service-id: ${{ secrets.BACKEND_RENDER_SERVICE_ID }}
-          api-key: ${{ secrets.BACKEND_RENDER_API_KEY }}
+        if: github.ref == 'refs/heads/main'
+        env:
+          deploy_url: ${{ secrets.BACKEND_RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          curl "$deploy_url"
