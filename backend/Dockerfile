@@ -51,6 +51,6 @@ RUN rm requirements.txt
 
 COPY ./src ./src
 
-EXPOSE 8080
+EXPOSE 80
 
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "80"]
