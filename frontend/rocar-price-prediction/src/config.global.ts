@@ -16,6 +16,7 @@ export const apiConfig = {
   entry: {
     list: `${BACKEND_URL}/entry/all`,
     delete: (id: string) => `${BACKEND_URL}/entry/${id}`,
+    upload: `${BACKEND_URL}/upload`,
   },
 }
 

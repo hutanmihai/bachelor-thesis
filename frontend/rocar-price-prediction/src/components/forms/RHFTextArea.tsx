@@ -1,27 +1,19 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Slider } from '@/components/ui/slider'
+import { Textarea, TextareaProps } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
-import { SliderProps } from '@radix-ui/react-slider'
 import { Asterisk } from 'lucide-react'
 import * as React from 'react'
 import { useFormContext } from 'react-hook-form'
 
-type TRHFSliderProps = SliderProps & {
+type TRHFTextArea = TextareaProps & {
   name: string
   labelName: string
   required?: boolean
-  className?: string
   disabled?: boolean
+  className?: string
 }
 
-function RHFSlider({ name, labelName, required, disabled, ...other }: TRHFSliderProps) {
+function RHFTextArea({ name, labelName, required, disabled, className, ...other }: TRHFTextArea) {
   const {
     control,
     formState: { isSubmitting },
@@ -34,17 +26,18 @@ function RHFSlider({ name, labelName, required, disabled, ...other }: TRHFSlider
       render={({ field, fieldState: { error } }) => (
         <FormItem>
           <div className="mb-1 flex items-center justify-start">
-            <FormLabel>
-              {labelName} - {field.value}
-            </FormLabel>
+            <FormLabel>{labelName}</FormLabel>
             {required && <Asterisk className="mb-2 h-4 w-4 text-destructive" />}
           </div>
           <FormControl>
-            <Slider
-              defaultValue={[field.value]}
-              onValueChange={field.onChange}
+            <Textarea
+              placeholder="Paste the ad description here..."
               disabled={disabled || isSubmitting}
-              {...other}
+              className={cn(
+                className,
+                error ? 'resize-none ring-2 ring-destructive' : 'resize-none'
+              )}
+              {...field}
             />
           </FormControl>
           {error && (
@@ -56,4 +49,4 @@ function RHFSlider({ name, labelName, required, disabled, ...other }: TRHFSlider
   )
 }
 
-export default RHFSlider
+export default RHFTextArea
