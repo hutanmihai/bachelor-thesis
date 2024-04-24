@@ -154,7 +154,9 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+core/lib/
+backend/lib/
+scraper/lib/
 lib64/
 parts/
 sdist/
