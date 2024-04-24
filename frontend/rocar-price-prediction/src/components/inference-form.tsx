@@ -7,7 +7,14 @@ import Dropzone from '@/components/ui/dropzone'
 import { FormLabel } from '@/components/ui/form'
 import { MultiStepLoader } from '@/components/ui/multi-step-loader'
 import { toast } from '@/components/ui/use-toast'
-import { getAllManufacturers, getModelsForManufacturer } from '@/constants'
+import {
+  chassisTypes,
+  fuelTypes,
+  gearboxTypes,
+  getAllManufacturers,
+  getModelsForManufacturer,
+  soldByTypes,
+} from '@/constants'
 import useFileUploader from '@/hooks/file-upload'
 import { useInference } from '@/hooks/inference'
 import { Asterisk } from 'lucide-react'
@@ -164,7 +171,7 @@ function InferenceForm() {
             labelName="Fuel"
             placeholder="Choose fuel"
             required
-            values={['gas', 'diesel', 'hibrid']}
+            values={fuelTypes}
           />
         </div>
         <RHFTextArea labelName="Description" name="description" required />
@@ -174,7 +181,7 @@ function InferenceForm() {
             labelName="Chassis"
             placeholder="Choose chassis"
             required
-            values={['suv', 'sedan']}
+            values={chassisTypes}
           />
           <RHFInput labelName="Km" name="km" placeholder="Enter km" type="number" required />
           <RHFInput
@@ -196,14 +203,14 @@ function InferenceForm() {
             labelName="Gearbox"
             placeholder="Choose gearbox"
             required
-            values={['manual', 'automatic']}
+            values={gearboxTypes}
           />
           <RHFSelect
             name="sold_by"
             labelName="Sold by"
             placeholder="Choose between private and dealer"
             required
-            values={['private', 'dealer']}
+            values={soldByTypes}
           />
         </div>
         <div>

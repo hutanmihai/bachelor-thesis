@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-export const selectValues = {
+export const manufacturerAndModels = {
   bmw: ['x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7'],
   audi: ['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8'],
   mercedes: ['a', 'b', 'c', 'e', 's'],
@@ -9,8 +9,16 @@ export const selectValues = {
 }
 
 // Function to get all keys from the object
-export const getAllManufacturers = () => _.keys(selectValues)
+export const getAllManufacturers = () => _.keys(manufacturerAndModels)
 
 // Function to get array for a given key
 export const getModelsForManufacturer = (manufacturer: string) =>
-  _.get(selectValues, manufacturer, [])
+  _.get(manufacturer, manufacturer, [])
+
+export const fuelTypes = ['gas', 'diesel', 'hybrid']
+
+export const chassisTypes = ['sedan', 'coupe', 'suv', 'hatchback', 'convertible']
+
+export const gearboxTypes = ['manual', 'automatic']
+
+export const soldByTypes = ['private', 'dealer']
