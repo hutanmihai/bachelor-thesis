@@ -29,6 +29,9 @@ class Entry(TimestampMixin, BaseModel):
     # description
     description = Column(TEXT(), nullable=False)
 
+    # image
+    image_url = Column(VARCHAR(255), nullable=False)
+
     # prediction
     prediction = Column(INT(), nullable=False)
 
@@ -44,6 +47,7 @@ class Entry(TimestampMixin, BaseModel):
         self.power = kwargs.get("power")
         self.engine = kwargs.get("engine")
         self.year = kwargs.get("year")
+        self.image_url = kwargs.get("image_url")
         self.description = kwargs.get("description")
         self.prediction = kwargs.get("prediction")
         self.user_id = kwargs.get("user_id")

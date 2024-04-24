@@ -83,4 +83,5 @@ def get_entry_instance(user_id: UUID):
     entry.year = get_random_int()
     entry.description = get_random_description()
     entry.prediction = get_random_int()
+    entry.image_url = get_random_name()
     return entry

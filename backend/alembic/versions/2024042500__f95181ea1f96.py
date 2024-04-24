@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: c4cac1c8dce9
+Revision ID: f95181ea1f96
 Revises:
-Create Date: 2024-04-22 23:50:09.101366
+Create Date: 2024-04-25 02:00:10.511859
 
 """
 
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = "c4cac1c8dce9"
+revision: str = "f95181ea1f96"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -47,6 +47,7 @@ def upgrade() -> None:
         sa.Column("engine", sa.INTEGER(), nullable=False),
         sa.Column("year", sa.INTEGER(), nullable=False),
         sa.Column("description", sa.TEXT(), nullable=False),
+        sa.Column("image_url", sa.VARCHAR(length=255), nullable=False),
         sa.Column("prediction", sa.INTEGER(), nullable=False),
         sa.Column("created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=False),
         sa.Column("updated_at", sa.DateTime(), server_default=sa.text("now()"), nullable=False),

@@ -20,6 +20,7 @@ async def test_inference_with_valid_data(client: AsyncClient):
         engine=2000,
         year=2021,
         description="some_description",
+        image_url="some_url",
     )
 
     expected_status_code = status.HTTP_200_OK
@@ -49,6 +50,7 @@ async def test_inference_with_invalid_data(client: AsyncClient):
         engine=None,
         year=None,
         description=None,
+        image_url=None,
     )
 
     expected_status_code = status.HTTP_422_UNPROCESSABLE_ENTITY
@@ -64,6 +66,7 @@ async def test_inference_with_invalid_data(client: AsyncClient):
         "engine",
         "year",
         "description",
+        "image_url",
     ]
 
     response = await client.post(

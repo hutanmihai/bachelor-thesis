@@ -30,6 +30,7 @@ def get_inference_payload(
     engine: int | None,
     year: int | None,
     description: str | None,
+    image_url: str | None,
 ) -> dict:
     payload = {}
     if manufacturer is not None:
@@ -54,5 +55,7 @@ def get_inference_payload(
         payload["year"] = year
     if description is not None:
         payload["description"] = description
+    if image_url is not None:
+        payload["image_url"] = image_url
 
     return payload

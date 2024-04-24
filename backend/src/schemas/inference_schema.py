@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 
 
-class StructuredDataSchema(BaseModel):
+class InferenceSchema(BaseModel):
     # categorical
     manufacturer: str
     model: str
@@ -18,6 +18,9 @@ class StructuredDataSchema(BaseModel):
 
     # description
     description: str
+
+    # image
+    image_url: str
 
 
 class InferenceResponseSchema(BaseModel):

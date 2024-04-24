@@ -14,6 +14,7 @@ class EntrySchema(BaseModel):
     engine: int
     year: int
     description: str
+    image_url: str
     prediction: int
 
 

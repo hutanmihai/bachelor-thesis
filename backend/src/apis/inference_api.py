@@ -5,7 +5,7 @@ from src.apis.utils.utils import generate_api_error_response, generate_error_res
 from src.auth.auth_bearer import auth_required
 from src.models import Entry
 from src.schemas.errors_schema import ApiError
-from src.schemas.inference_schema import InferenceResponseSchema, StructuredDataSchema
+from src.schemas.inference_schema import InferenceResponseSchema, InferenceSchema
 from src.services.entry_srv import EntrySrv
 from src.services.inference_srv import InferenceSrv
 
@@ -22,26 +22,27 @@ router = APIRouter(tags=["inference"])
     response_model=InferenceResponseSchema,
 )
 async def inference(
-    structured_data_schema: StructuredDataSchema,
+    inference_schema: InferenceSchema,
     inference_srv: InferenceSrv = Depends(InferenceSrv),
     user_id: UUID = Depends(auth_required),
     entry_srv: EntrySrv = Depends(EntrySrv),
 ):
     try:
-        prediction = await inference_srv.predict(structured_data_schema.dict())
+        prediction = await inference_srv.predict(inference_schema.dict())
         await entry_srv.create_entry(
             Entry(
-                manufacturer=structured_data_schema.manufacturer,
-                model=structured_data_schema.model,
-                fuel=structured_data_schema.fuel,
-                chassis=structured_data_schema.chassis,
-                sold_by=structured_data_schema.sold_by,
-                gearbox=structured_data_schema.gearbox,
-                km=structured_data_schema.km,
-                power=structured_data_schema.power,
-                engine=structured_data_schema.engine,
-                year=structured_data_schema.year,
-                description=structured_data_schema.description,
+                manufacturer=inference_schema.manufacturer,
+                model=inference_schema.model,
+                fuel=inference_schema.fuel,
+                chassis=inference_schema.chassis,
+                sold_by=inference_schema.sold_by,
+                gearbox=inference_schema.gearbox,
+                km=inference_schema.km,
+                power=inference_schema.power,
+                engine=inference_schema.engine,
+                year=inference_schema.year,
+                description=inference_schema.description,
+                image_url=inference_schema.image_url,
                 prediction=prediction,
                 user_id=user_id,
             )

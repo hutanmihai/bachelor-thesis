@@ -41,6 +41,7 @@ async def entry_all(user_id: UUID = Depends(auth_required), entry_srv: EntrySrv 
                 power=entry.power,
                 engine=entry.engine,
                 year=entry.year,
+                image_url=entry.image_url,
                 description=entry.description,
                 prediction=entry.prediction,
                 user_id=entry.user_id,
