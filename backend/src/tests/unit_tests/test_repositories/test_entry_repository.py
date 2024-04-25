@@ -13,7 +13,6 @@ async def test_entry_repo_create_can_successfully_create_entry_in_the_db(entry_r
 
     assert entry_instance == actual_entry_instance
     db_session.add.assert_called_once_with(entry_instance)
-    db_session.commit.assert_awaited_once_with()
 
 
 async def test_entry_repo_delete_can_succesfully_delete_entry_in_the_db(entry_repository: EntryRepository, db_session):
@@ -22,7 +21,6 @@ async def test_entry_repo_delete_can_succesfully_delete_entry_in_the_db(entry_re
     await entry_repository.delete(entry_instance)
 
     db_session.delete.assert_called_once_with(entry_instance)
-    db_session.commit.assert_awaited_once_with()
 
 
 async def test_user_repo_get_raise_error_when_user_does_not_exist(user_repository: UserRepository, db_session):

@@ -1,5 +1,5 @@
 from sqlalchemy.sql.expression import select
-from src.models import BaseModel, User
+from src.models import User
 from src.repositories.errors import EntityNotFound
 from src.repositories.sqlalchemy_repo import SQLAlchemyRepository
 

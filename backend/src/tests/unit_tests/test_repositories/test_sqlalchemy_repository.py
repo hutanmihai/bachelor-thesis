@@ -13,7 +13,6 @@ async def test_sqlalchemy_repo_create_can_successfully_create_entity_in_the_db(s
 
     assert entity_instance == actual_entity_instance
     db_session.add.assert_called_once_with(entity_instance)
-    db_session.commit.assert_awaited_once_with()
 
 
 async def test_sqlalchemy_repo_create_raise_error_when_entity_is_not_unique(sqlalchemy_repository: SQLAlchemyRepository, db_session):
@@ -68,7 +67,6 @@ async def test_sqlalchemy_repo_update_successfully_update_entity(sqlalchemy_repo
 
     assert actual_entity == entity_instance
     db_session.add.assert_called_once_with(entity_instance)
-    db_session.commit.assert_awaited_once_with()
 
 
 async def test_sqlalchemy_repo_update_raise_error_when_entity_is_not_unique(sqlalchemy_repository: SQLAlchemyRepository, db_session):

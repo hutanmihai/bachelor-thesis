@@ -13,7 +13,6 @@ async def test_user_repo_create_can_successfully_create_user_in_the_db(user_repo
 
     assert user_instance == actual_user_instance
     db_session.add.assert_called_once_with(user_instance)
-    db_session.commit.assert_awaited_once_with()
 
 
 async def test_user_repo_create_raise_error_when_user_is_not_unique(user_repository: UserRepository, db_session):

@@ -48,3 +48,12 @@ class UserSrv(AbstractService):
             await self._repository.delete(instance)
         except EntityNotFound:
             raise UserNotFound()
+
+    # Update user predictions
+    async def update_user_predictions(self, user_id: UUID, predictions: int) -> User:
+        try:
+            instance = await self.get_user(user_id)
+            instance.predictions += predictions
+            return await self._repository.update(instance)
+        except EntityNotFound:
+            raise UserNotFound()

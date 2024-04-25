@@ -11,7 +11,7 @@ from src.services.errors import EntryNotCreatedByUser, EntryNotFound
 
 
 class EntrySrv(AbstractService):
-    def __init__(self, repo: UserRepository = Depends(EntryRepository)):
+    def __init__(self, repo: EntryRepository = Depends(EntryRepository)):
         super().__init__(repo)
 
     # Create entry

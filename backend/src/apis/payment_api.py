@@ -4,14 +4,17 @@ import stripe
 from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
 from src.apis.utils.utils import generate_api_error_response, generate_error_responses
 from src.auth.auth_bearer import auth_required
-from src.schemas.errors_schema import ApiError
 from src.schemas.payment_schema import CreateCheckoutSessionRequestSchema, CreateCheckoutSessionResponseSchema
+from src.services.errors import UserNotFound
+from src.services.user_srv import UserSrv
 from src.settings import settings
 
 stripe.api_key = settings.stripe_secret_key
 stripe.api_version = settings.stripe_api_version
 
 router = APIRouter(tags=["payment"])
+
+PRODUCTS = {settings.stripe_price_id_ten: 10, settings.stripe_price_id_five: 5, settings.stripe_price_id_three: 3}
 
 
 @router.post(
@@ -50,6 +53,7 @@ async def create_checkout_session(
 async def webhook_stripe(
     request: Request,
     stripe_signature=Header(None),
+    user_srv: UserSrv = Depends(UserSrv),
 ):
     webhook_secret = settings.stripe_webhook_secret
     raw_body = await request.body()
@@ -64,7 +68,12 @@ async def webhook_stripe(
         raise HTTPException(422, detail=str(e))
 
     if event["type"] == "checkout.session.completed":
-        # TODO: Add logic to handle successful checkout!
-        print("Succesful checkout")
+        session = event["data"]["object"]
+        user_id = session["client_reference_id"]
+        product_id = session["metadata"]["price_id"]
+        try:
+            await user_srv.update_user_predictions(user_id, PRODUCTS[product_id])
+        except UserNotFound:
+            raise HTTPException(404, detail="User not found")
 
     return status.HTTP_200_OK

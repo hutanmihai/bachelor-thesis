@@ -21,7 +21,6 @@ class SQLAlchemyRepository(AbstractRepository):
     async def create(self, instance: BaseModel) -> BaseModel:
         try:
             self.db_session.add(instance)
-            await self.db_session.commit()
         except IntegrityError as e:
             await self.db_session.rollback()
             self._handle_sqlalchemy_error(e)
@@ -36,7 +35,6 @@ class SQLAlchemyRepository(AbstractRepository):
     async def update(self, instance: BaseModel) -> BaseModel:
         try:
             self.db_session.add(instance)
-            await self.db_session.commit()
         except IntegrityError as e:
             await self.db_session.rollback()
             self._handle_sqlalchemy_error(e)
@@ -47,7 +45,6 @@ class SQLAlchemyRepository(AbstractRepository):
 
     async def delete(self, instance: BaseModel) -> None:
         await self.db_session.delete(instance)
-        await self.db_session.commit()
 
     @staticmethod
     def _handle_sqlalchemy_error(err: Exception) -> None:

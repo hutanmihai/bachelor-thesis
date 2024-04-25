@@ -4,10 +4,10 @@ from fastapi import APIRouter, Depends, status
 from src.apis.utils.utils import generate_api_error_response, generate_error_responses
 from src.auth.auth_bearer import auth_required
 from src.models import Entry
-from src.schemas.errors_schema import ApiError
 from src.schemas.inference_schema import InferenceResponseSchema, InferenceSchema
 from src.services.entry_srv import EntrySrv
 from src.services.inference_srv import InferenceSrv
+from src.services.user_srv import UserSrv
 
 router = APIRouter(tags=["inference"])
 
@@ -26,9 +26,11 @@ async def inference(
     inference_srv: InferenceSrv = Depends(InferenceSrv),
     user_id: UUID = Depends(auth_required),
     entry_srv: EntrySrv = Depends(EntrySrv),
+    user_srv: UserSrv = Depends(UserSrv),
 ):
     try:
         prediction = await inference_srv.predict(inference_schema.dict())
+        await user_srv.update_user_predictions(user_id, -1)
         await entry_srv.create_entry(
             Entry(
                 manufacturer=inference_schema.manufacturer,
@@ -50,5 +52,4 @@ async def inference(
         return InferenceResponseSchema(prediction=prediction)
     except Exception as e:
         # TODO: see errors at inference
-        print(e)
-        return generate_api_error_response(status.HTTP_500_INTERNAL_SERVER_ERROR, "An unexpected error has occured, please try again later")
+        return generate_api_error_response(status.HTTP_500_INTERNAL_SERVER_ERROR, str(e))
