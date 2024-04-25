@@ -40,8 +40,8 @@ async def create_checkout_session(
             mode="payment",
             client_reference_id=str(user_id),
             metadata={"user_id": str(user_id), "price_id": create_checkout_schema.price_id},
-            success_url=request.headers.get("referer") + "/dashboard",
-            cancel_url=request.headers.get("referer") + "/pricing",
+            success_url=request.headers.get("referer") + "dashboard",
+            cancel_url=request.headers.get("referer") + "pricing",
         )
         return CreateCheckoutSessionResponseSchema(url=session.url)
     except Exception as e:
