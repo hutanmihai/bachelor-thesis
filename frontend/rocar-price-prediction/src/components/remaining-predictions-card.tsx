@@ -26,7 +26,7 @@ function RemainingPredictionsCard() {
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-center">
-          <span className="text-5xl font-bold">{userData?.predictions}</span>
+          <span className="h-12 text-5xl font-bold">{userData?.predictions}</span>
         </div>
       </CardContent>
       <CardFooter>
