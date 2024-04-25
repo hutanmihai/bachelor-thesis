@@ -108,7 +108,7 @@ async def test_invalid_jwt_no_user_found_error(client: AsyncClient):
     payload = {"sub": generate_id(), "exp": datetime.now(timezone.utc) + timedelta(10)}
     jwt = encode(payload, settings.secret_key, algorithm=settings.algorithm)
 
-    expected_status_code = status.HTTP_404_NOT_FOUND
+    expected_status_code = status.HTTP_403_FORBIDDEN
     expected_response = {"detail": "User not found, invalid token"}
 
     response = await client.get(

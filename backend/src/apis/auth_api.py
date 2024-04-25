@@ -19,7 +19,7 @@ router = APIRouter(tags=["auth"])
     summary="Register endpoint",
     status_code=status.HTTP_201_CREATED,
     response_description="User created successfully",
-    responses=generate_error_responses(status.HTTP_404_NOT_FOUND, status.HTTP_403_FORBIDDEN),
+    responses=generate_error_responses(status.HTTP_400_BAD_REQUEST, status.HTTP_403_FORBIDDEN),
 )
 async def register(register_schema: RegisterSchema, user_srv: UserSrv = Depends(UserSrv)):
     username = register_schema.username
@@ -44,7 +44,7 @@ async def register(register_schema: RegisterSchema, user_srv: UserSrv = Depends(
     summary="Login endpoint",
     status_code=status.HTTP_200_OK,
     response_description="Login successful",
-    responses=generate_error_responses(status.HTTP_404_NOT_FOUND, status.HTTP_403_FORBIDDEN),
+    responses=generate_error_responses(status.HTTP_400_BAD_REQUEST, status.HTTP_403_FORBIDDEN),
 )
 async def login(login_schema: LoginSchema, user_srv: UserSrv = Depends(UserSrv)):
     email = login_schema.email
@@ -65,7 +65,7 @@ async def login(login_schema: LoginSchema, user_srv: UserSrv = Depends(UserSrv))
     summary="Protected endpoint for testing purposes",
     status_code=status.HTTP_200_OK,
     response_description="Protected endpoint accesed successfully",
-    responses=generate_error_responses(status.HTTP_404_NOT_FOUND, status.HTTP_403_FORBIDDEN),
+    responses=generate_error_responses(status.HTTP_403_FORBIDDEN),
 )
 async def protected_return(user_id: UUID = Depends(auth_required), user_srv: UserSrv = Depends(UserSrv)):
     user = await user_srv.get_user(user_id)

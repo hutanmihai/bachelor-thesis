@@ -23,7 +23,7 @@ router = APIRouter(tags=["entry"])
     status_code=status.HTTP_200_OK,
     response_description="Successfully fetched all entries",
     response_model=EntryListSchema,
-    responses=generate_error_responses(status.HTTP_404_NOT_FOUND, status.HTTP_403_FORBIDDEN),
+    responses=generate_error_responses(status.HTTP_403_FORBIDDEN),
 )
 async def entry_all(user_id: UUID = Depends(auth_required), entry_srv: EntrySrv = Depends(EntrySrv)):
     entries = await entry_srv.get_all_entries(user_id)
@@ -76,7 +76,7 @@ async def entry_delete(entry_id: UUID, user_id: UUID = Depends(auth_required), e
     summary="Upload image",
     status_code=status.HTTP_200_OK,
     response_description="Image uploaded successfully",
-    responses=generate_error_responses(status.HTTP_400_BAD_REQUEST, status.HTTP_403_FORBIDDEN, status.HTTP_500_INTERNAL_SERVER_ERROR),
+    responses=generate_error_responses(status.HTTP_400_BAD_REQUEST, status.HTTP_403_FORBIDDEN),
 )
 async def upload_image(file: UploadFile = File(...), user_id=Depends(auth_required), s3_client: BaseClient = Depends(s3_auth)):
     try:

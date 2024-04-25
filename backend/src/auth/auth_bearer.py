@@ -68,7 +68,7 @@ async def auth_required(token: str = Depends(JWTBearer())):
         user = await session.get(User, user_id)
         if not user:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
+                status_code=status.HTTP_403_FORBIDDEN,
                 detail="User not found, invalid token",
             )
 

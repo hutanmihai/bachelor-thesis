@@ -2,7 +2,7 @@ from uuid import UUID
 
 import stripe
 from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
-from src.apis.utils.utils import generate_api_error_response
+from src.apis.utils.utils import generate_api_error_response, generate_error_responses
 from src.auth.auth_bearer import auth_required
 from src.schemas.errors_schema import ApiError
 from src.schemas.payment_schema import CreateCheckoutSessionRequestSchema, CreateCheckoutSessionResponseSchema
@@ -19,6 +19,7 @@ router = APIRouter(tags=["payment"])
     summary="Create checkout session",
     status_code=status.HTTP_200_OK,
     response_description="Checkout session created succesfully",
+    responses=generate_error_responses(status.HTTP_403_FORBIDDEN),
     response_model=CreateCheckoutSessionResponseSchema,
 )
 async def create_checkout_session(

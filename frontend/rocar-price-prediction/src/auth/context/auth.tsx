@@ -62,6 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }
         },
         onError: () => {
+          removeAccessToken()
           setIsAuth(false)
         },
       })
@@ -86,6 +87,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }
         },
         onError: () => {
+          removeAccessToken()
           setIsAuth(false)
         },
       })
