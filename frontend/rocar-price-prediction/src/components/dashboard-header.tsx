@@ -1,5 +1,6 @@
 import RemainingPredictionsCard from '@/components/remaining-predictions-card'
 import { buttonVariants } from '@/components/ui/button'
+import { routes } from '@/config.global'
 import { cn } from '@/lib/utils'
 import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
@@ -28,7 +29,7 @@ function DashboardHeader({ title, linkHref, linkText }: TDashboardHeaderProps) {
           )}
         >
           {linkText}
-          <PlusIcon className="ml-1.5 h-5 w-5" />
+          {linkHref === routes.dashboard.newPrediction && <PlusIcon className="ml-1.5 h-5 w-5" />}
         </Link>
       </div>
     </>
