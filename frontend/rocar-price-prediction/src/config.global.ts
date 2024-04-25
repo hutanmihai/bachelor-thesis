@@ -30,6 +30,7 @@ export const routes = {
   },
   dashboard: {
     root: '/dashboard',
+    newPrediction: '/dashboard/new-prediction',
   },
   pricing: {
     root: '/pricing',

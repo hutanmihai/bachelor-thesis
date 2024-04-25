@@ -6,7 +6,7 @@ import { PRODUCTS } from '@/utils/stripe'
 
 function Pricing() {
   return (
-    <MaxWidthWrapper className="mb-8 mt-24 max-w-5xl text-center">
+    <MaxWidthWrapper className="mb-10 mt-24 max-w-5xl text-center">
       <div className="mx-auto mb-10 sm:max-w-lg">
         <h1 className="text-6xl font-bold sm:text-7xl">Pricing</h1>
         <p className="mt-5 text-gray-600 sm:text-lg">

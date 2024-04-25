@@ -7,6 +7,7 @@ import Dropzone from '@/components/ui/dropzone'
 import { FormLabel } from '@/components/ui/form'
 import { MultiStepLoader } from '@/components/ui/multi-step-loader'
 import { toast } from '@/components/ui/use-toast'
+import { routes } from '@/config.global'
 import {
   chassisTypes,
   fuelTypes,
@@ -18,6 +19,8 @@ import {
 import useFileUploader from '@/hooks/file-upload'
 import { useInference } from '@/hooks/inference'
 import { Asterisk } from 'lucide-react'
+import { router } from 'next/client'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
@@ -58,6 +61,7 @@ function InferenceForm() {
   const { isError, isLoading, errorMessage, upload, fileUrl } = useFileUploader()
   const { mutateAsync: infer } = useInference()
   const [modelValues, setModelValues] = useState<string[]>([])
+  const router = useRouter()
 
   const defaultValues: TInferenceFormType = {
     manufacturer: '',
@@ -137,6 +141,8 @@ function InferenceForm() {
     // Sleep for 10 seconds to simulate the inference process TODO: Remove this line
     await new Promise((resolve) => setTimeout(resolve, 10000))
     await infer(data)
+    router.push(routes.dashboard.root)
+    form.reset(defaultValues)
   }
 
   return form.formState.isSubmitting ? (

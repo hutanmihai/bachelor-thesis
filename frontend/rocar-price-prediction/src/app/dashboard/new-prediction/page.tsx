@@ -1,9 +1,10 @@
 'use client'
 
 import { useAuth } from '@/auth/context/auth'
+import InferenceForm from '@/components/inference-form'
 import MaxWidthWrapper from '@/components/max-width-wrapper'
 import PredictionsHistory from '@/components/predictions-history'
-import { buttonVariants } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -16,9 +17,12 @@ import { routes } from '@/config.global'
 import { cn } from '@/lib/utils'
 import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
-function Dashboard() {
+function NewPrediction() {
   const { user } = useAuth()
+  const router = useRouter()
 
   return (
     <MaxWidthWrapper className="mb-10 mt-10">
@@ -44,26 +48,27 @@ function Dashboard() {
           </Link>
         </CardFooter>
       </Card>
-      <div className="mb-10 mt-10 flex w-full flex-col justify-between gap-10 md:flex-row">
-        <h1>
-          <span className="text-2xl font-bold">Predictions history</span>
-        </h1>
-        <Link
-          href={routes.dashboard.newPrediction}
-          className={cn(
-            buttonVariants({
-              size: 'sm',
-            }),
-            'w-fit'
-          )}
-        >
-          Make a new prediction
-          <PlusIcon className="ml-1.5 h-5 w-5" />
-        </Link>
+      <div className="mb-10 flex w-full flex-col gap-10 md:flex-row">
+        <div className="mt-10 flex w-full flex-col justify-between gap-10 md:flex-row">
+          <h1>
+            <span className="text-2xl font-bold">Create new prediction</span>
+          </h1>
+          <Link
+            href={routes.dashboard.root}
+            className={cn(
+              buttonVariants({
+                size: 'sm',
+              }),
+              'w-fit'
+            )}
+          >
+            See predictions history
+          </Link>
+        </div>
       </div>
-      <PredictionsHistory />
+      <InferenceForm />
     </MaxWidthWrapper>
   )
 }
 
-export default Dashboard
+export default NewPrediction
