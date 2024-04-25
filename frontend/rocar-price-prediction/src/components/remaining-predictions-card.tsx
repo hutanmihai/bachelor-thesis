@@ -1,6 +1,5 @@
 'use client'
 
-import { useAuth } from '@/auth/context/auth'
 import { buttonVariants } from '@/components/ui/button'
 import {
   Card,
@@ -11,10 +10,13 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { routes } from '@/config.global'
+import { useUser } from '@/hooks/user'
 import Link from 'next/link'
 
 function RemainingPredictionsCard() {
-  const { user } = useAuth()
+  const { data: userData } = useUser({
+    enabled: true,
+  })
 
   return (
     <Card className="w-full border-2">
@@ -24,7 +26,7 @@ function RemainingPredictionsCard() {
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-center">
-          <span className="text-5xl font-bold">{user?.predictions}</span>
+          <span className="text-5xl font-bold">{userData?.predictions}</span>
         </div>
       </CardContent>
       <CardFooter>
