@@ -1,9 +1,11 @@
 'use client'
 
-import { checkIsValidSession, removeAccessToken, saveAccessToken } from '@/auth/session'
+import { removeAccessToken, saveAccessToken } from '@/auth/session'
 import { toast } from '@/components/ui/use-toast'
 import { routes } from '@/config.global'
+import { useUser } from '@/hooks/user'
 import { TLoginRequestModel, TRegisterRequestModel } from '@/requests/auth'
+import { TUser } from '@/types/user.types'
 import { useRouter } from 'next/navigation'
 import { createContext, useContext, useState, useCallback, ReactNode, useEffect } from 'react'
 
@@ -12,6 +14,8 @@ import { useLogin, useRegister } from '@/hooks/auth'
 type AuthContextType = {
   isAuth: boolean
   isLoading: boolean
+  user: TUser | null
+  setUser: (user: TUser | null) => void
   login: (payload: TLoginRequestModel) => Promise<void>
   register: (payload: TRegisterRequestModel) => Promise<void>
   logout: () => Promise<void>
@@ -23,19 +27,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isAuth, setIsAuth] = useState<boolean>(false)
+  const [user, setUser] = useState<TUser | null>(null)
+  const { refetch: refetchUser } = useUser()
   const router = useRouter()
 
   const { mutateAsync: loginMutation } = useLogin()
   const { mutateAsync: registerMutation } = useRegister()
-
-  useEffect(() => {
-    const validateSession = async () => {
-      const isValidSession = await checkIsValidSession()
-      setIsAuth(isValidSession)
-    }
-
-    validateSession()
-  }, [])
 
   const login = useCallback(
     async (payload: TLoginRequestModel) => {
@@ -44,16 +41,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         onSuccess: async (token) => {
           try {
             saveAccessToken(token)
-            setIsAuth(true)
+            setIsAuth(() => true)
+            const { data: user } = await refetchUser()
+            if (!user) {
+              throw new Error('Failed to fetch user')
+            }
+            setUser(user)
             router.push(routes.dashboard.root)
           } catch (error) {
             removeAccessToken()
             setIsAuth(false)
+            setUser(null)
           }
         },
         onError: () => {
           removeAccessToken()
           setIsAuth(false)
+          setUser(null)
         },
       })
       setIsLoading(false)
@@ -69,16 +73,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         onSuccess: async (token) => {
           try {
             saveAccessToken(token)
-            setIsAuth(true)
+            setIsAuth(() => true)
+            const { data: user } = await refetchUser()
+            if (!user) {
+              throw new Error('Failed to fetch user')
+            }
+            setUser(user)
             router.push(routes.dashboard.root)
           } catch (error) {
             removeAccessToken()
             setIsAuth(false)
+            setUser(null)
           }
         },
         onError: () => {
           removeAccessToken()
           setIsAuth(false)
+          setUser(null)
         },
       })
       setIsLoading(false)
@@ -96,7 +107,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     })
   }, [router])
 
-  const value = { isAuth, isLoading, login, register, logout, setIsAuth }
+  const value = { isAuth, user, setUser, isLoading, login, register, logout, setIsAuth }
 
   return <AuthContext.Provider value={value}> {children} </AuthContext.Provider>
 }

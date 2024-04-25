@@ -11,8 +11,7 @@ import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
 function Navbar() {
-  const { isAuth } = useAuth()
-  const { data: user } = useUser()
+  const { user } = useAuth()
 
   return (
     <nav className="sticky inset-x-0 top-0 z-30 h-14 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
@@ -24,7 +23,7 @@ function Navbar() {
           <MobileNav />
 
           <div className="hidden items-center space-x-4 sm:flex">
-            {!isAuth ? (
+            {!user ? (
               <>
                 <Link
                   href={routes.pricing.root}

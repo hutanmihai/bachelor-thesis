@@ -11,24 +11,24 @@ type AuthGuardProps = {
 
 export default function AuthGuard({ children }: AuthGuardProps) {
   const router = useRouter()
-  const { isAuth } = useAuth()
+  const { user, isAuth } = useAuth()
 
   const [checked, setChecked] = useState(false)
 
   const check = useCallback(() => {
-    if (!isAuth) {
+    if (!user) {
       router.replace(routes.auth.login)
     } else {
       setChecked(true)
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuth])
+  }, [])
 
   useEffect(() => {
     check()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [check, isAuth, router])
 
   if (!checked) {
     return null

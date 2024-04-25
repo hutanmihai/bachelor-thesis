@@ -1,5 +1,4 @@
 export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
-export const STRIPE_PUBLIC_KEY = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY
 
 export const apiConfig = {
   auth: {

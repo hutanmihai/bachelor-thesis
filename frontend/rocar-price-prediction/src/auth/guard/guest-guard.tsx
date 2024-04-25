@@ -11,18 +11,18 @@ type GuestGuardProps = {
 
 export default function GuestGuard({ children }: GuestGuardProps) {
   const router = useRouter()
-  const { isAuth } = useAuth()
+  const { user, isAuth } = useAuth()
 
   const check = useCallback(() => {
-    if (isAuth) {
+    if (user) {
       router.replace(routes.dashboard.root)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuth])
+  }, [])
 
   useEffect(() => {
     check()
-  }, [check])
+  }, [check, isAuth, router])
 
   return <>{children}</>
 }

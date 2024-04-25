@@ -1,5 +1,6 @@
 'use client'
 
+import { AppFirstLogic } from '@/auth/context/app-first-logic'
 import { AuthProvider } from '@/auth/context/auth'
 import { Toaster } from '@/components/ui/toaster'
 import { ReactNode } from 'react'
@@ -9,7 +10,7 @@ function GlobalProviders({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={new QueryClient()}>
       <AuthProvider>
-        {children}
+        <AppFirstLogic>{children}</AppFirstLogic>
         <Toaster />
       </AuthProvider>
     </QueryClientProvider>
