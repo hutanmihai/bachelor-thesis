@@ -40,7 +40,7 @@ function BuyButton({ product }: TBuyButtonProps) {
     >
       Buy now{' '}
       {isLoading ? (
-        <Loader className="ml-1.5 h-5 w-5" />
+        <Loader className="loader-gradient ml-1.5 h-5 w-5" />
       ) : (
         <ArrowRight className="ml-1.5 h-5 w-5" />
       )}

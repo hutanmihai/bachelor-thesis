@@ -25,7 +25,7 @@ function RHFSubmitButton({
       disabled={disabled || isSubmitting}
       {...other}
     >
-      {isSubmitting ? <Loader className="h-6 w-6" /> : text}
+      {isSubmitting ? <Loader className="loader-gradient h-6 w-6" /> : text}
     </Button>
   )
 }
