@@ -21,7 +21,6 @@ import {
 import useFileUploader from '@/hooks/file-upload'
 import { useInference } from '@/hooks/inference'
 import { Asterisk } from 'lucide-react'
-import { router } from 'next/client'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import * as React from 'react'
@@ -126,13 +125,14 @@ function InferenceForm() {
   }, [isError, errorMessage, form])
 
   useEffect(() => {
-    if (form.watch('manufacturer')) {
-      const models = getModelsForManufacturer(form.watch('manufacturer'))
-      setModelValues(() => models)
-      form.resetField('model')
-    }
+    const subscription = form.watch((value, { name, type }) => {
+      if (name === 'manufacturer') {
+        setModelValues(() => getModelsForManufacturer(value.manufacturer))
+      }
+    })
+    return () => subscription.unsubscribe()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.watch('manufacturer')])
+  }, [form.watch])
 
   const handleDrop = async (files: FileList | null) => {
     if (!files) return
@@ -169,9 +169,7 @@ function InferenceForm() {
             name="model"
             labelName="Model"
             placeholder="Choose model"
-            // TODO: fix this
-            // values={modelValues}
-            values={['x1', 'x2']}
+            values={modelValues}
             disabled={!form.watch('manufacturer')}
             required
           />

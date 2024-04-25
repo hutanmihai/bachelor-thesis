@@ -12,8 +12,12 @@ export const manufacturerAndModels = {
 export const getAllManufacturers = () => _.keys(manufacturerAndModels)
 
 // Function to get array for a given key
-export const getModelsForManufacturer = (manufacturer: string) =>
-  _.get(manufacturer, manufacturer, [])
+export const getModelsForManufacturer = (manufacturer: string | undefined) => {
+  if (!manufacturer) {
+    return []
+  }
+  return _.get(manufacturerAndModels, manufacturer, [])
+}
 
 export const fuelTypes = ['gas', 'diesel', 'hybrid']
 
