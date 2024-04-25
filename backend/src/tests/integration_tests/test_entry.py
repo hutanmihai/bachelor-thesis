@@ -1,8 +1,8 @@
 from fastapi import status
 from httpx import AsyncClient
 from src.tests.integration_tests.utils.asserts import assert_api_error, assert_api_path_param_validation_error, assert_list_entry_response
-from src.tests.integration_tests.utils.data_generation_tools import generate_id
-from src.tests.integration_tests.utils.entity_instance import new_entriess, new_entryy, new_user
+from src.tests.integration_tests.utils.data_generation_tools import generate_id, generate_non_image_file, generate_test_file
+from src.tests.integration_tests.utils.entity_instance import new_entryy, new_user
 
 
 async def test_list_entry_successfully_returns_all_entries(client: AsyncClient):
@@ -79,3 +79,32 @@ async def test_delete_entry_returns_error_when_user_not_owner_of_entry(client: A
 
     assert response.status_code == expected_status_code
     assert_api_error(response.json(), "Entry not created by user")
+
+
+async def test_upload_image_success(client: AsyncClient):
+    new_created_user, jwt = await new_user()
+    test_file = generate_test_file()
+
+    response = await client.post("/upload", files={"file": ("test.jpg", test_file, "image/jpeg")}, headers={"Authorization": f"Bearer {jwt}"})
+
+    assert response.status_code == status.HTTP_200_OK
+    assert "url" in response.json() and response.json()["url"].startswith("https://")
+
+
+async def test_upload_non_image_file_returns_error(client: AsyncClient):
+    new_created_user, jwt = await new_user()
+    non_image_file = generate_non_image_file()
+
+    response = await client.post("/upload", files={"file": ("test.txt", non_image_file, "text/plain")}, headers={"Authorization": f"Bearer {jwt}"})
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert_api_error(response.json(), "File is not an image")
+
+
+async def test_upload_image_without_credentials_returns_error(client: AsyncClient):
+    test_file = generate_test_file()
+
+    response = await client.post("/upload", files={"file": ("unauth.jpg", test_file, "image/jpeg")})
+
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+    assert_api_error(response.json(), "Not authenticated")

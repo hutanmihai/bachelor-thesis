@@ -1,8 +1,10 @@
+from io import BytesIO
 from random import choice as random_choice
 from random import randint, random
 from string import ascii_lowercase
 from uuid import UUID, uuid4
 
+from PIL import Image
 from src.models import Entry, User
 
 
@@ -56,6 +58,22 @@ def get_random_gearbox():
 
 def get_random_description():
     return generate_random_string(randint(300, 1000))
+
+
+def generate_test_file() -> BytesIO:
+    image = Image.new("RGB", (100, 100), color="red")
+    img_byte_arr = BytesIO()
+    image_format = "JPEG"
+    image.save(img_byte_arr, format=image_format)
+    img_byte_arr.seek(0)
+    return img_byte_arr
+
+
+def generate_non_image_file() -> BytesIO:
+    text_content = "This is a test file."
+    text_byte_arr = BytesIO(text_content.encode("utf-8"))
+    text_byte_arr.seek(0)
+    return text_byte_arr
 
 
 def get_user_instance():

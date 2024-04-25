@@ -48,3 +48,36 @@ async def test_user_get_raise_error_when_user_is_not_found(user_service: UserSrv
         await user_service.get_user(user_id=user_instance.id)
 
     user_repository_mock.get.assert_awaited_once_with(User, user_instance.id)
+
+
+async def test_user_update_predictions_successfully_updates_predictions(user_service: UserSrv, user_repository_mock):
+    user_instance = User(
+        id="some valid id",
+        email="some email",
+        username="some username",
+        password="some password",
+        predictions=0,
+    )
+
+    user_repository_mock.get.return_value = user_instance
+    user_repository_mock.update.return_value = user_instance
+
+    actual_user_instance = await user_service.update_user_predictions(user_id=user_instance.id, predictions=1)
+
+    assert actual_user_instance.predictions == 1
+
+
+async def test_user_update_predictions_raise_error_when_user_is_not_found(user_service: UserSrv, user_repository_mock):
+    user_instance = User(
+        id="some not existing id",
+        email="some email",
+        username="some username",
+        password="some password",
+        predictions=0,
+    )
+    user_repository_mock.get.side_effect = EntityNotFound()
+
+    with pytest.raises(UserNotFound):
+        await user_service.update_user_predictions(user_id=user_instance.id, predictions=1)
+
+    user_repository_mock.get.assert_awaited_once_with(User, user_instance.id)
