@@ -1,8 +1,3 @@
-import { STRIPE_PUBLIC_KEY } from '@/config.global'
-import { loadStripe } from '@stripe/stripe-js'
-
-const stripePromise = loadStripe(STRIPE_PUBLIC_KEY!)
-
 export const PRODUCTS = [
   {
     priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_TEN,
