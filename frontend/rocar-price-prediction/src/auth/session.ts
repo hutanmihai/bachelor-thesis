@@ -19,6 +19,7 @@ export async function checkIsValidSession() {
     const user = await getCurrentUser()
     return !!user
   } catch (error) {
+    removeAccessToken()
     return false
   }
 }
