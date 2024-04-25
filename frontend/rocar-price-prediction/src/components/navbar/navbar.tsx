@@ -6,11 +6,13 @@ import MobileNav from '@/components/navbar/mobile-nav'
 import UserAccountNav from '@/components/navbar/user-account-nav'
 import { buttonVariants } from '@/components/ui/button'
 import { routes } from '@/config.global'
+import { useUser } from '@/hooks/user'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
 function Navbar() {
-  const { isAuth, user } = useAuth()
+  const { isAuth } = useAuth()
+  const { data: user } = useUser()
 
   return (
     <nav className="sticky inset-x-0 top-0 z-30 h-14 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">

@@ -1,16 +1,9 @@
 'use client'
 
-import {
-  checkIsValidSession,
-  getAccessToken,
-  removeAccessToken,
-  saveAccessToken,
-} from '@/auth/session'
+import { checkIsValidSession, removeAccessToken, saveAccessToken } from '@/auth/session'
 import { toast } from '@/components/ui/use-toast'
 import { routes } from '@/config.global'
-import { useUser } from '@/hooks/user'
 import { TLoginRequestModel, TRegisterRequestModel } from '@/requests/auth'
-import { TUser } from '@/types/user.types'
 import { useRouter } from 'next/navigation'
 import { createContext, useContext, useState, useCallback, ReactNode, useEffect } from 'react'
 
@@ -18,7 +11,6 @@ import { useLogin, useRegister } from '@/hooks/auth'
 
 type AuthContextType = {
   isAuth: boolean
-  user: TUser | null
   isLoading: boolean
   login: (payload: TLoginRequestModel) => Promise<void>
   register: (payload: TRegisterRequestModel) => Promise<void>
@@ -31,10 +23,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isAuth, setIsAuth] = useState<boolean>(false)
-  const [user, setUser] = useState<TUser | null>(null)
-  const { data: userData } = useUser({
-    enabled: isAuth,
-  })
   const router = useRouter()
 
   const { mutateAsync: loginMutation } = useLogin()
@@ -48,14 +36,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     validateSession()
   }, [])
-
-  useEffect(() => {
-    if (userData) {
-      setUser(userData)
-    } else {
-      setUser(null)
-    }
-  }, [userData])
 
   const login = useCallback(
     async (payload: TLoginRequestModel) => {
@@ -116,7 +96,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     })
   }, [router])
 
-  const value = { isAuth, user, isLoading, login, register, logout, setIsAuth }
+  const value = { isAuth, isLoading, login, register, logout, setIsAuth }
 
   return <AuthContext.Provider value={value}> {children} </AuthContext.Provider>
 }

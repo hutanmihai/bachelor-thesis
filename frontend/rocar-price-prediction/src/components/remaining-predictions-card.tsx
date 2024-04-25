@@ -14,9 +14,7 @@ import { useUser } from '@/hooks/user'
 import Link from 'next/link'
 
 function RemainingPredictionsCard() {
-  const { data: userData } = useUser({
-    enabled: true,
-  })
+  const { data: userData } = useUser()
 
   return (
     <Card className="w-full border-2">
