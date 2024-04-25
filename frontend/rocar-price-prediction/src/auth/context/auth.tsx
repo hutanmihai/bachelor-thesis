@@ -1,6 +1,11 @@
 'use client'
 
-import { getAccessToken, removeAccessToken, saveAccessToken } from '@/auth/session'
+import {
+  checkIsValidSession,
+  getAccessToken,
+  removeAccessToken,
+  saveAccessToken,
+} from '@/auth/session'
 import { toast } from '@/components/ui/use-toast'
 import { routes } from '@/config.global'
 import { useUser } from '@/hooks/user'
@@ -36,7 +41,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { mutateAsync: registerMutation } = useRegister()
 
   useEffect(() => {
-    if (getAccessToken()) setIsAuth(true)
+    const validateSession = async () => {
+      const isValidSession = await checkIsValidSession()
+      setIsAuth(isValidSession)
+    }
+
+    validateSession()
   }, [])
 
   useEffect(() => {

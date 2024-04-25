@@ -22,7 +22,7 @@ export default function useFileUploader() {
       setIsLoading(false)
       setFileUrl(null)
       setIsError(true)
-      setErrorMessage('File upload failed!')
+      setErrorMessage('File upload failed. Please try again.')
     }
   }
   return { fileUrl, upload: uploadFile, isError, errorMessage, isLoading }

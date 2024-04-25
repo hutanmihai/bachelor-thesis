@@ -1,7 +1,6 @@
 'use client'
 
 import { useAuth } from '@/auth/context/auth'
-import { getAccessToken } from '@/auth/session'
 import { routes } from '@/config.global'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect, useCallback, ReactNode } from 'react'
@@ -13,13 +12,12 @@ type AuthGuardProps = {
 export default function AuthGuard({ children }: AuthGuardProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const { setIsAuth } = useAuth()
+  const { setIsAuth, user } = useAuth()
 
   const [checked, setChecked] = useState(false)
 
   const check = useCallback(() => {
-    const token = getAccessToken()
-    if (!token) {
+    if (!user) {
       setIsAuth(false)
       router.replace(routes.auth.login)
     } else {
@@ -27,7 +25,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, pathname])
+  }, [pathname, user])
 
   useEffect(() => {
     check()

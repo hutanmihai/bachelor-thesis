@@ -1,6 +1,6 @@
 import { getAccessToken } from '@/auth/session'
 import { BACKEND_URL, routes } from '@/config.global'
-import axios from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 
 const axiosInstance = axios.create({ baseURL: BACKEND_URL })
 
@@ -31,5 +31,13 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+
+interface CustomApiResponse<T = any> extends AxiosResponse<T> {
+  data: T & { detail: string }
+}
+
+export interface CustomApiError<T = any> extends AxiosError<T> {
+  response?: CustomApiResponse<T>
+}
 
 export default axiosInstance

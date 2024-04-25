@@ -1,6 +1,6 @@
 import { toast } from '@/components/ui/use-toast'
 import { callInference, TInferenceRequestModel } from '@/requests/inference'
-import { AxiosError } from 'axios'
+import { CustomApiError } from '@/utils/axios'
 import { useMutation } from 'react-query'
 
 export function useInference() {
@@ -13,9 +13,9 @@ export function useInference() {
           title: `Prediction: ${prediction}`,
         })
       },
-      onError: (error: AxiosError) => {
+      onError: (error: CustomApiError) => {
         toast({
-          title: error.message,
+          title: error.response?.data.detail,
           variant: 'destructive',
         })
       },

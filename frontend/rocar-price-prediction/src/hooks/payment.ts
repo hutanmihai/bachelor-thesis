@@ -1,6 +1,6 @@
 import { toast } from '@/components/ui/use-toast'
 import { createCheckoutSession, TCreateCheckoutSessionRequestModel } from '@/requests/payment'
-import { AxiosError } from 'axios'
+import { CustomApiError } from '@/utils/axios'
 import { useRouter } from 'next/navigation'
 import { useMutation } from 'react-query'
 
@@ -14,9 +14,9 @@ export function useCreateCheckoutSession() {
       onSuccess: async ({ url }) => {
         router.push(url)
       },
-      onError: (error: AxiosError) => {
+      onError: (error: CustomApiError) => {
         toast({
-          title: error.message,
+          title: error.response?.data.detail,
           variant: 'destructive',
         })
       },

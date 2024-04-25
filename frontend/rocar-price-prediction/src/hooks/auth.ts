@@ -1,6 +1,6 @@
 import { toast, useToast } from '@/components/ui/use-toast'
 import { login, register, TLoginRequestModel, TRegisterRequestModel } from '@/requests/auth'
-import { AxiosError } from 'axios'
+import { CustomApiError } from '@/utils/axios'
 import { useMutation } from 'react-query'
 
 export function useLogin() {
@@ -12,9 +12,9 @@ export function useLogin() {
         title: 'Login successful',
       })
     },
-    onError: (error: AxiosError) => {
+    onError: (error: CustomApiError) => {
       toast({
-        title: error.message,
+        title: error.response?.data?.detail,
         variant: 'destructive',
       })
     },
@@ -31,9 +31,9 @@ export function useRegister() {
           title: 'Registration successful',
         })
       },
-      onError: (error: AxiosError) => {
+      onError: (error: CustomApiError) => {
         toast({
-          title: error.message,
+          title: error.response?.data.detail,
           variant: 'destructive',
         })
       },

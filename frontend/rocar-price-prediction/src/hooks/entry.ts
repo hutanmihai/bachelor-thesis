@@ -1,13 +1,13 @@
 import { toast } from '@/components/ui/use-toast'
 import { deleteEntry, listEntries } from '@/requests/entry'
-import { AxiosError } from 'axios'
+import { CustomApiError } from '@/utils/axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
 export function useEntries() {
   return useQuery('entries', async () => await listEntries(), {
-    onError: (error: AxiosError) => {
+    onError: (error: CustomApiError) => {
       toast({
-        title: error.message,
+        title: error.response?.data.detail,
         variant: 'destructive',
       })
     },
@@ -24,9 +24,9 @@ export function useDeleteEntry() {
         title: 'Entry deleted successfully!',
       })
     },
-    onError: (error: AxiosError) => {
+    onError: (error: CustomApiError) => {
       toast({
-        title: error.message,
+        title: error.response?.data.detail,
         variant: 'destructive',
       })
     },
