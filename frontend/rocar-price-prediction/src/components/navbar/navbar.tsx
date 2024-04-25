@@ -6,7 +6,6 @@ import MobileNav from '@/components/navbar/mobile-nav'
 import UserAccountNav from '@/components/navbar/user-account-nav'
 import { buttonVariants } from '@/components/ui/button'
 import { routes } from '@/config.global'
-import { useUser } from '@/hooks/user'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 

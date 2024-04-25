@@ -7,7 +7,7 @@ import { useUser } from '@/hooks/user'
 import { TLoginRequestModel, TRegisterRequestModel } from '@/requests/auth'
 import { TUser } from '@/types/user.types'
 import { useRouter } from 'next/navigation'
-import { createContext, useContext, useState, useCallback, ReactNode, useEffect } from 'react'
+import { createContext, useContext, useState, useCallback, ReactNode } from 'react'
 
 import { useLogin, useRegister } from '@/hooks/auth'
 
