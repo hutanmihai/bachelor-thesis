@@ -1,3 +1,5 @@
+'use client'
+
 import FormProvider from '@/components/forms/FormProvider'
 import RHFInput from '@/components/forms/RHFInput'
 import RHFSelect from '@/components/forms/RHFSelect'
