@@ -4,10 +4,9 @@ from typing import AsyncGenerator
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
+from src import models
 from src.database import async_engine, async_session
 from src.main import app
-
-from src import models
 
 
 @pytest.fixture(scope="session")
