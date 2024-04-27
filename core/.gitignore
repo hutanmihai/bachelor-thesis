@@ -1,0 +1,4 @@
+models/
+precomputed_embeddings/
+split_data/
+preprocessors/
