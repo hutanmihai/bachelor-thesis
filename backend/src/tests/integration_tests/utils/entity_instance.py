@@ -17,6 +17,17 @@ async def new_user() -> (User, str):
         return actual_user, token
 
 
+async def new_user_with_no_predictions() -> (User, str):
+    async with async_session() as session:
+        user: User = get_user_instance()
+        user.predictions = 0
+        session.add(user)
+        actual_user = await session.get(User, user.id)
+        await session.commit()
+        token: str = token_encode(actual_user.id)
+        return actual_user, token
+
+
 async def new_user_with_password(password: str) -> (User, str):
     async with async_session() as session:
         user: User = get_user_instance()

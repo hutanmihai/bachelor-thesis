@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 
 const MobileNav = () => {
   const pathname = usePathname()
-  const { isAuth, logout } = useAuth()
+  const { user } = useAuth()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const toggleOpen = () => setIsOpen((prev) => !prev)
 
@@ -33,7 +33,7 @@ const MobileNav = () => {
       {isOpen ? (
         <div className="fixed inset-0 z-0 w-full animate-in fade-in-20 slide-in-from-top-5">
           <ul className="absolute grid w-full gap-3 border-b border-zinc-200 bg-white px-10 pb-8 pt-20 shadow-xl">
-            {!isAuth ? (
+            {!user ? (
               <>
                 <li>
                   <Link

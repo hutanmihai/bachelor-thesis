@@ -1,7 +1,6 @@
 import os
 
 import pandas as pd
-
 from src.constants import STAGE_FINAL_CSV, STAGE_IMAGES_PATH
 
 

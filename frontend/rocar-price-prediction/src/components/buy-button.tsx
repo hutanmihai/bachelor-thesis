@@ -13,12 +13,12 @@ type TBuyButtonProps = {
 }
 
 function BuyButton({ product }: TBuyButtonProps) {
-  const { isAuth } = useAuth()
+  const { user } = useAuth()
   const router = useRouter()
   const { isLoading, mutateAsync: createCheckoutSession } = useCreateCheckoutSession()
 
   const onClick = async () => {
-    if (!isAuth) {
+    if (!user) {
       router.push(routes.auth.login)
       return
     }

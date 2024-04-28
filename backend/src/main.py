@@ -8,7 +8,8 @@ from src.apis.health_api import router as health_router
 from src.apis.inference_api import router as inference_router
 from src.apis.payment_api import router as payment_router
 from src.apis.user_api import router as user_router
-from src.load import download_dirs_from_s3
+from src.download import download_dirs_from_s3
+from src.ml import get_models_and_preprocessors, ml_ops
 from src.settings import settings
 from uvicorn import run as uvicorn_run
 
@@ -38,18 +39,18 @@ def add_middleware(app: FastAPI) -> FastAPI:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global tokenizer, bert, fastvit, nnet, ml_preprocessors
-    ml_preprocessors = {}
-
-    await download_dirs_from_s3()
-
-    # Load the ML models and preprocessors
-    pass  # TODO: Load the ML models and preprocessors
-
+    download_dirs_from_s3()
+    (
+        ml_ops.fastvit_model,
+        ml_ops.transforms,
+        ml_ops.tokenizer,
+        ml_ops.bert_model,
+        ml_ops.model,
+        ml_ops.target_encoder,
+        ml_ops.scaler_numerical,
+        ml_ops.scaler_categorical,
+    ) = get_models_and_preprocessors()
     yield
-    # Clean up the ML models and release the resources
-    ml_models.clear()
-    ml_preprocessors.clear()
 
 
 def create_app() -> FastAPI:

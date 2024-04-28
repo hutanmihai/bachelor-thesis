@@ -1,8 +1,12 @@
 import { getCurrentUser } from '@/requests/user'
 import { useQuery } from 'react-query'
 
-export function useUser() {
+type TUseUserProps = {
+  enabled?: boolean
+}
+
+export function useUser({ enabled = true }: TUseUserProps = {}) {
   return useQuery('getCurrentUser', async () => await getCurrentUser(), {
-    enabled: false,
+    enabled,
   })
 }

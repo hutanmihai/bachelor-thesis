@@ -3,7 +3,6 @@ import os
 import shutil
 
 import pandas as pd
-
 from src.constants import CURRENT_FINAL_CSV, CURRENT_IMAGES_PATH, CURRENT_RAW_CSV, NUMBER_OF_IMAGES_MAX_PER_AD
 
 

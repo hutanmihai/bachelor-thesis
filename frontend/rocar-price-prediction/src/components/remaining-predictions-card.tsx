@@ -11,10 +11,11 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { routes } from '@/config.global'
+import { useUser } from '@/hooks/user'
 import Link from 'next/link'
 
 function RemainingPredictionsCard() {
-  const { user } = useAuth()
+  const { data: user } = useUser({ enabled: true })
 
   return (
     <Card className="w-full border-2">

@@ -20,6 +20,15 @@ alembic = "^1.13.1"
 boto3 = "^1.34.90"
 python-multipart = "^0.0.9"
 cloudpathlib = {extras = ["s3"], version = "^0.18.1"}
+transformers = "^4.40.1"
+torch = "^2.3.0"
+torchvision = "^0.18.0"
+timm = "^0.9.16"
+emoji = "^2.11.1"
+beautifulsoup4 = "^4.12.3"
+lxml = "^5.2.1"
+pandas = "^2.2.2"
+category-encoders = "^2.6.3"
 
 [tool.poetry.group.dev.dependencies]
 black = "24.2.0"

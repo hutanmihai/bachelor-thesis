@@ -30,9 +30,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 const loadingStates = [
   {
-    text: 'Receiving your request',
-  },
-  {
     text: 'Processing your request',
   },
   {
@@ -59,7 +56,7 @@ type TInferenceFormType = {
 }
 
 function InferenceForm() {
-  const { isError, isLoading, errorMessage, upload, fileUrl } = useFileUploader()
+  const { isError, errorMessage, upload, fileUrl } = useFileUploader()
   const { mutateAsync: infer } = useInference()
   const [modelValues, setModelValues] = useState<string[]>([])
   const router = useRouter()
@@ -140,8 +137,7 @@ function InferenceForm() {
   }
 
   const handleSubmit = async (data: TInferenceFormType) => {
-    // Sleep for 10 seconds to simulate the inference process TODO: Remove this line
-    await new Promise((resolve) => setTimeout(resolve, 10000))
+    await new Promise((resolve) => setTimeout(resolve, 1500))
     await infer(data)
     router.push(routes.dashboard.root)
     form.reset(defaultValues)
@@ -151,7 +147,7 @@ function InferenceForm() {
     <MultiStepLoader
       loadingStates={loadingStates}
       loading={form.formState.isSubmitting}
-      duration={2000}
+      duration={500}
       loop={false}
     />
   ) : (

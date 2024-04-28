@@ -6,6 +6,7 @@ from src.auth.auth_bearer import auth_required
 from src.models import Entry
 from src.schemas.inference_schema import InferenceResponseSchema, InferenceSchema
 from src.services.entry_srv import EntrySrv
+from src.services.errors import UserNotFound
 from src.services.inference_srv import InferenceSrv
 from src.services.user_srv import UserSrv
 
@@ -29,7 +30,26 @@ async def inference(
     user_srv: UserSrv = Depends(UserSrv),
 ):
     try:
-        prediction = await inference_srv.predict(inference_schema.dict())
+        user = await user_srv.get_user(user_id)
+        if user.predictions <= 0:
+            return generate_api_error_response(status.HTTP_400_BAD_REQUEST, "No predictions left")
+    except UserNotFound:
+        return generate_api_error_response(status.HTTP_403_FORBIDDEN, "User not found")
+    try:
+        prediction = await inference_srv.predict(
+            manufacturer=inference_schema.manufacturer,
+            model=inference_schema.model,
+            fuel=inference_schema.fuel,
+            chassis=inference_schema.chassis,
+            sold_by=inference_schema.sold_by,
+            gearbox=inference_schema.gearbox,
+            km=inference_schema.km,
+            power=inference_schema.power,
+            engine=inference_schema.engine,
+            year=inference_schema.year,
+            description=inference_schema.description,
+            image_url=inference_schema.image_url,
+        )
         await user_srv.update_user_predictions(user_id, -1)
         await entry_srv.create_entry(
             Entry(
@@ -51,5 +71,4 @@ async def inference(
         )
         return InferenceResponseSchema(prediction=prediction)
     except Exception as e:
-        # TODO: see errors at inference
         return generate_api_error_response(status.HTTP_500_INTERNAL_SERVER_ERROR, str(e))
