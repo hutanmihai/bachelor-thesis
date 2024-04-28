@@ -1,4 +1,5 @@
 import asyncio
+import os
 from typing import AsyncGenerator
 
 import pytest
@@ -6,6 +7,7 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 from src import models
 from src.database import async_engine, async_session
+from src.download import S3_DIR_PATH, download_dirs_from_s3
 from src.main import app
 from src.ml import get_models_and_preprocessors, ml_ops
 
@@ -19,6 +21,9 @@ def event_loop():
 
 @pytest.fixture(scope="session", autouse=True)
 def init_models():
+    # Download models and preprocessors from S3 if they do not exist
+    if not os.path.exists(S3_DIR_PATH):
+        download_dirs_from_s3()
     (
         ml_ops.fastvit_model,
         ml_ops.transforms,

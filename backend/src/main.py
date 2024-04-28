@@ -1,3 +1,4 @@
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -8,7 +9,7 @@ from src.apis.health_api import router as health_router
 from src.apis.inference_api import router as inference_router
 from src.apis.payment_api import router as payment_router
 from src.apis.user_api import router as user_router
-from src.download import download_dirs_from_s3
+from src.download import S3_DIR_PATH, download_dirs_from_s3
 from src.ml import get_models_and_preprocessors, ml_ops
 from src.settings import settings
 from uvicorn import run as uvicorn_run
@@ -39,7 +40,9 @@ def add_middleware(app: FastAPI) -> FastAPI:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    download_dirs_from_s3()
+    # Download models and preprocessors from S3 if they do not exist
+    if not os.path.exists(S3_DIR_PATH):
+        download_dirs_from_s3()
     (
         ml_ops.fastvit_model,
         ml_ops.transforms,
