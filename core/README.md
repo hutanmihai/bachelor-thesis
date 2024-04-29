@@ -34,6 +34,7 @@ pip install wordcloud
 pip install timm scipy
 pip install beautifulsoup4
 pip install tabulate
+pip install lxml
 ```
 
 - Install pytorch

@@ -17,7 +17,7 @@ def replace_patterns(text: str):
     email_pattern = r'\b(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))\b'
     phone_pattern = r"\b^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$\b"
     url_pattern = r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)"
-    soup = bs4.BeautifulSoup(text, "html.parser")
+    soup = bs4.BeautifulSoup(text, "lxml")
     text = re.sub(email_pattern, "", text)
     text = re.sub(phone_pattern, "", text)
     text = re.sub(url_pattern, "", text)
