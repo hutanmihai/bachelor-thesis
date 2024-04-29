@@ -1,5 +1,6 @@
 'use client'
 
+import ExtraOptions from '@/components/extra-options'
 import FormProvider from '@/components/forms/FormProvider'
 import RHFInput from '@/components/forms/RHFInput'
 import RHFSelect from '@/components/forms/RHFSelect'
@@ -61,7 +62,7 @@ function InferenceForm() {
   const [modelValues, setModelValues] = useState<string[]>([])
   const router = useRouter()
 
-  const defaultValues: TInferenceFormType = {
+  const defaultValues = {
     manufacturer: '',
     model: '',
     year: 2024,
@@ -74,6 +75,11 @@ function InferenceForm() {
     sold_by: '',
     description: '',
     image_url: '',
+    audio_and_technology: [],
+    confort_and_extra_options: [],
+    electronics_and_assistance_systems: [],
+    performance: [],
+    safety: [],
   }
 
   const schema = z.object({
@@ -94,9 +100,14 @@ function InferenceForm() {
     sold_by: z.string().min(1),
     description: z.string().min(1),
     image_url: z.string().min(1).url(),
+    audio_and_technology: z.array(z.string()),
+    confort_and_extra_options: z.array(z.string()),
+    electronics_and_assistance_systems: z.array(z.string()),
+    performance: z.array(z.string()),
+    safety: z.array(z.string()),
   })
 
-  const form = useForm<TInferenceFormType>({
+  const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: defaultValues,
   })
@@ -228,6 +239,9 @@ function InferenceForm() {
             accept="image/*"
             imageUrl={form.watch('image_url')}
           />
+        </div>
+        <div>
+          <ExtraOptions />
         </div>
         <RHFSubmitButton text="Get the right price" className="mt-10 w-full" type="submit" />
       </div>

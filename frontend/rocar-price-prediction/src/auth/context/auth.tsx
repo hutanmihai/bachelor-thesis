@@ -25,7 +25,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [user, setUser] = useState<TUser | null>(null)
-  const { refetch: refetchUser } = useUser()
+  const { refetch: refetchUser } = useUser({ enabled: false })
   const router = useRouter()
 
   const { mutateAsync: loginMutation } = useLogin()

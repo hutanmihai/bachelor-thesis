@@ -13,7 +13,7 @@ function Pricing() {
           Choose the package that fits your needs. We got you covered.
         </p>
       </div>
-      <div className="lg: grid grid-cols-1 mx-5 gap-10 pt-12 md:grid-cols-2 xl:mx-[-200px] xl:grid-cols-3">
+      <div className="lg: mx-5 grid grid-cols-1 gap-10 pt-12 md:grid-cols-2 xl:mx-[-200px] xl:grid-cols-3">
         <TooltipProvider>
           {PRODUCTS.map((product) => {
             return (
