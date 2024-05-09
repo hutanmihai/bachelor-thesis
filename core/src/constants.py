@@ -1,7 +1,8 @@
 from pathlib import Path
 
 GRAPHS_PATH = Path("../graphs")
-DATA_PATH = Path("../../scraper/data/best")
+# DATA_PATH = Path("../../scraper/data/best")
+DATA_PATH = Path("../data")
 MODELS_PATH = Path("../models")
 PRECOMPUTED_EMBEDDINGS_PATH = Path("../precomputed_embeddings")
 SPLIT_DATA_PATH = Path("../split_data")
