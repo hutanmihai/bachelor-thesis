@@ -19,12 +19,14 @@ PREPROCESSORS_PATH = Path("../preprocessors")
 NUMERICAL_SCALER_PATH = PREPROCESSORS_PATH / "numerical_scaler.pkl"
 CATEGORICAL_SCALER_PATH = PREPROCESSORS_PATH / "categorical_scaler.pkl"
 ENCODER_PATH = PREPROCESSORS_PATH / "encoder.pkl"
+TARGET_SCALER_PATH = PREPROCESSORS_PATH / "target_scaler.pkl"
 
 SIMPLE_MODEL_PATH = MODELS_PATH / "simple_model.pth"
 MULTIMODAL_NO_ENCODER_MODEL_PATH = MODELS_PATH / "multimodal_no_encoder_model.pth"
 MULTIMODAL_MODEL_PATH = MODELS_PATH / "multimodal_model.pth"
 MULTIMODAL_ENCODER_MODEL_PATH = MODELS_PATH / "multimodal_encoder_model.pth"
-FINE_TUNED_BERT_MODEL_PATH = MODELS_PATH / "fine_tuned_bert_model"
+FINE_TUNED_BERT_MODEL_PATH = MODELS_PATH / "fine_tuned_bert_model.pth"
+FINE_TUNED_FASTVIT_MODEL_PATH = MODELS_PATH / "fine_tuned_fastvit_model.pth"
 
 TEST_IMAGE_FEATURES_PATH = PRECOMPUTED_EMBEDDINGS_PATH / "test_image_features.npy"
 TRAIN_IMAGE_FEATURES_PATH = PRECOMPUTED_EMBEDDINGS_PATH / "train_image_features.npy"
