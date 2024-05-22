@@ -6,6 +6,7 @@ DATA_PATH = Path("../data")
 MODELS_PATH = Path("../models")
 PRECOMPUTED_EMBEDDINGS_PATH = Path("../precomputed_embeddings")
 SPLIT_DATA_PATH = Path("../split_data")
+JSON_PATH = Path("../json/json.json")
 
 IMAGES_PATH = DATA_PATH / "images"
 FINAL_CSV = DATA_PATH / "final.csv"
