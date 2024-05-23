@@ -56,7 +56,7 @@ class InferenceSrv:
         structured_data = await self.get_structured_data_features(numerical_data, categorical_data)
 
         structured = tensor(structured_data, dtype=float32).to(self.DEVICE)
-        booleans = tensor([[1 if sold_by == "dealer" else 0, 1 if gearbox == "automatic" else 0]]).to(self.DEVICE)
+        booleans = tensor([[1 if sold_by == "company" else 0, 1 if gearbox == "automatic" else 0]]).to(self.DEVICE)
         structured = cat([structured, booleans], dim=1)
 
         features = cat([image, text, structured], dim=1)

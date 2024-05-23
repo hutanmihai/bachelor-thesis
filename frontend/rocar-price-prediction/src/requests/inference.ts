@@ -12,6 +12,13 @@ export type TInferenceRequestModel = {
   km: number
   power: number
   engine: number
+  description: string
+  image_url: string
+  audio_and_technology?: string[]
+  confort_and_extra_options?: string[]
+  electronics_and_assistance_systems?: string[]
+  performance?: string[]
+  safety?: string[]
 }
 
 export type TInferenceResponseModel = {

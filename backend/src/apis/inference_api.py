@@ -9,6 +9,7 @@ from src.services.entry_srv import EntrySrv
 from src.services.errors import UserNotFound
 from src.services.inference_srv import InferenceSrv
 from src.services.user_srv import UserSrv
+from src.translation import translation_mapping_custom_options
 
 router = APIRouter(tags=["inference"])
 
@@ -36,6 +37,23 @@ async def inference(
     except UserNotFound:
         return generate_api_error_response(status.HTTP_403_FORBIDDEN, "User not found")
     try:
+        # Translate optional fields, and append them to the description
+        translated_fields = inference_schema.translate_optional_fields()
+        inference_schema.audio_and_technology = translated_fields["Audio and technology"]
+        inference_schema.comfort_and_optional_equipment = translated_fields["Comfort and optional equipment"]
+        inference_schema.electronics_and_assistance_systems = translated_fields["Electronics and assistance systems"]
+        inference_schema.performance = translated_fields["Performance"]
+        inference_schema.safety = translated_fields["Safety"]
+
+        def concatenate_custom_options():
+            custom_options_string = ""
+            for key, value in translated_fields.items():
+                if len(value) > 0:
+                    custom_options_string = custom_options_string + f"{translation_mapping_custom_options[key].lower()}: {', '.join(value)}\n"
+            return custom_options_string
+
+        new_description = concatenate_custom_options() + inference_schema.description
+
         prediction = await inference_srv.predict(
             manufacturer=inference_schema.manufacturer,
             model=inference_schema.model,
@@ -47,7 +65,7 @@ async def inference(
             power=inference_schema.power,
             engine=inference_schema.engine,
             year=inference_schema.year,
-            description=inference_schema.description,
+            description=new_description,
             image_url=inference_schema.image_url,
         )
         await user_srv.update_user_predictions(user_id, -1)
@@ -63,7 +81,7 @@ async def inference(
                 power=inference_schema.power,
                 engine=inference_schema.engine,
                 year=inference_schema.year,
-                description=inference_schema.description,
+                description=new_description,
                 image_url=inference_schema.image_url,
                 prediction=prediction,
                 user_id=user_id,

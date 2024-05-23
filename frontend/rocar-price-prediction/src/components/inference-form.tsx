@@ -54,6 +54,11 @@ type TInferenceFormType = {
   engine: number
   description: string
   image_url: string
+  audio_and_technology?: string[]
+  confort_and_extra_options?: string[]
+  electronics_and_assistance_systems?: string[]
+  performance?: string[]
+  safety?: string[]
 }
 
 function InferenceForm() {
@@ -76,7 +81,7 @@ function InferenceForm() {
     description: '',
     image_url: '',
     audio_and_technology: [],
-    confort_and_extra_options: [],
+    comfort_and_optional_equipment: [],
     electronics_and_assistance_systems: [],
     performance: [],
     safety: [],
@@ -100,11 +105,11 @@ function InferenceForm() {
     sold_by: z.string().min(1),
     description: z.string().min(1),
     image_url: z.string().min(1).url(),
-    audio_and_technology: z.array(z.string()),
-    confort_and_extra_options: z.array(z.string()),
-    electronics_and_assistance_systems: z.array(z.string()),
-    performance: z.array(z.string()),
-    safety: z.array(z.string()),
+    audio_and_technology: z.array(z.string()).optional(),
+    comfort_and_optional_equipment: z.array(z.string()).optional(),
+    electronics_and_assistance_systems: z.array(z.string()).optional(),
+    performance: z.array(z.string()).optional(),
+    safety: z.array(z.string()).optional(),
   })
 
   const form = useForm<z.infer<typeof schema>>({
@@ -207,7 +212,7 @@ function InferenceForm() {
             required
           />
           <RHFInput
-            labelName={'Engine capacity'}
+            labelName="Engine capacity"
             name="engine"
             placeholder="Enter engine capacity"
             type="number"

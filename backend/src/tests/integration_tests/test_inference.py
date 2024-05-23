@@ -14,7 +14,7 @@ async def test_inference_with_valid_data(client: AsyncClient):
         model="x2",
         fuel="diesel",
         chassis="suv",
-        sold_by="dealer",
+        sold_by="company",
         gearbox="automatic",
         km=1000,
         power=100,

@@ -1,13 +1,12 @@
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from tqdm import tqdm
-
 from src.constants import BEST_FINAL_CSV, CURRENT_DATA_PATH, CURRENT_URLS_TXT_PATH, NUMBER_OF_PAGES
 from src.scrape_ads import get_id
 from src.utils.decorators import send_notification, show_elapsed_time
 from src.utils.dirs import create_dir_if_not_exists
 from src.utils.search import add_page
+from tqdm import tqdm
 
 MAIN_PAGE_SECTION_CLASS = "ooa-10gfd0w e1i3khom1"
 H1_INSIDE_SECTION_CLASS = "e1i3khom9 ooa-1ed90th er34gjf0"
