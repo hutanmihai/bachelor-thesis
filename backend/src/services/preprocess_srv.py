@@ -43,12 +43,16 @@ class PreprocessSrv:
         return image
 
     def preprocess_structured_data(self, numerical_data: list, categorical_data: list):
-        categorical_df = pd.DataFrame([categorical_data], columns=["marca", "model", "combustibil", "tip caroserie"])
-        numerical_df = pd.DataFrame([numerical_data], columns=["km", "putere", "capacitate cilindrica", "anul producției"])
+        categorical_df = pd.DataFrame([categorical_data], columns=["manufacturer", "model", "fuel", "chassis"])
+        numerical_df = pd.DataFrame([numerical_data], columns=["km", "power", "engine_capacity", "year"])
         categorical_encoded = ml_ops.target_encoder.transform(categorical_df)
         numerical_scaled = ml_ops.scaler_numerical.transform(numerical_df)
+        numerical_scaled_df = pd.DataFrame(numerical_scaled, columns=["km", "power", "engine_capacity", "year"])
         categorical_scaled = ml_ops.scaler_categorical.transform(categorical_encoded)
-        data = cat([tensor(numerical_scaled, dtype=float32), tensor(categorical_scaled, dtype=float32)], dim=1)
+        categorical_scaled_df = pd.DataFrame(categorical_scaled, columns=["manufacturer", "model", "fuel", "chassis"])
+        df = pd.concat([numerical_scaled_df, categorical_scaled_df], axis=1)
+        df = df[["manufacturer", "model", "year", "km", "power", "engine_capacity", "fuel", "chassis"]]
+        data = tensor(df.values, dtype=float32)
         return data
 
     def tokenize(self, text: str) -> dict:

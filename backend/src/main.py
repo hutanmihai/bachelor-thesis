@@ -52,6 +52,7 @@ async def lifespan(app: FastAPI):
         ml_ops.target_encoder,
         ml_ops.scaler_numerical,
         ml_ops.scaler_categorical,
+        ml_ops.target_scaler,
     ) = get_models_and_preprocessors()
     yield
 
