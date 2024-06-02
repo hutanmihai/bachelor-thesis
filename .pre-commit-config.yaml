@@ -10,7 +10,7 @@ repos:
       - id: check-yaml
         exclude: ^(docs/.*|^frontend/.*)
       - id: check-added-large-files
-        exclude: ^(docs/.*|^frontend/.*)
+        exclude: ^(docs/.*|^frontend/.*|bachelor-thesis-hutan-mihai.pdf)
 
   - repo: https://github.com/psf/black-pre-commit-mirror
     rev: 24.2.0

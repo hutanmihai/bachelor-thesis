@@ -1,0 +1,36 @@
+\chapter{Conclusion and Future Work}
+
+\section{Future Work}
+
+Although our goal was to create a fully-fledged framework for our concept, we encountered several challenges that prevented us from reaching this objective fully. Despite these hurdles, we believe we have developed a robust Minimum Viable Product (MVP) that can be easily scaled and enhanced, thanks to our strategic architectural decisions.
+
+In the following sections, we will delve deeper into the key areas for future development:
+
+\subsection{Dataset}
+
+Our experiments demonstrated the importance of descriptions and images in our regression model. However, the primary limitation was our self-scraped dataset. While it sufficed for our initial analysis and experiments, it is not yet suitable for handling edge cases in a production environment.
+
+Our goal is to create a more comprehensive dataset. We plan to achieve this by refining our scraping model, supported by manual effort at times, to ensure data quality and completeness. We envision providing more structured data parameters, along with high-quality images of both the exterior and interior of vehicles from various angles and possibly a standardized description format. We believe this enhancement will significantly improve our model's performance.
+
+
+\subsection{API}
+
+Currently, our app offers a minimal API for our customers. There are several additional aspects that are typically expected in a finalized product, which we aim to incorporate in future iterations:
+
+\begin{itemize}
+\item \textbf{Statistics}: Leveraging our extensive dataset, we can offer users detailed statistics on market trends and provide insights into their previous predictions made within the app. This feature will add significant value by helping users make informed decisions.
+\item \textbf{Performance}: At present, the app is hosted on a single server, which could quickly become a bottleneck due to the resource-intensive nature of our models. Implementing a scalable deployment strategy will ensure a smoother and more reliable user experience.
+\item \textbf{Multi-Country Support}: While our initial focus has been on the Romanian market, the challenges we address are prevalent in multiple countries. Expanding our support to include other markets will broaden our user base and enhance the app's utility.
+\end{itemize}
+
+\subsection{Frontend}
+
+Although we have developed a fully functional UI for our users, there is considerable room for improvement. The current design is minimal and functional but lacks visual appeal. In today's web landscape, a more engaging and aesthetically pleasing design is crucial. Enhancing the UI to be more visually attractive will improve user engagement and satisfaction.
+
+\section{Conclusion}
+
+This thesis presents \textit{RoCar}, a web application designed to empower buyers in the complex Romanian second-hand car market. Utilizing a comprehensive, self-scraped dataset and employing a multimodal approach incorporating textual and visual data analysis, \textit{RoCar} significantly enhances the accuracy and depth of car price predictions compared to existing tools.
+
+The development of RoCar highlighted the critical importance and inherent challenges of working with self-scraped data. The iterative process of data collection, cleaning, and formatting demanded significant effort and expertise, underscoring the need for meticulous data preparation in machine learning applications.
+
+In conclusion, predicting the price of a second-hand car is still a complex challenge due to the multiple factors involved. However, in this thesis, we presented metrics and techniques that we hope will pave the way to future improvements and better results in the automotive sector of machine learning.

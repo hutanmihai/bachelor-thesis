@@ -48,7 +48,7 @@ function Pricing() {
                 </div>
                 <div className="flex h-20 items-center justify-center border-b border-t border-gray-200 bg-gray-50">
                   <div className="flex items-center space-x-1">
-                    <p>TODO ADD HERE</p>
+                    <p className="text-sm">{product.description}</p>
                   </div>
                 </div>
                 <div className="border-t border-gray-200" />

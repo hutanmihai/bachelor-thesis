@@ -7,6 +7,7 @@ export const PRODUCTS = [
     currency: 'ron',
     amount: 10,
     pricePerUnit: 8,
+    description: 'We are happy you like our service.',
   },
   {
     priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_FIVE,
@@ -16,6 +17,7 @@ export const PRODUCTS = [
     currency: 'ron',
     amount: 5,
     pricePerUnit: 9,
+    description: 'Still doubting? Try this package.',
   },
   {
     priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_THREE,
@@ -25,5 +27,6 @@ export const PRODUCTS = [
     currency: 'ron',
     amount: 3,
     pricePerUnit: 10,
+    description: 'Just a taste of what we can do.',
   },
 ]

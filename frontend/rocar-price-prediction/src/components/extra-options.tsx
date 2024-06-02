@@ -27,7 +27,7 @@ function ExtraOptions() {
     const presentValues = currentSelectPossibleValues.filter((value) =>
       currentValues.includes(value)
     )
-    return presentValues.length ? presentValues[0] : 'Selecteaza'
+    return presentValues.length ? presentValues[0] : 'Choose an option'
   }
 
   return (
@@ -51,7 +51,7 @@ function ExtraOptions() {
                             <FormLabel className="mb-1">{option}</FormLabel>
                             <FormControl>
                               <Select
-                                defaultValue="Selecteaza"
+                                defaultValue="Choose an option"
                                 value={getSelectedValue(category, values)}
                                 disabled={form.formState.isSubmitting}
                                 onValueChange={(newValue) => {
@@ -86,11 +86,11 @@ function ExtraOptions() {
                                   <SelectTrigger
                                     className={cn(error ? 'ring-2 ring-destructive' : '')}
                                   >
-                                    <SelectValue placeholder="Selecteaza" />
+                                    <SelectValue placeholder="Choose an option" />
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  <SelectItem value="Selecteaza">Selecteaza</SelectItem>
+                                  <SelectItem value="Choose an option">Choose an option</SelectItem>
                                   {values.map((value) => (
                                     <SelectItem key={value} value={value}>
                                       {value}

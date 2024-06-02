@@ -5,7 +5,6 @@ from fastapi import Depends
 from src.models import Entry
 from src.repositories.entry_repo import EntryRepository
 from src.repositories.errors import EntityNotFound
-from src.repositories.user_repo import UserRepository
 from src.services.abstract_srv import AbstractService
 from src.services.errors import EntryNotCreatedByUser, EntryNotFound
 
