@@ -5,7 +5,7 @@ In this chapter, we present our preprocessing steps and the incremental approach
 Before starting the training process, we ensured our data was prepared and optimized for learning. This section details the preprocessing steps, data splitting strategy, and the metrics used throughout our model development.
 
 \subsection{Preprocessing}
-To enhance the learning process, we normalized our values using various tools from scikit-learn \cite{scikit-learn} and pickle \cite{pickle}. Scikit-learn, a Python module, offers valuable functions and classes for such tasks. We used pickle to save the fitted encoders and preprocessors for future inference.
+To enhance the learning process, we normalized our values using various tools from \textit{scikit-learn} \cite{scikit-learn} and \textit{pickle} \cite{pickle}. Scikit-learn, a Python module, offers valuable functions and classes for such tasks. We used pickle to save the fitted encoders and preprocessors for future inference.
 
 We began by converting the boolean columns to integer values, followed by encoding the categorical columns. Initially, we attempted one-hot encoding for the categorical columns. One-hot encoding transforms each possible entry in the categorical columns into its own column with boolean values. However, this approach was suboptimal because our model's features became extremely sparse, with each manufacturer having five to thirty models. Instead, we opted for target encoding, which calculates the mean of the target variable where the encoded value is present.
 
@@ -87,14 +87,13 @@ These metrics together provide a comprehensive understanding of model performanc
 \section{MLP - Structured Data}
 Working with our self-scraped dataset, we lacked a baseline performance score. Our initial experiment involved creating a multilayer perceptron (MLP) as our baseline.
 
-We utilized PyTorch \cite{pytorch} as our deep learning framework. PyTorch simplifies the development of deep learning models by providing an accessible abstraction layer over the complex mathematical operations required. One of its key features is the utilization of CUDA (Compute Unified Device Architecture) cores for GPU acceleration, which significantly improves both training and inference computations. While TensorFlow \cite{tensorflow} is a common alternative, we chose PyTorch due to its ease of use and support across all platforms, ensuring our code's reproducibility on various operating systems. In contrast, TensorFlow has support for CUDA only on Linux machines, which could limit its applicability.
+We utilized \textit{PyTorch} \cite{pytorch} as our deep learning framework. PyTorch simplifies the development of deep learning models by providing an accessible abstraction layer over the complex mathematical operations required. One of its key features is the utilization of CUDA (Compute Unified Device Architecture) cores for GPU acceleration, which significantly improves both training and inference computations. While \textit{TensorFlow} \cite{tensorflow} is a common alternative, we chose PyTorch due to its ease of use and support across all platforms, ensuring our code's reproducibility on various operating systems. In contrast, TensorFlow has support for CUDA only on Linux machines, which could limit its applicability.
 
 The architecture of the Multilayer Perceptron (MLP) that yielded the best results after extensive fine-tuning comprises two fully connected (linear) hidden layers. The first hidden layer contains 128 neurons, while the second one contains 64 neurons.
 
 ReLU activation functions are applied to each hidden layer to introduce non-linearity. Additionally, we use dropout with a rate of 0.2 on the second hidden layer to help prevent overfitting during the training phase.
 
 For training this model, we will use the Adam optimization function with a learning rate of 1e-4 (0.0001). 
-% This optimization function is suitable for first-order gradient-based optimization of stochastic objective functions, based on estimates of lower-order moments \cite{adam}.
 
 We use the L1Loss function as our loss metric. We chose L1Loss over the more commonly used L2Loss for regression tasks because our self-scraped dataset still contains some outliers that we do not want to unduly influence our model. This issue with outliers is evident in our final results presented in \hyperref[tab:best-results]{Table 4.1}, where the R-squared score is high, but the performance is not optimal.
 
@@ -102,9 +101,9 @@ During our training phase, we also implemented two important techniques: reducin
 
 \section{BERT - Text Encoder}
 \label{sec:bert}
-\textbf{B}idirectional \textbf{E}ncoder \textbf{R}epresentation from \textbf{T}ransformers (BERT) \cite{bert} is a transformer-based architecture, designed for encoding continuous pieces of text data. BERT builds on the transformer model introduced in the paper "Attention is All You Need" \cite{attention}, which details the architecture's encoding and decoding components. BERT consists of multiple transformer encoder layers stacked on top of each other, similar to how GPT (Generative Pre-trained Transformer) is composed of stacked decoder layers. Its key features include faster processing speed, the ability to process multiple words simultaneously, and a deep understanding of context in a bidirectional manner.
+\textbf{B}idirectional \textbf{E}ncoder \textbf{R}epresentation from \textbf{T}ransformers (BERT) \cite{bert} is a transformer-based architecture, designed for encoding continuous pieces of text data. BERT builds on the transformer model introduced in the paper \textit{"Attention is All You Need"} \cite{attention}, which details the architecture's encoding and decoding components. BERT consists of multiple transformer encoder layers stacked on top of each other, similar to how GPT (Generative Pre-trained Transformer) is composed of stacked decoder layers. Its key features include faster processing speed, the ability to process multiple words simultaneously, and a deep understanding of context in a bidirectional manner.
 
-For our problem, which involves inputs in Romanian, we will use a pre-trained version of BERT Base called Romanian BERT, introduced in the paper "The Birth of Romanian BERT" \cite{dumitrescu-etal-2020-birth}. This model, based on BERT Base, contains 110 million trainable parameters and has been pre-trained on a 15GB corpus of Romanian text data.
+For our problem, which involves inputs in Romanian, we will use a pre-trained version of BERT Base called Romanian BERT, introduced in the paper \textit{"The Birth of Romanian BERT"} \cite{dumitrescu-etal-2020-birth}. This model, based on BERT Base, contains 110 million trainable parameters and has been pre-trained on a 15GB corpus of Romanian text data.
 
 Initially, we considered training a base BERT model from scratch. This idea stemmed from the unique language structure of our advertisement descriptions, which often contain numerous enumerations. However, we quickly realized that our data was insufficient for this approach, so we opted to use the pre-trained Romanian BERT model.
 
@@ -129,7 +128,7 @@ Our final and best architecture for our multimodal model, showcased in \hyperref
 
 By using these fine-tuned encoders, we use their ability to extract essential features, which we then concatenate with our structured data, resulting in an input of 1546 features. In this setup, all layers of our encoders are frozen. However, a potential future enhancement could involve unfreezing these layers to enable full end-to-end fine-tuning throughout our architecture.
 
-The concatenated input is then passed through the Multilayer Perceptron (MLP) shown in \autoref{lst:multimodal}, on which we apply ReLU activation functions and Dropout to introduce non-linearity and prevent overfitting, respectively. Additionally, EarlyStopping is used to halt training if overfitting is detected or if there is no further improvement.
+The concatenated input is then passed through the Multilayer Perceptron (MLP) shown in \autoref{lst:multimodal}, on which we apply ReLU activation functions and Dropout to introduce non-linearity and prevent overfitting, respectively. Additionally, early stopping is used to halt training if overfitting is detected or if there is no further improvement.
 
 \begin{lstlisting}[label={lst:multimodal}]
 model = nn.Sequential(

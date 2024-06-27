@@ -10,7 +10,7 @@ Representational State Transfer (REST) is an architectural style that uses stand
 Considering our target clients, which include both our users and other businesses, we aimed to create a robust solution that could seamlessly integrate with any user interface. To achieve this, we developed a web application programming interface (API) that exposes our inference model, allowing clients to utilize it in various scenarios according to their needs.
 
 \subsection{Tech Stack}
-To ensure our backend could efficiently serve not only our client application but also external frontends, we chose FastAPI \cite{fastapi} as our framework. FastAPI offers a multitude of advantages, including the automatic generation of interactive API documentation through Swagger, which provides comprehensive and easily navigable documentation for each endpoint when properly configured.
+To ensure our backend could efficiently serve not only our client application but also external frontends, we chose \textit{FastAPI} \cite{fastapi} as our framework. FastAPI offers a multitude of advantages, including the automatic generation of interactive API documentation through Swagger, which provides comprehensive and easily navigable documentation for each endpoint when properly configured.
 
 Our decision to remain within the Python ecosystem was driven by the need for seamless integration with machine learning packages. After considering Django, Flask, and FastAPI, we opted for FastAPI due to several compelling reasons:
 
@@ -18,8 +18,8 @@ Our decision to remain within the Python ecosystem was driven by the need for se
     \item \textbf{Performance}: The web, fundamentally based on HTTP requests, poses an I/O-bound heavy task for any web server. One of the standout features of FastAPI is its support for asynchronous programming, making it unique among Python web frameworks. This capability allows FastAPI to handle numerous simultaneous requests efficiently, reducing latency and improving overall performance. This, combined with its lightweight nature and the flexibility to choose all the other tools, makes it the most performant Python web framework available
     \item \textbf{Ease of use}: At its core, FastAPI addresses one of Python's long-standing challenges: the lack of static typing. Although type hints were introduced in Python 3.5, they do not provide the same level of static type enforcement as statically typed languages like C or Go. This often complicates the development process, making it more error-prone and less efficient. FastAPI, however, leverages type hints extensively, enhancing the developer experience significantly. By using type hints, FastAPI enables better code validation and error checking, akin to the benefits found in statically typed languages. Additionally, FastAPI offers an intuitive and modern approach to creating APIs through Python decorators. This makes defining endpoints straightforward and expressive, allowing us to build APIs with minimal boilerplate code.
     \item \textbf{Granularity and Flexibility}: Unlike Django, which is a comprehensive framework that includes built-in database adapters, an ORM, and migration tools, FastAPI provides developers with the freedom to choose their own tools and packages. This modularity allows for greater customization and flexibility, enabling developers to select the best components for their specific needs rather than being constrained by the framework’s built-in features.
-    \item \textbf{Validation and Serialization}: Powered by Pydantic \cite{pydantic}, FastAPI ensures robust data validation and serialization, reducing the likelihood of runtime errors and improving data integrity.
-    \item \textbf{Interactive API Documentation}: One of the standout features of FastAPI is its automatic generation of interactive API documentation. Utilizing OpenAPI \cite{openapi} and JSON Schema standards, FastAPI creates a detailed and interactive documentation interface with Swagger UI \cite{swagger}.
+    \item \textbf{Validation and Serialization}: Powered by \textit{Pydantic} \cite{pydantic}, FastAPI ensures robust data validation and serialization, reducing the likelihood of runtime errors and improving data integrity.
+    \item \textbf{Interactive API Documentation}: One of the standout features of FastAPI is its automatic generation of interactive API documentation. Utilizing \textit{OpenAPI} \cite{openapi} and JSON Schema standards, FastAPI creates a detailed and interactive documentation interface with \textit{Swagger UI} \cite{swagger}.
 \end{itemize}
 
 \subsection{Architecture}
@@ -66,7 +66,7 @@ In \hyperref[fig:backend-repositories]{Figure 5.2}, our abstractization is prese
     \end{figure}
 
 \subsection{Endpoints}
-The RoCar API exposes multiple endpoints, each with a distinct role, enabling seamless interaction with various functionalities of our application. All endpoints are prefixed with /api/v1 to ensure backward compatibility in future updates, preventing breaking changes. In this section, we will delve deeper into the specifics of each endpoint.
+The \textit{RoCar API} exposes multiple endpoints, each with a distinct role, enabling seamless interaction with various functionalities of our application. All endpoints are prefixed with /api/v1 to ensure backward compatibility in future updates, preventing breaking changes. In this section, we will delve deeper into the specifics of each endpoint.
 
 \subsubsection{Auth API}
 The Auth API module manages the authentication processes, ensuring secure access to the application.
@@ -142,7 +142,7 @@ curl -X 'POST' \
 \end{lstlisting}
 
 \subsection{RDBMS}
-To efficiently manage and organize the data throughout our application, we selected a robust relational database management system (RDBMS) stack. The chosen stack comprises PostgreSQL \cite{postgresql} as the database, SQLAlchemy \cite{sqlalchemy} as the Object-Relational Mapping (ORM) library, Alembic \cite{alembic} for database migrations, and Amazon S3 \cite{amazon_s3} for image storage.
+To efficiently manage and organize the data throughout our application, we selected a robust relational database management system (RDBMS) stack. The chosen stack comprises \textit{PostgreSQL} \cite{postgresql} as the database, \textit{SQLAlchemy} \cite{sqlalchemy} as the Object-Relational Mapping (ORM) library, \textit{Alembic} \cite{alembic} for database migrations, and \textit{Amazon S3} \cite{amazon_s3} for image storage.
 
 \begin{itemize}
     \item \textbf{PostgreSQL}: We opted for PostgreSQL as our database due to its open-source nature, strong community support, and advanced features. PostgreSQL is known for its reliability, scalability, and compliance with SQL standards.
@@ -163,7 +163,7 @@ Implementing the RDBMS stack involved several key steps to ensure seamless integ
 \subsection{Testing}
 Testing is a crucial aspect of the development lifecycle, especially for a production-ready application. Our focus was not only on creating tests that pass but also on simulating a real production environment. This approach ensures that any changes we make do not break existing functionality, thereby maintaining the stability and reliability of our application.
 
-We utilized the power of pytest \cite{pytest} and pytest-asyncio \cite{pytest_asyncio} for their easy configuration, effective mocking capabilities, and fast testing speeds. Our testing strategy includes both unit tests and integration tests to comprehensively validate our application.
+We utilized the power of \textit{pytest} \cite{pytest} and \textit{pytest-asyncio} \cite{pytest_asyncio} for their easy configuration, effective mocking capabilities, and fast testing speeds. Our testing strategy includes both unit tests and integration tests to comprehensively validate our application.
 
 \subsubsection{Unit tests}
 In our unit tests, we concentrated on testing the core functionality of our services and repositories. Mocking was our primary method for handling external dependencies, allowing us to isolate and test individual components effectively.
@@ -177,9 +177,9 @@ In our unit tests, we concentrated on testing the core functionality of our serv
 \subsubsection{Integration tests}
 To simulate a real production environment during testing, we set up a dedicated database before running integration tests. This setup was achieved using a custom Docker Compose configuration file and a custom Docker image for our application.
 
-For an easier testing process, we create a custom script that does all the steps for us, from starting the test db, to cleaning pycache and saving the coverage for us.
+For an easier testing process, we create a custom script that does all the steps for us, from starting the test database, to cleaning pycache and saving the coverage for us.
 
-The script is made with the task runner poethepoet \cite{poethepoet}, that has it's config inside the pyproject.toml file from our virtual environment managed with poetry \cite{poetry}.
+The script is made with the task runner \textit{poethepoet} \cite{poethepoet}, that has it's config inside the pyproject.toml file from our virtual environment managed with \textit{poetry} \cite{poetry}.
 
 We used this tool for various repetead cli commands, for an easier development experience:
 
@@ -200,38 +200,6 @@ CONFIGURED TASKS
   downgrade_schema         Downgrade database schema
 \end{lstlisting}
 
-
-In the following snippet, our flow of starting the integration tests is presented:
-\begin{lstlisting}
-[tool.poe.tasks.start_test_db]
-help = "Start the test db"
-cmd = "docker-compose up -d test_db "
-
-[tool.poe.tasks.pytest_api]
-help = "Run API tests"
-cmd = "pytest src/tests/integration_tests --cov=src/tests/integration_tests --cov-report=$cov_type"
-
-[[tool.poe.tasks.pytest_api.args]]
-help = "Generate coverage html or xml report"
-name = "cov_type"
-positional = true
-required = false
-default = "term"
-
-[tool.poe.tasks.wait_for_db]
-help = "Wait for the database to be ready"
-cmd = "sleep 1"
-
-[tool.poe.tasks.destroy_test_db]
-help = "Destroy the test db"
-cmd = "docker-compose rm -svf test_db"
-
-[tool.poe.tasks.integration_test]
-help = "Run API tests in a new environment"
-sequence = ["start_test_db", "wait_for_db", "pytest_api $cov_type", "clean_pycache", "destroy_test_db"]
-envfile = "envs/test.env"
-\end{lstlisting}
-
 \begin{itemize}
     \item \textbf{Environment Simulation}: By spinning up a database and other necessary services, we created an environment that closely mimics production, allowing us to test the interactions between various components in a real world scenario.
     \item \textbf{Isolation}: Each test is designed to run independently, with no dependencies on other tests. This isolation ensures that tests do not pass or fail due to side effects from other tests.
@@ -242,9 +210,9 @@ envfile = "envs/test.env"
 By employing a comprehensive testing strategy that includes both unit and integration tests, we ensured that our application is robust, reliable, and ready for production. This approach helps us maintain high code quality and quickly identify and resolve issues, providing confidence in the stability of our system.
 
 \subsection{Deployment}
-For our API we employed an automatic deployment, managed with Github Actions \cite{github_actions}. We created rules, and jobs that check our code quality, runs tests, and sends a signal to Render \cite{render} (our deployment platform) to pull the changes and run the deployment.
+For our API we employed an automatic deployment, managed with \textit{Github Actions} \cite{github_actions}. We created rules, and jobs that check our code quality, runs tests, and sends a signal to \textit{Render} \cite{render} (our deployment platform) to pull the changes and run the deployment.
 
-On render, our app is deployed by it taking our custom docker image from our github repository. There we have set up a multi staged docker image, that has 3 stages.
+On Render, our app is deployed by it taking our custom docker image from our github repository. There we have set up a multi staged docker image, that has 3 stages.
 
 \begin{itemize}
     \item \textbf{Base}: In the base stage we make sure poetry is installed in our container.
@@ -253,28 +221,28 @@ On render, our app is deployed by it taking our custom docker image from our git
     \item \textbf{Production Stage}: This is the final stage, where we utilize the dependencies installed in the previous step and start our server. A custom bash script is executed to first run migrations and then start the server.
 \end{itemize}
 
-An essential aspect of our deployment, and indeed across all our environments, is the loading process for our models and preprocessors. Before starting the server, we verify if the latest model and preprocessors are already present on the server. If they are, we proceed with the server startup. If not, we initiate the download process from our manually maintained S3 bucket. This workflow is consistently applied in local development, Docker \cite{docker} development, testing environments, and production environments.
+An essential aspect of our deployment, and indeed across all our environments, is the loading process for our models and preprocessors. Before starting the server, we verify if the latest model and preprocessors are already present on the server. If they are, we proceed with the server startup. If not, we initiate the download process from our manually maintained S3 bucket. This workflow is consistently applied in local development, \textit{Docker} \cite{docker} development, testing environments, and production environments.
 
 
 Our Github Actions setup is visually illustrated in \hyperref[fig:backend-cicd]{Figure 5.4}.
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.9\linewidth]{images/webapp/backend/cicd.png}
+    \includegraphics[width=\linewidth]{images/webapp/backend/cicd.png}
     \caption{Github Actions Pipeline}
     \label{fig:backend-cicd}
 \end{figure}
 
 
 \subsection{Environments}
-All secrets within our app are securely stored in ignored .env files in the local environment, in GitHub secrets within our remote repository, and in Render and Vercel secrets for our deployment services. This ensures that sensitive information, such as our secret key for generating JWTs, remains protected. We maintain separate .env files for each stage: testing, development, and production, and, as illustrated in our custom test script shown above, we load the appropriate variables as needed.
+All secrets within our app are securely stored in ignored .env files in the local environment, in GitHub secrets within our remote repository, and in Render and Vercel secrets for our deployment services. This ensures that sensitive information, such as our secret key for generating JWTs, remains protected. We maintain separate .env files for each stage: testing, development, and production, that are injected accordingly using our custom cli commands.
 
 \section{Frontend}
 In addition to the logic and functionality provided by our API, we recognized the need to make our model accessible to non-technical users. To achieve this, we developed a minimal, responsive user interface that ensures ease of use across all devices. This intuitive interface empowers users of all technical backgrounds to seamlessly interact with our model, providing a streamlined and user-friendly experience.
 
 \subsection{Tech Stack}
-Our tech stack features Next.js \cite{nextjs}, a comprehensive framework built on React. Next.js provides significant value out of the box, including features such as caching, server-side rendering (SSR), and support for React Server Components. These capabilities ensure fast, dynamic, and SEO-friendly web applications.
+Our tech stack features \textit{Next.js} \cite{nextjs}, a comprehensive framework built on React. Next.js provides significant value out of the box, including features such as caching, server-side rendering (SSR), and support for React Server Components. These capabilities ensure fast, dynamic, and SEO-friendly web applications.
 
-In terms of our UI library, we opted for Shadcn \cite{shadcn}. Shadcn is a headless component library that allows for complete control over styles. It leverages Tailwind CSS \cite{tailwind_css}, providing a highly customizable and efficient styling solution.
+In terms of our UI library, we opted for \textit{Shadcn} \cite{shadcn}. Shadcn is a headless component library that allows for complete control over styles. It leverages \textit{Tailwind CSS} \cite{tailwind_css}, providing a highly customizable and efficient styling solution.
 
 \subsection{Pages}
 The user interface comprehends six pages:
@@ -289,4 +257,4 @@ The user interface comprehends six pages:
 \end{itemize}
 
 \subsection{Deployment}
-The deployment platform for our user interface is Vercel \cite{vercel}. We connected the Vercel project to our repository, and each time a change is seen in the main branch in our frontend directory, the automatic deployment process starts. Vercel offers zero downtime deployment out of the box, an important requirement for a production ready application.
+The deployment platform for our user interface is \textit{Vercel} \cite{vercel}. We connected the Vercel project to our repository, and each time a change is seen in the main branch in our frontend directory, the automatic deployment process starts. Vercel offers zero downtime deployment out of the box, an important requirement for a production ready application.

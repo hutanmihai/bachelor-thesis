@@ -4,9 +4,9 @@
 
 In order to train our model, we required a substantial amount of data. During our search for a dataset, we discovered that no large dataset for second-hand car prices in the Romanian market existed. Consequently, we decided to develop a scraper.
 
-Throughout this thesis our primary programming language is Python. The choice is based on the need to have great integration with the extensive packages and frameworks in the Python ecosystem. Utilizing BeautifulSoup4 \cite{bs4}, a package that simplifies web scraping, and lxml \cite{lxml} as our parser for improved performance, we successfully obtained a dataset of 46,893 advertisements. This dataset includes various parametric data, detailed descriptions, and ten images for each post.
+Throughout this thesis our primary programming language is Python. The choice is based on the need to have great integration with the extensive packages and frameworks in the Python ecosystem. Utilizing \textit{BeautifulSoup4} \cite{bs4}, a package that simplifies web scraping, and \textit{lxml} \cite{lxml} as our parser for improved performance, we successfully obtained a dataset of 46,893 advertisements. This dataset includes various parametric data, detailed descriptions, and ten images for each post.
 
-Our primary tool for handling the data obtained from scraping, formatting, and cleaning it for analysis, inference, and preprocessing is pandas \cite{pandas}, a versatile library for data manipulation and analysis. Pandas offers robust data structures and a wide range of functions, simplifying the efficient handling of both numerical and categorical data.
+Our primary tool for handling the data obtained from scraping, formatting, and cleaning it for analysis, inference, and preprocessing is \textit{Pandas} \cite{pandas}, a versatile library for data manipulation and analysis. Pandas offers robust data structures and a wide range of functions, simplifying the efficient handling of both numerical and categorical data.
 
 \subsection{Scraping Strategy}
 
@@ -171,7 +171,7 @@ To address these issues, we employed various data formatting techniques:
 \subsubsection{Enriching our descriptions}
 In Romania's second-hand car market, it is common for sellers to highlight custom options and equipment in the description of their advertisements. This thing can be seen also in our example provided in \hyperref[fig:scraping-details]{Figure 3.1}. However, our data analysis revealed that some descriptions were either empty or lacked this specific information. 
 
-To provide a more robust input to our BERT model, we appended our custom options columns \textit{audio \& technology, comfort \& optional equipment, electronics \& assistance systems, performance and safety} to the descriptions. We formatted these additions to match the enumerated style observed in most advertisements. By enriching the descriptions this way, we created a more consistent and comprehensive dataset, better aligned with the data we expect to encounter during future inference. Additionally, this step will be replicated by our inference endpoint if users provide more details on the custom options, which are unrequired fields.
+To provide a more robust input to our BERT model, we appended our custom options columns \textit{audio \& technology, comfort \& optional equipment, electronics \& assistance systems, performance} and \textit{safety} to the descriptions. We formatted these additions to match the enumerated style observed in most advertisements. By enriching the descriptions this way, we created a more consistent and comprehensive dataset, better aligned with the data we expect to encounter during future inference. Additionally, this step will be replicated by our inference endpoint if users provide more details on the custom options, which are unrequired fields.
 
 A small example is the description in \hyperref[lst:description-before]{Listing 3.1} that will be concatenated with the text in \hyperref[lst:description-after]{Listing 3.2} after our enrichment process.
 
@@ -501,13 +501,13 @@ For the analysis of the descriptions, we conducted both programmatic and manual 
 
 During our manual analysis, we observed a significant issue: some advertisements were posted in languages other than Romanian. This discrepancy would have greatly affected our model, as we are using a BERT model pre-trained and specialized in Romanian.
 
-To address this, we employed the langdetect library \cite{langdetect} to detect the language of each description. After identifying foreign language samples, we carefully removed them from our dataset. \autoref{lst:langs} shows the detected languages and their frequency.
+To address this, we employed the \textit{langdetect} library \cite{langdetect} to detect the language of each description. After identifying foreign language samples, we carefully removed them from our dataset. \autoref{lst:langs} shows the detected languages and their frequency.
 
 \begin{lstlisting}[label={lst:langs}]
 {'ro': 23964, 'it': 478, 'en': 228, 'ca': 7, 'de': 1, 'sl': 1, 'id': 2, 'pt': 2, 'af': 1, 'sv': 1, 'fr': 1, 'et': 1}
 \end{lstlisting}
 
-We also found that many descriptions contained email addresses, phone numbers, URLs, HTML tags such as <strong>, and a surprisingly large number of emojis. Since these elements do not provide any value to our regression model, we removed them using regular expressions. For emojis, we utilized the emoji \cite{emoji} package from pip.
+We also found that many descriptions contained email addresses, phone numbers, URLs, HTML tags such as <strong>, and a surprisingly large number of emojis. Since these elements do not provide any value to our regression model, we removed them using regular expressions. For emojis, we utilized the \textit{emoji} \cite{emoji} package from pip.
 
 \begin{listing}[H]
 \begin{lstlisting}
