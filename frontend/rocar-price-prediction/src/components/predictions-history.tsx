@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { BentoGrid, BentoGridItem } from '@/components/ui/bento-grid'
 import { buttonVariants } from '@/components/ui/button'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { useDeleteEntry, useEntries } from '@/hooks/entry'
 import { Trash2 } from 'lucide-react'
 
@@ -48,8 +48,8 @@ function PredictionsHistory() {
                 <Chip text={entry.chassis} />
               </div>
               <div className="flex items-center justify-between">
-                <Popover>
-                  <PopoverTrigger
+                <Dialog>
+                  <DialogTrigger
                     className={buttonVariants({
                       variant: 'secondary',
                       size: 'sm',
@@ -57,9 +57,11 @@ function PredictionsHistory() {
                     })}
                   >
                     Read description
-                  </PopoverTrigger>
-                  <PopoverContent className="max-w-xl">{entry.description}</PopoverContent>
-                </Popover>
+                  </DialogTrigger>
+                  <DialogContent className="max-h-96 max-w-xl overflow-scroll">
+                    {entry.description}
+                  </DialogContent>
+                </Dialog>
                 <AlertDialog>
                   <AlertDialogTrigger>
                     <Trash2 color="#ef4444" size={20} className="cursor-pointer rounded-full" />
