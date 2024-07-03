@@ -474,7 +474,7 @@ export const getModelsForManufacturer = (manufacturer: string | undefined) => {
 
 export const fuelTypes = ['diesel', 'gasoline']
 
-export const chassisTypes = ['suv', 'combi', 'compact', 'sedan', 'coupe', 'monovolum']
+export const chassisTypes = ['suv', 'combi', 'compacta', 'sedan', 'coupe', 'monovolum']
 
 export const gearboxTypes = ['manual', 'automatic']
 
