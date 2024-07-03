@@ -39,7 +39,28 @@ class PreprocessSrv:
         response = get(image_url)
         image = BytesIO(response.content)
         image = Image.open(image)
+
+        # Ensure the image is in the correct format (PIL Image)
+        if not isinstance(image, Image.Image):
+            raise ValueError("The loaded image is not a PIL Image.")
+
+        # Convert image to RGB if it's not already
+        if image.mode != "RGB":
+            image = image.convert("RGB")
+
         image = ml_ops.transforms(image).unsqueeze(0)
+
+        # Check the shape of the transformed image
+        if len(image.shape) == 3:
+            # If the shape is [C, H, W], proceed with unsqueeze
+            image = image.unsqueeze(0)
+        elif len(image.shape) == 4:
+            # If the shape is already [B, C, H, W], use as is
+            pass
+        else:
+            # Handle unexpected shape
+            raise ValueError(f"Unexpected shape of transformed image: {image.shape}")
+
         return image
 
     def preprocess_structured_data(self, numerical_data: list, categorical_data: list):
